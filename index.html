@@ -96,6 +96,11 @@
     background: rgba(0,0,0,0.4);  /* 背景更透明 */
     padding: 8px 20px;            /* 内边距小一点 */
     border-radius: 8px;
+    opacity: 0.6;
+transition: opacity 0.3s;
+}
+        .comparison-wrapper:hover .label {
+    opacity: 1;                   /* 鼠标移到大图时才完全显示 */
 }
 .label-a {
     left: 20px;
