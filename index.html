@@ -61,7 +61,7 @@
         .slider {
             position: absolute;
             top: 0; bottom: 0;
-            width: 4px;
+            width: 2px;
             background: white;
             left: 50%;
             pointer-events: none; /* 不拦截鼠标事件 */
@@ -77,13 +77,15 @@
         }
         .slider::before {
             content: "↔";
-            font-size: 30px;
-            background: rgba(0,0,0,0.7);
-            width: 50px; height: 50px;
+            font-size: 24px;
+            background: none;
+            width: auto; 
+            height: auto;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            text-shadow: 0 0 8px rgba(0,0,0,0.8);
         }
         .label {
             position: absolute;
@@ -101,15 +103,16 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(0,0,0,0.5);
+            background: none;  /* 去掉背景 */
             color: white;
             border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            font-size: 30px;
+            width: auto;
+            height: auto;
+            border-radius: 0;
+            font-size: 40px;  /* 可选：箭头大小自己调 */
             cursor: pointer;
             z-index: 20;
+            text-shadow: 0 0 10px rgba(0,0,0,0.8);
         }
         .prev { left: 20px; }
         .next { right: 20px; }
