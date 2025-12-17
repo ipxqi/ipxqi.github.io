@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的作品对比展示</title>
+    <style>
+        body { 
+            margin: 0; 
+            padding: 0; 
+            background: #000; 
+            color: #fff; 
+            font-family: Arial, sans-serif; 
+        }
+        .tabs {
+            text-align: center;
+            padding: 20px 0;
+        }
+        .tabs button {
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .tabs button.active {
+            background: #555;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 0 20px 40px;
+            gap: 20px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        .comparison-wrapper {
+            flex: 2;
+            min-width: 300px;
+            position: relative;
+            height: 80vh;
+            min-height: 500px;
+            background: #111;
+        }
+        .comparison {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            overflow: hidden;
+        }
+        .comparison img {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: contain;
+        }
+        .slider {
+            position: absolute;
+            top: 0; bottom: 0;
+            width: 4px;
+            background: white;
+            left: 50%;
+            cursor: ew-resize;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .slider::before {
+            content: "↔";
+            font-size: 30px;
+            background: rgba(0,0,0,0.7);
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .label {
+            position: absolute;
+            top: 20px;
+            font-size: 36px;
+            font-weight: bold;
+            z-index: 10;
+            background: rgba(0,0,0,0.5);
+            padding: 10px 30px;
+            border-radius: 10px;
+        }
+        .label-a { left: 20px; color: #ff8888; }
+        .label-b { right: 20px; color: #88ff88; }
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 20;
+        }
+        .prev { left: 20px; }
+        .next { right: 20px; }
+        .thumbnails {
+            flex: 1;
+            min-width: 300px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        .thumb {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            cursor: pointer;
+            border: 3px solid #333;
+            transition: all 0.3s;
+        }
+        .thumb:hover, .thumb.active {
+            border-color: #ff6666;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="tabs">
+        <button class="active">类别一</button>
+        <button>类别二</button>
+        <button>类别三</button>
+    </div>
+    <div class="container">
+        <div class="comparison-wrapper">
+            <div class="comparison" id="comparison">
+                <img id="original" src="">
+                <img id="edited" src="">
+                <div class="slider" id="slider"></div>
+                <div class="label label-a">A 原图</div>
+                <div class="label label-b">B 效果图</div>
+            </div>
+            <button class="nav-arrow prev" id="prev">‹</button>
+            <button class="nav-arrow next" id="next">›</button>
+        </div>
+        <div class="thumbnails" id="thumbnails">
+            <!-- 把下面这几行复制多份，换成你自己的图片链接 -->
+            <img class="thumb active" src="https://imgur.com/Kf3DO49"
+                 data-original="https://imgur.com/Kf3DO49"
+                 data-edited="https://imgur.com/Zlq3aCb">
+            <img class="thumb" src="https://imgur.com/Ej9SFb2"
+                 data-original="https://imgur.com/Ej9SFb2"
+                 data-edited="https://imgur.com/OD2hovc">
+            <!-- 继续加更多 -->
+        </div>
+    </div>
+    <script>
+        const original = document.getElementById('original');
+        const edited = document.getElementById('edited');
+        const slider = document.getElementById('slider');
+        const comparison = document.getElementById('comparison');
+        const thumbs = document.querySelectorAll('.thumb');
+        const prevBtn = document.getElementById('prev');
+        const nextBtn = document.getElementById('next');
+        let currentIndex = 0;
+        let isDragging = false;
+
+        function loadImage(index) {
+            const thumb = thumbs[index];
+            original.src = thumb.dataset.original;
+            edited.src = thumb.dataset.edited;
+            thumbs.forEach(t => t.classList.remove('active'));
+            thumb.classList.add('active');
+            currentIndex = index;
+            edited.style.clipPath = 'inset(0 50% 0 0)';
+        }
+
+        thumbs.forEach((thumb, index) => {
+            thumb.addEventListener('click', () => loadImage(index));
+        });
+
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + thumbs.length) % thumbs.length;
+            loadImage(currentIndex);
+        });
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % thumbs.length;
+            loadImage(currentIndex);
+        });
+
+        function moveSlider(e) {
+            if (!isDragging) return;
+            const rect = comparison.getBoundingClientRect();
+            let x = (e.clientX || e.touches[0].clientX) - rect.left;
+            let percent = (x / rect.width) * 100;
+            percent = Math.max(0, Math.min(100, percent));
+            edited.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+        }
+
+        slider.addEventListener('mousedown', () => isDragging = true);
+        document.addEventListener('mouseup', () => isDragging = false);
+        document.addEventListener('mousemove', moveSlider);
+        slider.addEventListener('touchstart', () => isDragging = true);
+        document.addEventListener('touchend', () => isDragging = false);
+        document.addEventListener('touchmove', moveSlider);
+
+        if (thumbs.length > 0) loadImage(0);
+    </script>
+</body>
+</html>
