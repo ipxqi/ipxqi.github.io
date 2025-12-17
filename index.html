@@ -87,18 +87,24 @@
             justify-content: center;
             text-shadow: 0 0 8px rgba(0,0,0,0.8);
         }
-        .label {
-            position: absolute;
-            top: 20px;
-            font-size: 36px;
-            font-weight: bold;
-            z-index: 10;
-            background: rgba(0,0,0,0.6);
-            padding: 10px 30px;
-            border-radius: 10px;
-        }
-        .label-a { left: 20px; color: #ff6666; }
-        .label-b { right: 20px; color: #66ff66; }
+.label {
+    position: absolute;
+    top: 20px;
+    font-size: 20px;              /* 原36px → 20px，小很多，更低调 */
+    font-weight: normal;          /* 去掉粗体 */
+    z-index: 10;
+    background: rgba(0,0,0,0.4);  /* 背景更透明 */
+    padding: 8px 20px;            /* 内边距小一点 */
+    border-radius: 8px;
+}
+.label-a {
+    left: 20px;
+    color: #cccccc;               /* 浅灰色，低调 */
+}
+.label-b {
+    right: 20px;
+    color: #dddddd;               /* 更浅的灰白 */
+}
         .nav-arrow {
             position: absolute;
             top: 50%;
