@@ -45,9 +45,9 @@
             background: #111;
         }
         .comparison {
-            position: relative;
-            width: 100%;
-            height: 100%;
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            overflow: hidden;
         }
         .comparison img {
             position: absolute;
@@ -56,8 +56,7 @@
             object-fit: contain;
         }
         #edited {
-            width: 50%; /* 默认显示一半 */
-            overflow: hidden;
+            clip-path: inset(0 50% 0 0); /* 默认显示右半边 */
         }
         .slider {
             position: absolute;
@@ -65,11 +64,16 @@
             width: 4px;
             background: white;
             left: 50%;
-            cursor: ew-resize;
+            pointer-events: none; /* 不拦截鼠标事件 */
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 10;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .comparison-wrapper:hover .slider {
+            opacity: 1; /* 鼠标移入时显示滑块 */
         }
         .slider::before {
             content: "↔";
@@ -148,15 +152,15 @@
             <button class="nav-arrow prev" id="prev">‹</button>
             <button class="nav-arrow next" id="next">›</button>
         </div>
-         <div class="thumbnails" id="thumbnails">
-            <!-- 把下面这几行复制多份，换成你自己的图片链接 -->
+        <div class="thumbnails" id="thumbnails">
+            <!-- 替换成你的真实图片链接 -->
             <img class="thumb active" src="https://imgur.com/Kf3DO49.jpeg"
                  data-original="https://imgur.com/Kf3DO49.jpeg"
                  data-edited="https://imgur.com/Zlq3aCb.jpeg">
             <img class="thumb" src="https://imgur.com/Ej9SFb2.jpeg"
                  data-original="https://imgur.com/Ej9SFb2.jpeg"
                  data-edited="https://imgur.com/OD2hovc.jpeg">
-            <!-- 继续加更多 -->
+            <!-- 继续添加更多组 -->
         </div>
     </div>
 
@@ -164,12 +168,11 @@
         const original = document.getElementById('original');
         const edited = document.getElementById('edited');
         const slider = document.getElementById('slider');
-        const comparison = document.querySelector('.comparison');
+        const wrapper = document.querySelector('.comparison-wrapper');
         const thumbs = document.querySelectorAll('.thumb');
         const prevBtn = document.getElementById('prev');
         const nextBtn = document.getElementById('next');
         let currentIndex = 0;
-        let isDragging = false;
 
         function loadImage(index) {
             const thumb = thumbs[index];
@@ -178,33 +181,34 @@
             thumbs.forEach(t => t.classList.remove('active'));
             thumb.classList.add('active');
             currentIndex = index;
-            setPosition(50); // 重置到中间
+            updateSlider(50); // 重置到中间
         }
 
-        function setPosition(percent) {
-            edited.style.width = percent + '%';
+        function updateSlider(percent) {
+            edited.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
             slider.style.left = percent + '%';
         }
 
-        // 鼠标拖动
-        function moveSlider(e) {
-            if (!isDragging) return;
-            const rect = comparison.getBoundingClientRect();
-            let x = (e.clientX || e.touches[0].clientX) - rect.left;
+        // 鼠标移动自动跟随
+        wrapper.addEventListener('mousemove', (e) => {
+            const rect = wrapper.getBoundingClientRect();
+            let x = e.clientX - rect.left;
             let percent = (x / rect.width) * 100;
             percent = Math.max(0, Math.min(100, percent));
-            setPosition(percent);
-        }
+            updateSlider(percent);
+        });
 
-        slider.addEventListener('mousedown', () => isDragging = true);
-        document.addEventListener('mouseup', () => isDragging = false);
-        document.addEventListener('mousemove', moveSlider);
+        // 手机触屏支持
+        wrapper.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const rect = wrapper.getBoundingClientRect();
+            let x = e.touches[0].clientX - rect.left;
+            let percent = (x / rect.width) * 100;
+            percent = Math.max(0, Math.min(100, percent));
+            updateSlider(percent);
+        });
 
-        slider.addEventListener('touchstart', () => isDragging = true);
-        document.addEventListener('touchend', () => isDragging = false);
-        document.addEventListener('touchmove', moveSlider);
-
-        // 点击缩略图和箭头切换
+        // 切换作品
         thumbs.forEach((thumb, i) => thumb.addEventListener('click', () => loadImage(i)));
         prevBtn.addEventListener('click', () => loadImage((currentIndex - 1 + thumbs.length) % thumbs.length));
         nextBtn.addEventListener('click', () => loadImage((currentIndex + 1) % thumbs.length));
