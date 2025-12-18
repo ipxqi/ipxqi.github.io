@@ -251,25 +251,25 @@ function loadImage(index) {
     currentMode = mode;
 
     if (mode === 'compare') {
-        // 对比模式：显示两张图 + 滑块 + 标签
-        original.src = thumb.dataset.original;
-        edited.src = thumb.dataset.edited;
-        original.style.display = 'block';
-        edited.style.display = 'block';
-        slider.style.display = 'flex';
-        labels.forEach(l => l.style.display = 'block');
-        if (guideText) guideText.style.display = 'block';
-        updateSlider(50);
-    } else {
-        // 单图模式：只显示效果图（或指定单图），隐藏对比元素
-        original.src = '';
-        edited.src = thumb.dataset.single || thumb.src.replace('缩略', '大'); // fallback
-        original.style.display = 'none';
-        edited.style.display = 'block';
-        slider.style.display = 'none';
-        labels.forEach(l => l.style.display = 'none');
-        if (guideText) guideText.style.display = 'none';
-    }
+    // 对比模式：显示两张图 + 滑块 + 标签 + 引导
+    original.src = thumb.dataset.original;
+    edited.src = thumb.dataset.edited;
+    original.style.display = 'block';   // 必须加这行！原图才能显示
+    edited.style.display = 'block';
+    slider.style.display = 'flex';
+    labels.forEach(l => l.style.display = 'block');
+    if (guideText) guideText.style.display = 'block';
+    updateSlider(50);
+} else {
+    // 单图模式
+    original.src = '';
+    edited.src = thumb.dataset.single || thumb.src;
+    original.style.display = 'none';    // 单图时隐藏原图
+    edited.style.display = 'block';
+    slider.style.display = 'none';
+    labels.forEach(l => l.style.display = 'none');
+    if (guideText) guideText.style.display = 'none';
+}
 }
 
 function updateSlider(percent) {
