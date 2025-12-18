@@ -340,6 +340,25 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') lightbox.style.display = 'none';
         });
+
+        // 键盘左右箭头切换大图
+document.addEventListener('keydown', (e) => {
+    if (lightbox.style.display !== 'flex') return; // 只有 Lightbox 打开时才响应
+
+    if (e.key === 'ArrowLeft') {
+        // 左箭头：上一张
+        e.preventDefault();
+        currentIndex = (currentIndex - 1 + thumbs.length) % thumbs.length;
+        const bigImg = thumbs[currentIndex].dataset.lightbox || thumbs[currentIndex].dataset.edited || thumbs[currentIndex].dataset.single || thumbs[currentIndex].src;
+        lightboxImg.src = bigImg;
+    } else if (e.key === 'ArrowRight') {
+        // 右箭头：下一张
+        e.preventDefault();
+        currentIndex = (currentIndex + 1) % thumbs.length;
+        const bigImg = thumbs[currentIndex].dataset.lightbox || thumbs[currentIndex].dataset.edited || thumbs[currentIndex].dataset.single || thumbs[currentIndex].src;
+        lightboxImg.src = bigImg;
+    }
+});
     </script>
 </body>
 </html>
