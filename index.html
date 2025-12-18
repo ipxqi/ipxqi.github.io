@@ -222,68 +222,87 @@
 
 <!-- 继续加更多单图 -->
 
-            
-            <!-- 替换成你的真实图片链接 -->
-            <img class="thumb active" src=""
-                 data-original="https://s3.bmp.ovh/imgs/2025/12/18/c523be23fbcb1d09.jpg"
-                 data-edited="https://s3.bmp.ovh/imgs/2025/12/18/87b099dec43309e6.jpg">
-            <img class="thumb" src="https://s3.bmp.ovh/imgs/2025/12/18/6052c94b5fb23af2.jpg"
-                 data-original="https://s3.bmp.ovh/imgs/2025/12/18/c760383d9441f1a0.jpg"
-                 data-edited="https://s3.bmp.ovh/imgs/2025/12/18/6052c94b5fb23af2.jpg">
-            <!-- 继续添加更多组 -->
+      
         </div>
     </div>
 
     <script>
         const original = document.getElementById('original');
-        const edited = document.getElementById('edited');
-        const slider = document.getElementById('slider');
-        const wrapper = document.querySelector('.comparison-wrapper');
-        const thumbs = document.querySelectorAll('.thumb');
-        const prevBtn = document.getElementById('prev');
-        const nextBtn = document.getElementById('next');
-        let currentIndex = 0;
+const edited = document.getElementById('edited');
+const slider = document.getElementById('slider');
+const wrapper = document.querySelector('.comparison-wrapper');
+const thumbs = document.querySelectorAll('.thumb');
+const prevBtn = document.getElementById('prev');
+const nextBtn = document.getElementById('next');
+const labels = document.querySelectorAll('.label');
+const guideText = document.querySelector('.guide-text');
+let currentIndex = 0;
+let currentMode = 'compare'; // 默认对比模式
 
-        function loadImage(index) {
-            const thumb = thumbs[index];
-            original.src = thumb.dataset.original;
-            edited.src = thumb.dataset.edited;
-            thumbs.forEach(t => t.classList.remove('active'));
-            thumb.classList.add('active');
-            currentIndex = index;
-            updateSlider(50); // 重置到中间
-        }
+function loadImage(index) {
+    const thumb = thumbs[index];
+    currentIndex = index;
+    
+    // 更新激活状态
+    thumbs.forEach(t => t.classList.remove('active'));
+    thumb.classList.add('active');
+    
+    const mode = thumb.dataset.mode || 'single'; // 默认单图
+    currentMode = mode;
 
-        function updateSlider(percent) {
-            edited.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
-            slider.style.left = percent + '%';
-        }
+    if (mode === 'compare') {
+        // 对比模式：显示两张图 + 滑块 + 标签
+        original.src = thumb.dataset.original;
+        edited.src = thumb.dataset.edited;
+        original.style.display = 'block';
+        edited.style.display = 'block';
+        slider.style.display = 'flex';
+        labels.forEach(l => l.style.display = 'block');
+        if (guideText) guideText.style.display = 'block';
+        updateSlider(50);
+    } else {
+        // 单图模式：只显示效果图（或指定单图），隐藏对比元素
+        original.src = '';
+        edited.src = thumb.dataset.single || thumb.src.replace('缩略', '大'); // fallback
+        original.style.display = 'none';
+        edited.style.display = 'block';
+        slider.style.display = 'none';
+        labels.forEach(l => l.style.display = 'none');
+        if (guideText) guideText.style.display = 'none';
+    }
+}
 
-        // 鼠标移动自动跟随
-        wrapper.addEventListener('mousemove', (e) => {
-            const rect = wrapper.getBoundingClientRect();
-            let x = e.clientX - rect.left;
-            let percent = (x / rect.width) * 100;
-            percent = Math.max(0, Math.min(100, percent));
-            updateSlider(percent);
-        });
+function updateSlider(percent) {
+    if (currentMode !== 'compare') return;
+    edited.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+    slider.style.left = percent + '%';
+}
 
-        // 手机触屏支持
-        wrapper.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            const rect = wrapper.getBoundingClientRect();
-            let x = e.touches[0].clientX - rect.left;
-            let percent = (x / rect.width) * 100;
-            percent = Math.max(0, Math.min(100, percent));
-            updateSlider(percent);
-        });
+// 鼠标移动跟随（仅对比模式）
+wrapper.addEventListener('mousemove', (e) => {
+    if (currentMode !== 'compare') return;
+    const rect = wrapper.getBoundingClientRect();
+    let x = e.clientX - rect.left;
+    let percent = (x / rect.width) * 100;
+    percent = Math.max(0, Math.min(100, percent));
+    updateSlider(percent);
+});
 
-        // 切换作品
-        thumbs.forEach((thumb, i) => thumb.addEventListener('click', () => loadImage(i)));
-        prevBtn.addEventListener('click', () => loadImage((currentIndex - 1 + thumbs.length) % thumbs.length));
-        nextBtn.addEventListener('click', () => loadImage((currentIndex + 1) % thumbs.length));
+// 触屏支持
+wrapper.addEventListener('touchmove', (e) => {
+    if (currentMode !== 'compare') return;
+    e.preventDefault();
+    const rect = wrapper.getBoundingClientRect();
+    let x = e.touches[0].clientX - rect.left;
+    let percent = (x / rect.width) * 100;
+    percent = Math.max(0, Math.min(100, percent));
+    updateSlider(percent);
+});
 
-        if (thumbs.length > 0) loadImage(0);
-    </script>
-</body>
-</html>
+// 点击缩略图和箭头切换
+thumbs.forEach((thumb, i) => thumb.addEventListener('click', () => loadImage(i)));
+prevBtn.addEventListener('click', () => loadImage((currentIndex - 1 + thumbs.length) % thumbs.length));
+nextBtn.addEventListener('click', () => loadImage((currentIndex + 1) % thumbs.length));
+
+// 初始化第一张
+if (thumbs.length > 0) loadImage(0);
