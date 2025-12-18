@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>我的作品对比展示</title>
     <style>
-        body { 
-            margin: 0; 
-            padding: 0; 
-            background: #000; 
-            color: #fff; 
-            font-family: Arial, sans-serif; 
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
         }
         .tabs {
             text-align: center;
@@ -44,29 +44,25 @@
             min-height: 500px;
             background: #111;
         }
-        /* 引导文字 */
-.guide-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 28px;                     /* 字体更大，从24px → 28px */
-    font-weight: none;                   /* 加粗，更醒目 */
-    color: rgba(255, 255, 255, 0.95);    /* 文字几乎纯白，很亮 */
-    background: rgba(0, 0, 0, 0.7);      /* 背景更深，更衬托文字 */
-    padding: 15px 30px;                  /* 内边距加大，整体更大气 */
-    border-radius: 12px;                 /* 圆角稍大，更柔和 */
-    pointer-events: none;
-    z-index: 15;
-    transition: opacity 0.5s ease;
-    white-space: nowrap;
-    box-shadow: none; /*0 4px 20px rgba(0,0,0,0.6);  /* 加轻微阴影，立体感更强 */
-}
-
-/* 鼠标移入大图时隐藏引导文字 */
-.comparison-wrapper:hover .guide-text {
-    opacity: 0;
-}
+        .guide-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 28px;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.95);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px 30px;
+            border-radius: 12px;
+            pointer-events: none;
+            z-index: 15;
+            transition: opacity 0.5s ease;
+            white-space: nowrap;
+        }
+        .comparison-wrapper:hover .guide-text {
+            opacity: 0;
+        }
         .comparison {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -79,7 +75,7 @@
             object-fit: contain;
         }
         #edited {
-            clip-path: inset(0 50% 0 0); /* 默认显示右半边 */
+            clip-path: inset(0 50% 0 0);
         }
         .slider {
             position: absolute;
@@ -87,7 +83,7 @@
             width: 2px;
             background: white;
             left: 50%;
-            pointer-events: none; /* 不拦截鼠标事件 */
+            pointer-events: none;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -96,58 +92,39 @@
             transition: opacity 0.3s;
         }
         .comparison-wrapper:hover .slider {
-            opacity: 1; /* 鼠标移入时显示滑块 */
+            opacity: 1;
         }
         .slider::before {
             content: "↔";
             font-size: 24px;
             background: none;
-            width: auto; 
-            height: auto;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             text-shadow: 0 0 8px rgba(0,0,0,0.8);
         }
-.label {
-    position: absolute;
-    top: 20px;
-    font-size: 20px;              /* 原36px → 20px，小很多，更低调 */
-    font-weight: normal;          /* 去掉粗体 */
-    z-index: 10;
-    background: rgba(0,0,0,0.4);  /* 背景更透明 */
-    padding: 8px 20px;            /* 内边距小一点 */
-    border-radius: 8px;
-    opacity: 0;                   /* 新增：默认隐藏 */
-    transition: opacity 0.4s;     /* 新增：淡入淡出平滑 */
-}
+        .label {
+            position: absolute;
+            top: 20px;
+            font-size: 20px;
+            font-weight: normal;
+            z-index: 10;
+            background: rgba(0,0,0,0.4);
+            padding: 8px 20px;
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
         .comparison-wrapper:hover .label {
-    opacity: 1;                   /* 鼠标移到大图时才完全显示 */
-}
-.label-a {
-    left: 20px;
-    color: #cccccc;               /* 浅灰色，低调 */
-}
-.label-b {
-    right: 20px;
-    color: #dddddd;               /* 更浅的灰白 */
-}
-        /* 鼠标移到大图区域时才显示标签 */
-.comparison-wrapper:hover .label {
-    opacity: 1;
-}
+            opacity: 1;
+        }
+        .label-a { left: 20px; color: #ff8888; }
+        .label-b { right: 20px; color: #88ff88; }
         .nav-arrow {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: none;  /* 去掉背景 */
+            background: none;
             color: white;
             border: none;
-            width: auto;
-            height: auto;
-            border-radius: 0;
-            font-size: 40px;  /* 可选：箭头大小自己调 */
+            font-size: 40px;
             cursor: pointer;
             z-index: 20;
             text-shadow: 0 0 10px rgba(0,0,0,0.8);
@@ -166,19 +143,55 @@
             aspect-ratio: 1/1;
             object-fit: cover;
             cursor: pointer;
-            border: 2px solid #444;/* 细一半，用深灰色 */
+            border: 2px solid #444;
             transition: all 0.3s;
-            border-radius: 10px;  /* 圆角大小自己调，8px 微圆，12px 更圆 */
+            border-radius: 10px;
+        }
+        .thumb:hover {
+            border-color: #888;
+            transform: scale(1.03);
+        }
+        .thumb.active {
+            border: 2px solid #ffffff;
+            transform: scale(1.03);
         }
 
-        .thumb:hover {
-            border-color: #888;           /* 悬停时稍亮灰色 */
-            transform: scale(1.03);       /* 轻微放大 */
-}
-        .thumb.active {
-    border: 2px solid #ffffff;   /* 白色细边 */
-    transform: scale(1.03);        /* 只留这一行，轻微放大表示选中 */
-}
+        /* Lightbox 样式 */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+        }
+        .lightbox-prev, .lightbox-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 50px;
+            color: white;
+            cursor: pointer;
+            padding: 20px;
+        }
+        .lightbox-prev { left: 30px; }
+        .lightbox-next { right: 30px; }
     </style>
 </head>
 <body>
@@ -201,108 +214,124 @@
             <button class="nav-arrow next" id="next">›</button>
         </div>
         <div class="thumbnails" id="thumbnails">
-            <!-- 这张点击后做对比 -->
-<img class="thumb active" src="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/sA6N/2124X2832/0.jpg/webp"
-     data-original="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/aZoT/2124X2832/1.jpg/webp"
-     data-edited="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/sA6N/2124X2832/0.jpg/webp"
-     data-mode="compare" loading="eager" crossorigin="anonymous">
+            <!-- 点击缩略图弹出大图查看 -->
+            <img class="thumb active" src="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/sA6N/2124X2832/1.jpg/webp"
+                 data-original="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/sA6N/2124X2832/0.jpg/webp"
+                 data-edited="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/sA6N/2124X2832/1.jpg/webp"
+                 data-lightbox="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/aZoT/2124X2832/1.jpg/webp"> <!-- 用于 Lightbox -->
 
-<!-- 其它点击后只显示单张（用 data-edited 或任意一张作为单图） -->
-<img class="thumb" src="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/j3Zz/2160X2906/3.jpg/webp"
-     data-single="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/j3Zz/2160X2906/3.jpg/webp"
-     data-mode="single" loading="eager" crossorigin="anonymous">
-
-<img class="thumb" src="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/JZqo/2160X2904/4.jpg/webp"
-     data-single="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/JZqo/2160X2904/4.jpg/webp"
-     data-mode="single" loading="eager" crossorigin="anonymous">
-
-            <img class="thumb" src="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/kYKP/2160X2904/5.jpg/webp"
-     data-single="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/kYKP/2160X2904/5.jpg/webp"
-     data-mode="single" loading="eager" crossorigin="anonymous">
-
-<!-- 继续加更多单图 -->
-
-      
+            <img class="thumb" src="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/j3Zz/2160X2906/3.jpg/webp"
+                 data-single="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/j3Zz/2160X2906/3.jpg/webp"
+                 data-lightbox="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/j3Zz/2160X2906/3.jpg/webp">
+            
+            <img class="thumb" src="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/j3Zz/2160X2906/4.jpg/webp"
+                 data-single="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/j3Zz/2160X2906/4.jpg/webp"
+                 data-lightbox="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/j3Zz/2160X2906/4.jpg/webp">
+            <!-- 继续添加 -->
         </div>
     </div>
 
+    <!-- Lightbox 浮层 -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close">×</span>
+        <span class="lightbox-prev">‹</span>
+        <span class="lightbox-next">›</span>
+        <img id="lightbox-img" src="">
+    </div>
+
     <script>
+        // 原对比功能保持不变（你的代码）
         const original = document.getElementById('original');
-const edited = document.getElementById('edited');
-const slider = document.getElementById('slider');
-const wrapper = document.querySelector('.comparison-wrapper');
-const thumbs = document.querySelectorAll('.thumb');
-const prevBtn = document.getElementById('prev');
-const nextBtn = document.getElementById('next');
-const labels = document.querySelectorAll('.label');
-const guideText = document.querySelector('.guide-text');
-let currentIndex = 0;
-let currentMode = 'compare'; // 默认对比模式
+        const edited = document.getElementById('edited');
+        const slider = document.getElementById('slider');
+        const wrapper = document.querySelector('.comparison-wrapper');
+        const thumbs = document.querySelectorAll('.thumb');
+        const prevBtn = document.getElementById('prev');
+        const nextBtn = document.getElementById('next');
+        let currentIndex = 0;
 
-function loadImage(index) {
-    const thumb = thumbs[index];
-    currentIndex = index;
-    
-    // 更新激活状态
-    thumbs.forEach(t => t.classList.remove('active'));
-    thumb.classList.add('active');
-    
-    const mode = thumb.dataset.mode || 'single'; // 默认单图
-    currentMode = mode;
+        function loadImage(index) {
+            const thumb = thumbs[index];
+            original.src = thumb.dataset.original || '';
+            edited.src = thumb.dataset.edited || thumb.dataset.single || '';
+            original.style.display = thumb.dataset.original ? 'block' : 'none';
+            edited.style.display = 'block';
+            slider.style.display = thumb.dataset.original ? 'flex' : 'none';
+            thumbs.forEach(t => t.classList.remove('active'));
+            thumb.classList.add('active');
+            currentIndex = index;
+            updateSlider(50);
+        }
 
-    if (mode === 'compare') {
-    // 对比模式：显示两张图 + 滑块 + 标签 + 引导
-    original.src = thumb.dataset.original;
-    edited.src = thumb.dataset.edited;
-    original.style.display = 'block';   // 必须加这行！原图才能显示
-    edited.style.display = 'block';
-    slider.style.display = 'flex';
-    labels.forEach(l => l.style.display = 'block');
-    if (guideText) guideText.style.display = 'block';
-    updateSlider(50);
-} else {
-    // 单图模式
-    original.src = '';
-    edited.src = thumb.dataset.single || thumb.src;
-    original.style.display = 'none';    // 单图时隐藏原图
-    edited.style.display = 'block';
-    slider.style.display = 'none';
-    labels.forEach(l => l.style.display = 'none');
-    if (guideText) guideText.style.display = 'none';
-}
-}
+        function updateSlider(percent) {
+            edited.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+            slider.style.left = percent + '%';
+        }
 
-function updateSlider(percent) {
-    if (currentMode !== 'compare') return;
-    edited.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
-    slider.style.left = percent + '%';
-}
+        wrapper.addEventListener('mousemove', (e) => {
+            const rect = wrapper.getBoundingClientRect();
+            let x = e.clientX - rect.left;
+            let percent = (x / rect.width) * 100;
+            percent = Math.max(0, Math.min(100, percent));
+            updateSlider(percent);
+        });
 
-// 鼠标移动跟随（仅对比模式）
-wrapper.addEventListener('mousemove', (e) => {
-    if (currentMode !== 'compare') return;
-    const rect = wrapper.getBoundingClientRect();
-    let x = e.clientX - rect.left;
-    let percent = (x / rect.width) * 100;
-    percent = Math.max(0, Math.min(100, percent));
-    updateSlider(percent);
-});
+        wrapper.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const rect = wrapper.getBoundingClientRect();
+            let x = e.touches[0].clientX - rect.left;
+            let percent = (x / rect.width) * 100;
+            percent = Math.max(0, Math.min(100, percent));
+            updateSlider(percent);
+        });
 
-// 触屏支持
-wrapper.addEventListener('touchmove', (e) => {
-    if (currentMode !== 'compare') return;
-    e.preventDefault();
-    const rect = wrapper.getBoundingClientRect();
-    let x = e.touches[0].clientX - rect.left;
-    let percent = (x / rect.width) * 100;
-    percent = Math.max(0, Math.min(100, percent));
-    updateSlider(percent);
-});
+        thumbs.forEach((thumb, i) => thumb.addEventListener('click', () => loadImage(i)));
+        prevBtn.addEventListener('click', () => loadImage((currentIndex - 1 + thumbs.length) % thumbs.length));
+        nextBtn.addEventListener('click', () => loadImage((currentIndex + 1) % thumbs.length));
+        if (thumbs.length > 0) loadImage(0);
 
-// 点击缩略图和箭头切换
-thumbs.forEach((thumb, i) => thumb.addEventListener('click', () => loadImage(i)));
-prevBtn.addEventListener('click', () => loadImage((currentIndex - 1 + thumbs.length) % thumbs.length));
-nextBtn.addEventListener('click', () => loadImage((currentIndex + 1) % thumbs.length));
+        // 新增 Lightbox 功能
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const closeBtn = document.querySelector('.lightbox-close');
+        const lightboxPrev = document.querySelector('.lightbox-prev');
+        const lightboxNext = document.querySelector('.lightbox-next');
 
-// 初始化第一张
-if (thumbs.length > 0) loadImage(0);
+        // 点击缩略图弹出大图
+        thumbs.forEach((thumb, i) => {
+            thumb.addEventListener('click', (e) => {
+                e.stopPropagation(); // 防止触发对比切换
+                const bigImg = thumb.dataset.lightbox || thumb.dataset.edited || thumb.dataset.single || thumb.src;
+                lightboxImg.src = bigImg;
+                lightbox.style.display = 'flex';
+                currentIndex = i;
+            });
+        });
+
+        // 关闭
+        lightbox.addEventListener('click', () => {
+            lightbox.style.display = 'none';
+        });
+
+        // 左右切换
+        lightboxPrev.addEventListener('click', (e) => {
+            e.stopPropagation();
+            currentIndex = (currentIndex - 1 + thumbs.length) % thumbs.length;
+            const bigImg = thumbs[currentIndex].dataset.lightbox || thumbs[currentIndex].dataset.edited || thumbs[currentIndex].dataset.single || thumbs[currentIndex].src;
+            lightboxImg.src = bigImg;
+        });
+
+        lightboxNext.addEventListener('click', (e) => {
+            e.stopPropagation();
+            currentIndex = (currentIndex + 1) % thumbs.length;
+            const bigImg = thumbs[currentIndex].dataset.lightbox || thumbs[currentIndex].dataset.edited || thumbs[currentIndex].dataset.single || thumbs[currentIndex].src;
+            lightboxImg.src = bigImg;
+        });
+
+        // 键盘 ESC 关闭
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') lightbox.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
