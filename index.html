@@ -15,25 +15,24 @@
             display: flex;
             flex-direction: column;
         }
-        /* 标题左对齐 */
+        /* 标题真正左对齐 */
         .header {
-            text-align: left;
             padding: 80px 60px 60px;
-            max-width: 1800px;
-            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
         }
         .header h1 {
             font-size: 32px;
             font-weight: 500;
             margin: 0;
             line-height: 1.4;
+            text-align: left; /* 明确左对齐 */
         }
-        /* 滑动容器 */
         .gallery-container {
             overflow: hidden;
             padding: 0 60px 140px;
-            max-width: 1800px;
-            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
             flex: 1;
         }
         .gallery {
@@ -68,11 +67,10 @@
         .card-desc {
             font-size: 15px;
             line-height: 1.6;
-            color: #86868b;
+            color: #ddd;
             margin: 8px 0 0 0;
             text-align: left;
         }
-        /* 右下角横向 ← → 箭头 */
         .nav-buttons {
             position: fixed;
             right: 40px;
@@ -103,13 +101,13 @@
             cursor: not-allowed;
             transform: none;
         }
-        /* 手机端 */
         @media (max-width: 1024px) {
             .header {
                 padding: 60px 30px 40px;
             }
             .header h1 {
                 font-size: 28px;
+                text-align: center;
             }
             .gallery-container {
                 padding: 0 30px 140px;
@@ -181,7 +179,6 @@
         </div>
     </div>
 
-    <!-- 右下角横向箭头 -->
     <div class="nav-buttons">
         <button id="prev-btn">←</button>
         <button id="next-btn">→</button>
@@ -193,14 +190,17 @@
         const total = items.length;
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
-        let index = 0;
+        
+        // 默认从第二张图开始（index = 1）
+        let index = 1;
 
         function updateSlide() {
-            const width = items[0].offsetWidth + 40; // 卡片宽度 + gap
+            const width = items[0].offsetWidth + 40;
             gallery.style.transform = `translateX(${-index * width}px)`;
 
-            // 控制按钮状态：到头时禁用
+            // 按钮状态控制
             prevBtn.disabled = index === 0;
+            // 当第四张图完全进入视野（即滑动到最后）时禁用 →
             nextBtn.disabled = index === total - 1;
         }
 
@@ -218,11 +218,8 @@
             }
         };
 
-        // 窗口变化时重新计算
         window.addEventListener('resize', updateSlide);
-
-        // 初始化
-        updateSlide();
+        updateSlide(); // 页面加载时立即定位到第二张图
     </script>
 </body>
 </html>
