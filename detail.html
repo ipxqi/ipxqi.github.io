@@ -10,76 +10,77 @@
             padding: 0;
             background: #000;
             color: #fff;
-            font-family: "Microsoft YaHei", Arial, sans-serif;
+            font-family: Arial, sans-serif;
         }
         .header {
             text-align: center;
             padding: 80px 20px 60px;
         }
         .header h1 {
-            font-size: 48px;
+            font-size: 42px;
             font-weight: bold;
             margin: 0;
-            line-height: 1.2;
+            line-height: 1.4;
         }
         .header p {
-            font-size: 24px;
-            color: #ccc;
+            font-size: 20px;
+            color: #aaa;
             margin-top: 20px;
         }
         .gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-            gap: 40px;
-            padding: 0 60px;
-            max-width: 1600px;
-            margin: 0 auto 80px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 0 40px 80px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
         .card {
-            background: rgba(255, 255, 255, 0.05);
+            background: #fff;
+            color: #333;
             border-radius: 20px;
             overflow: hidden;
             transition: transform 0.3s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
         }
         .card:hover {
             transform: translateY(-10px);
         }
-        .card-images {
-            display: flex;
-            gap: 10px;
-            padding: 20px 20px 0;
-        }
-        .card-images img {
-            width: 50%;
+        .card-img {
+            width: 100%;
             height: 300px;
-            object-fit: cover;
-            border-radius: 15px;
+            background: #eee; /* 占位灰色，可替换为封面图 */
+            background-size: cover;
+            background-position: center;
         }
         .card-info {
-            padding: 20px;
-            text-align: left;
+            padding: 30px 20px;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         .card-info h3 {
-            font-size: 28px;
-            margin: 0 0 15px 0;
-            color: #9966ff; /* 紫色标题，像你的参考图 */
+            font-size: 24px;
+            margin: 0 0 15px;
+            color: #000;
         }
         .card-info p {
-            font-size: 18px;
-            line-height: 1.8;
-            color: #ddd;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #666;
             margin: 0;
         }
-        @media (max-width: 1000px) {
+        @media (max-width: 768px) {
             .gallery {
                 grid-template-columns: 1fr;
-                padding: 0 30px;
+                padding: 0 20px;
             }
-            .card-images {
-                flex-direction: column;
-            }
-            .card-images img {
-                width: 100%;
+            .header h1 {
+                font-size: 32px;
             }
         }
     </style>
@@ -91,35 +92,41 @@
     </div>
 
     <div class="gallery">
-        <!-- 作品系列一 -->
-        <div class="card">
-            <div class="card-images">
-                <img src="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/sA6N/2124X2832/0.jpg/webp" alt="无人场景">
-                <img src="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/sA6N/2124X2832/0.jpg/webp" alt="加人效果">
-            </div>
+        <!-- 系列一：点击进入对比页面 -->
+        <a href="detail.html" class="card">
+            <div class="card-img" style="background-image: url('https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/sA6N/2124X2832/0.jpg/webp');"></div>
             <div class="card-info">
                 <h3>作品系列一</h3>
-                <p>这一句话简单的介绍，<br>
-                   我能帮你又复工期时<br>
-                   现在利用技术AI技术将无人场景加入人物，<br>
-                   想加多少个都轻松搞定，<br>
-                   还可以同时显示不同角度，成功搞定</p>
+                <p>这一句话简单的介绍，<br>我能帮你又复工期时<br>现在利用技术AI技术将无人场景加入人物，<br>想加多少个都轻松搞定，<br>还可以同时显示不同角度，成功搞定</p>
             </div>
-        </div>
+        </a>
 
-        <!-- 作品系列二 -->
+        <!-- 系列二（示例，暂时不跳转） -->
         <div class="card">
-            <div class="card-images">
-                <img src="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/aZoT/2124X2832/1.jpg/webp" alt="无人场景">
-                <img src="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/aZoT/2124X2832/1.jpg/webp" alt="加人效果">
-            </div>
+            <div class="card-img" style="background-image: url('https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/aZoT/2124X2832/1.jpg/webp');"></div>
             <div class="card-info">
                 <h3>作品系列二</h3>
-                <p>这一句话简单的介绍...</p>
+                <p>这一句话简单的介绍，<br>我能帮你又复工期时<br>现在利用技术AI技术将无人场景加入人物，<br>想加多少个都轻松搞定，<br>还可以同时显示不同角度，成功搞定</p>
             </div>
         </div>
 
-        <!-- 继续添加更多系列 -->
+        <!-- 系列三 -->
+        <div class="card">
+            <div class="card-img" style="background-image: url('https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/j3Zz/2160X2906/3.jpg/webp');"></div>
+            <div class="card-info">
+                <h3>作品系列三</h3>
+                <p>这一句话简单的介绍，<br>我能帮你又复工期时<br>现在利用技术AI技术将无人场景加入人物，<br>想加多少个都轻松搞定，<br>还可以同时显示不同角度，成功搞定</p>
+            </div>
+        </div>
+
+        <!-- 系列四 -->
+        <div class="card">
+            <div class="card-img" style="background-image: url('https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/JZqo/2160X2904/4.jpg/webp');"></div>
+            <div class="card-info">
+                <h3>作品系列四</h3>
+                <p>这一句话简单的介绍，<br>我能帮你又复工期时<br>现在利用技术AI技术将无人场景加入人物，<br>想加多少个都轻松搞定，<br>还可以同时显示不同角度，成功搞定</p>
+            </div>
+        </div>
     </div>
 </body>
 </html>
