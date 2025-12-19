@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的作品集</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        .header p {
+            font-size: 20px;
+            color: #aaa;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 0 40px 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .card {
+            background: #111;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+        }
+        .card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+        .card-info {
+            padding: 20px;
+            text-align: center;
+        }
+        .card-info h3 {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        .card-info p {
+            color: #aaa;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>无人场景<br>加多人&多角度</h1>
+        <p>专业室内设计效果图制作</p>
+    </div>
+
+    <div class="gallery">
+        <!-- 作品系列一：点击进入你的对比页面 -->
+        <a href="detail.html" class="card">
+            <img src="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/sA6N/2124X2832/0.jpg/webp" alt="作品系列一">
+            <div class="card-info">
+                <h3>作品系列一</h3>
+                <p>这一句话简单的介绍，<br>我能帮你又复工期时<br>现在利用技术AI技术将无人场景加入人物，<br>想加多少个都轻松搞定，<br>还可以同时显示不同角度，成功搞定</p>
+            </div>
+        </a>
+
+        <!-- 更多系列卡片（示例） -->
+        <div class="card">
+            <img src="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/aZoT/2124X2832/1.jpg/webp" alt="作品系列二">
+            <div class="card-info">
+                <h3>作品系列二</h3>
+                <p>这一句话简单的介绍...</p>
+            </div>
+        </div>
+
+        <!-- 继续添加更多卡片 -->
+    </div>
+</body>
+</html>
