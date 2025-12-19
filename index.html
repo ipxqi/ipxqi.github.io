@@ -10,17 +10,16 @@
             padding: 0;
             background: #000;
             color: #fff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: Arial, sans-serif;
         }
         .header {
             text-align: center;
-            padding: 100px 20px 80px;
+            padding: 80px 20px 60px;
         }
         .header h1 {
             font-size: 48px;
-            font-weight: 600;
+            font-weight: bold;
             margin: 0;
-            line-height: 1.2;
         }
         .header p {
             font-size: 24px;
@@ -29,45 +28,45 @@
         }
         .gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
             gap: 40px;
             padding: 0 40px 100px;
-            max-width: 1600px;
+            max-width: 1800px;
             margin: 0 auto;
         }
         .card {
-            background: #111;
+            position: relative;
+            height: 600px;
+            background-size: cover;
+            background-position: center;
             border-radius: 30px;
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            transition: transform 0.4s ease;
             cursor: pointer;
+            transition: transform 0.4s ease;
         }
         .card:hover {
             transform: scale(1.03); /* 鼠标悬停微微放大 */
         }
-        .card-img {
-            width: 50%;
-            height: 500px;
-            background-size: cover;
-            background-position: center;
-            flex-shrink: 0;
+        .card-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.8));
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 40px;
+            text-align: center;
         }
-        .card-info {
-            padding: 60px;
-            width: 50%;
+        .card-title {
+            font-size: 36px;
+            font-weight: bold;
+            color: #bb86fc; /* 紫色标题，和参考图一致 */
+            margin-bottom: 20px;
         }
-        .card-info h3 {
-            font-size: 32px;
-            font-weight: 600;
-            margin: 0 0 20px;
-        }
-        .card-info p {
-            font-size: 19px;
-            line-height: 1.6;
-            color: #ccc;
-            margin: 0;
+        .card-desc {
+            font-size: 20px;
+            line-height: 1.8;
+            color: #fff;
         }
         @media (max-width: 1024px) {
             .gallery {
@@ -75,16 +74,7 @@
                 padding: 0 20px;
             }
             .card {
-                flex-direction: column;
-            }
-            .card-img {
-                width: 100%;
-                height: 400px;
-            }
-            .card-info {
-                width: 100%;
-                padding: 40px;
-                text-align: center;
+                height: 500px;
             }
         }
     </style>
@@ -96,39 +86,35 @@
     </div>
 
     <div class="gallery">
-        <!-- 卡片1：点击跳转到对比页面 -->
-        <a href="detail.html" class="card">
-            <div class="card-img" style="background-image: url('https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/sA6N/2124X2832/0.jpg/webp');"></div>
-            <div class="card-info">
-                <h3>作品系列一</h3>
-                <p>这一句话简单的介绍，<br>我能帮你又复工期时<br>现在利用技术AI技术将无人场景加入人物，<br>想加多少个都轻松搞定，<br>还可以同时显示不同角度，成功搞定</p>
+        <!-- 系列一：点击跳转到对比页面 -->
+        <a href="detail.html" class="card" style="background-image: url('https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/sA6N/2124X2832/0.jpg/webp');">
+            <div class="card-overlay">
+                <div class="card-title">作品系列一</div>
+                <div class="card-desc">这一句话简单的介绍，<br>我能帮你又复工期时<br>现在利用技术AI技术将无人场景加入人物，<br>想加多少个都轻松搞定，<br>还可以同时显示不同角度，成功搞定</div>
             </div>
         </a>
 
-        <!-- 卡片2（示例） -->
-        <div class="card">
-            <div class="card-img" style="background-image: url('https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/aZoT/2124X2832/1.jpg/webp');"></div>
-            <div class="card-info">
-                <h3>作品系列二</h3>
-                <p>这一句话简单的介绍，<br>我能帮你又复工期时<br>现在利用技术AI技术将无人场景加入人物，<br>想加多少个都轻松搞定，<br>还可以同时显示不同角度，成功搞定</p>
+        <!-- 系列二 -->
+        <div class="card" style="background-image: url('https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/aZoT/2124X2832/1.jpg/webp');">
+            <div class="card-overlay">
+                <div class="card-title">作品系列二</div>
+                <div class="card-desc">这一句话简单的介绍，<br>我能帮你又复工期时<br>现在利用技术AI技术将无人场景加入人物，<br>想加多少个都轻松搞定，<br>还可以同时显示不同角度，成功搞定</div>
             </div>
         </div>
 
-        <!-- 卡片3 -->
-        <div class="card">
-            <div class="card-img" style="background-image: url('https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/j3Zz/2160X2906/3.jpg/webp');"></div>
-            <div class="card-info">
-                <h3>作品系列三</h3>
-                <p>这一句话简单的介绍，<br>我能帮你又复工期时<br>现在利用技术AI技术将无人场景加入人物，<br>想加多少个都轻松搞定，<br>还可以同时显示不同角度，成功搞定</p>
+        <!-- 系列三 -->
+        <div class="card" style="background-image: url('https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/j3Zz/2160X2906/3.jpg/webp');">
+            <div class="card-overlay">
+                <div class="card-title">作品系列三</div>
+                <div class="card-desc">这一句话简单的介绍，<br>我能帮你又复工期时<br>现在利用技术AI技术将无人场景加入人物，<br>想加多少个都轻松搞定，<br>还可以同时显示不同角度，成功搞定</div>
             </div>
         </div>
 
-        <!-- 卡片4 -->
-        <div class="card">
-            <div class="card-img" style="background-image: url('https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/JZqo/2160X2904/4.jpg/webp');"></div>
-            <div class="card-info">
-                <h3>作品系列四</h3>
-                <p>这一句话简单的介绍，<br>我能帮你又复工期时<br>现在利用技术AI技术将无人场景加入人物，<br>想加多少个都轻松搞定，<br>还可以同时显示不同角度，成功搞定</p>
+        <!-- 系列四 -->
+        <div class="card" style="background-image: url('https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/JZqo/2160X2904/4.jpg/webp');">
+            <div class="card-overlay">
+                <div class="card-title">作品系列四</div>
+                <div class="card-desc">这一句话简单的介绍，<br>我能帮你又复工期时<br>现在利用技术AI技术将无人场景加入人物，<br>想加多少个都轻松搞定，<br>还可以同时显示不同角度，成功搞定</div>
             </div>
         </div>
     </div>
