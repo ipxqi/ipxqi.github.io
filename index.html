@@ -78,28 +78,38 @@
             gap: 16px;
             z-index: 100;
         }
-        .nav-buttons button {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
-            font-size: 30px;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-            transition: all 0.3s;
-        }
-        .nav-buttons button:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.1);
-        }
-        .nav-buttons button:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            transform: none;
-        }
+       .nav-buttons button {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    transition: background 0.3s, transform 0.3s;
+}
+
+/* 正常hover效果 */
+.nav-buttons button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+/* 禁用状态：变灰 + 完全无反应 */
+.nav-buttons button:disabled {
+    opacity: 0.3;
+    cursor: default;                 /* 鼠标不变手型 */
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* 关键：禁用时hover完全无效 */
+.nav-buttons button:disabled:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: none;
+}
         @media (max-width: 1024px) {
             .header {
                 padding: 60px 30px 40px;
