@@ -40,14 +40,14 @@
             transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
         .card-wrapper {
-            flex: 0 0 380px;
+            flex: 0 0 327px; /* 固定宽度 327px */
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
         .card {
-            width: 380px;
-            height: 520px;
+            width: 327px;
+            height: 450px; /* 高度改为 450px */
             background-size: cover;
             background-position: center;
             border-radius: 28px;
@@ -118,124 +118,4 @@
                 flex: 0 0 calc(100vw - 60px);
             }
             .card {
-                width: 100%;
-                height: 480px;
-                border-radius: 24px;
-            }
-            .card-title, .card-desc {
-                text-align: center;
-            }
-            .nav-buttons {
-                right: 20px;
-                bottom: 30px;
-            }
-            .nav-buttons button {
-                width: 50px;
-                height: 50px;
-                font-size: 26px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <h1>无人场景<br>加多人&多角度</h1>
-    </div>
-
-    <div class="gallery-container">
-        <div class="gallery" id="gallery">
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/0.jpg');"></div>
-                <div>
-                    <div class="card-title">无人场景前后对比</div>
-                    <div class="card-desc">原为空荡餐厅场景<br>利用AI技术快速添加一家五口自然就餐<br>人物姿势真实、灯光协调<br>直观展示改造前后效果</div>
-                </div>
-            </div>
-
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/1.jpg');"></div>
-                <div>
-                    <div class="card-title">正面就餐视角</div>
-                    <div class="card-desc">一家五口其乐融融围坐用餐<br>老人、年轻夫妇和小女孩互动自然<br>食物细节丰富、氛围温馨<br>完美呈现家庭生活场景</div>
-                </div>
-            </div>
-
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/3.jpg');"></div>
-                <div>
-                    <div class="card-title">侧面自然光视角</div>
-                    <div class="card-desc">窗户光线柔和洒入<br>人物表情与动作清晰可见<br>爷爷微笑、奶奶关怀等细节突出<br>增强空间真实感和层次</div>
-                </div>
-            </div>
-
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/4.jpg');"></div>
-                <div>
-                    <div class="card-title">多角度展示</div>
-                    <div class="card-desc">从另一侧展现餐厅全貌<br>拱门、酒柜、墙饰细节完整<br>小女孩背影视角更具代入感<br>多角度帮助客户全面理解空间</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="nav-buttons">
-        <button id="prev-btn">←</button>
-        <button id="next-btn">→</button>
-    </div>
-
-    <script>
-        const gallery = document.getElementById('gallery');
-        const items = document.querySelectorAll('.card-wrapper');
-        const total = items.length;
-        const prevBtn = document.getElementById('prev-btn');
-        const nextBtn = document.getElementById('next-btn');
-
-        // 计算可视区域能容纳的卡片数量（大约）
-        function getVisibleCount() {
-            const containerWidth = document.querySelector('.gallery-container').offsetWidth;
-            const cardWidth = items[0].offsetWidth + 40; // 卡片宽 + gap
-            return Math.floor(containerWidth / cardWidth);
-        }
-
-        // 最大可滑动步数 = 总张数 - 可视张数
-        let maxIndex = total - getVisibleCount();
-        if (maxIndex < 0) maxIndex = 0;
-
-        let index = 0; // 默认从第一张开始
-
-        function updateSlide() {
-            const width = items[0].offsetWidth + 40;
-            gallery.style.transform = `translateX(${-index * width}px)`;
-
-            prevBtn.disabled = index === 0;
-            nextBtn.disabled = index >= maxIndex;
-        }
-
-        nextBtn.onclick = () => {
-            if (index < maxIndex) {
-                index++;
-                updateSlide();
-            }
-        };
-
-        prevBtn.onclick = () => {
-            if (index > 0) {
-                index--;
-                updateSlide();
-            }
-        };
-
-        // 窗口大小变化时重新计算最大滑动步数
-        window.addEventListener('resize', () => {
-            maxIndex = total - getVisibleCount();
-            if (maxIndex < 0) maxIndex = 0;
-            if (index > maxIndex) {
-                index = maxIndex;
-            }
-            updateSlide();
-        });
-
-        updateSlide(); // 初始化
-    </script>
-</body>
-</html>
+                width: 
