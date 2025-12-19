@@ -26,7 +26,7 @@
             font-weight: 500;
             margin: 0;
             line-height: 1.4;
-            text-align: left; /* 明确左对齐 */
+            text-align: left;
         }
         .gallery-container {
             overflow: hidden;
@@ -190,22 +190,22 @@
         const total = items.length;
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
-        
-        // 默认从第二张图开始（index = 1）
-        let index = 1;
+
+        // 最大可滑动次数 = 总张数 - 1（因为一次滑动一格，最后一张完全可见时停止）
+        const maxIndex = total - 1;
+        let index = 0; // 默认显示第一张在最左边
 
         function updateSlide() {
-            const width = items[0].offsetWidth + 40;
+            const width = items[0].offsetWidth + 40; // 每格宽度（卡片 + gap）
             gallery.style.transform = `translateX(${-index * width}px)`;
 
-            // 按钮状态控制
+            // 按钮状态
             prevBtn.disabled = index === 0;
-            // 当第四张图完全进入视野（即滑动到最后）时禁用 →
-            nextBtn.disabled = index === total - 1;
+            nextBtn.disabled = index === maxIndex; // 最后一张完全可见时禁用 →
         }
 
         nextBtn.onclick = () => {
-            if (index < total - 1) {
+            if (index < maxIndex) {
                 index++;
                 updateSlide();
             }
@@ -219,7 +219,7 @@
         };
 
         window.addEventListener('resize', updateSlide);
-        updateSlide(); // 页面加载时立即定位到第二张图
+        updateSlide(); // 初始化
     </script>
 </body>
 </html>
