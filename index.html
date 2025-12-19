@@ -15,7 +15,6 @@
             display: flex;
             flex-direction: column;
         }
-        /* 标题真正左对齐 */
         .header {
             padding: 80px 60px 60px;
             width: 100%;
@@ -191,17 +190,25 @@
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
 
-        // 最大可滑动次数 = 总张数 - 1（因为一次滑动一格，最后一张完全可见时停止）
-        const maxIndex = total - 1;
-        let index = 0; // 默认显示第一张在最左边
+        // 计算可视区域能容纳的卡片数量（大约）
+        function getVisibleCount() {
+            const containerWidth = document.querySelector('.gallery-container').offsetWidth;
+            const cardWidth = items[0].offsetWidth + 40; // 卡片宽 + gap
+            return Math.floor(containerWidth / cardWidth);
+        }
+
+        // 最大可滑动步数 = 总张数 - 可视张数
+        let maxIndex = total - getVisibleCount();
+        if (maxIndex < 0) maxIndex = 0;
+
+        let index = 0; // 默认从第一张开始
 
         function updateSlide() {
-            const width = items[0].offsetWidth + 40; // 每格宽度（卡片 + gap）
+            const width = items[0].offsetWidth + 40;
             gallery.style.transform = `translateX(${-index * width}px)`;
 
-            // 按钮状态
             prevBtn.disabled = index === 0;
-            nextBtn.disabled = index === maxIndex; // 最后一张完全可见时禁用 →
+            nextBtn.disabled = index >= maxIndex;
         }
 
         nextBtn.onclick = () => {
@@ -218,7 +225,16 @@
             }
         };
 
-        window.addEventListener('resize', updateSlide);
+        // 窗口大小变化时重新计算最大滑动步数
+        window.addEventListener('resize', () => {
+            maxIndex = total - getVisibleCount();
+            if (maxIndex < 0) maxIndex = 0;
+            if (index > maxIndex) {
+                index = maxIndex;
+            }
+            updateSlide();
+        });
+
         updateSlide(); // 初始化
     </script>
 </body>
