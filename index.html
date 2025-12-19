@@ -85,7 +85,9 @@
     border: none;
     background: rgba(255, 255, 255, 0.15);
     color: white;
-    font-size: 30px;
+    font-size: 40px;        /* 原30px或36px，改成40px更粗壮 */
+    font-weight: bold;      /* 新增：加粗，像苹果一样厚实 */
+    line-height: 56px;      /* 新增：完美垂直居中 */
     cursor: pointer;
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 20px rgba(0,0,0,0.4);
@@ -189,9 +191,9 @@
     </div>
 
     <div class="nav-buttons">
-        <button id="prev-btn">❮</button>
-        <button id="next-btn">❯</button>
-    </div>
+    <button id="prev-btn">❮</button>
+    <button id="next-btn">❯</button>
+</div>
 
     <script>
         const gallery = document.getElementById('gallery');
