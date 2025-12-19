@@ -17,7 +17,7 @@
         }
         .header {
             text-align: left;
-            padding: 80px 60px 40px;
+            padding: 80px 60px 60px;
             max-width: 1800px;
             margin: 0 auto;
             width: 100%;
@@ -29,33 +29,23 @@
             margin: 0;
             line-height: 1.2;
         }
-        .header p {
-            font-size: 32px;
-            color: #aaa;
-            margin-top: 20px;
-            font-weight: 400;
-        }
-        .learn-more {
-            color: #007aff;
-            text-decoration: none;
-            font-size: 20px;
-            margin-left: auto;
-            display: block;
-            width: fit-content;
-            margin-top: 40px;
-        }
         .gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-            padding: 0 60px 100px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 80px 40px; /* 垂直间距加大，让文字有更多呼吸感 */
+            padding: 0 60px 120px;
             max-width: 1800px;
             margin: 0 auto;
             flex: 1;
         }
+        .card-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
         .card {
-            position: relative;
-            height: 500px;
+            width: 100%;
+            height: 520px; /* 稍加大图片高度，展示更完整 */
             background-size: cover;
             background-position: center;
             border-radius: 20px;
@@ -64,24 +54,19 @@
             backdrop-filter: blur(10px);
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .card-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 40px;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-        }
         .card-title {
             font-size: 28px;
             font-weight: 600;
-            margin-bottom: 15px;
-            color: #bb86fc; /* 保持你原来的紫色标题 */
+            margin: 0 0 15px 0;
+            color: #bb86fc;
+            text-align: left;
         }
         .card-desc {
             font-size: 18px;
             line-height: 1.6;
             color: #ddd;
+            margin: 0;
+            text-align: left;
         }
         .carousel-nav {
             position: fixed;
@@ -103,25 +88,22 @@
         }
         @media (max-width: 1024px) {
             .header {
-                padding: 60px 30px 30px;
+                padding: 60px 30px 40px;
                 text-align: center;
             }
             .header h1 {
                 font-size: 36px;
             }
-            .header p {
-                font-size: 24px;
-            }
             .gallery {
                 grid-template-columns: 1fr;
-                padding: 0 30px 100px;
-                gap: 30px;
+                padding: 0 30px 120px;
+                gap: 60px;
             }
             .card {
-                height: 400px;
+                height: 420px;
             }
-            .learn-more {
-                margin: 40px auto 0;
+            .card-title, .card-desc {
+                text-align: center; /* 手机端文字居中，更好看 */
             }
         }
     </style>
@@ -129,37 +111,40 @@
 <body>
     <div class="header">
         <h1>无人场景<br>加多人&多角度</h1>
-    
     </div>
 
     <div class="gallery">
-        <!-- 作品系列一 -->
-        <div class="card" style="background-image: url('https://img.adons.top/0.jpg');">
-            <div class="card-overlay">
+        <!-- 作品一：无人场景前后对比 -->
+        <div class="card-wrapper">
+            <div class="card" style="background-image: url('https://img.adons.top/0.jpg');"></div>
+            <div>
                 <div class="card-title">无人场景前后对比</div>
                 <div class="card-desc">原为空荡餐厅场景<br>利用AI技术快速添加一家五口自然就餐<br>人物姿势真实、灯光协调<br>直观展示改造前后效果</div>
             </div>
         </div>
 
-        <!-- 作品系列二 -->
-        <div class="card" style="background-image: url('https://img.adons.top/1.jpg');">
-            <div class="card-overlay">
+        <!-- 作品二：正面就餐视角 -->
+        <div class="card-wrapper">
+            <div class="card" style="background-image: url('https://img.adons.top/1.jpg');"></div>
+            <div>
                 <div class="card-title">正面就餐视角</div>
                 <div class="card-desc">一家五口其乐融融围坐用餐<br>老人、年轻夫妇和小女孩互动自然<br>食物细节丰富、氛围温馨<br>完美呈现家庭生活场景</div>
             </div>
         </div>
 
-        <!-- 作品系列三 -->
-        <div class="card" style="background-image: url('https://img.adons.top/3.jpg');">
-            <div class="card-overlay">
+        <!-- 作品三：侧面自然光视角 -->
+        <div class="card-wrapper">
+            <div class="card" style="background-image: url('https://img.adons.top/3.jpg');"></div>
+            <div>
                 <div class="card-title">侧面自然光视角</div>
                 <div class="card-desc">窗户光线柔和洒入<br>人物表情与动作清晰可见<br>爷爷微笑、奶奶关怀等细节突出<br>增强空间真实感和层次</div>
             </div>
         </div>
 
-        <!-- 作品系列四 -->
-        <div class="card" style="background-image: url('https://img.adons.top/4.jpg');">
-            <div class="card-overlay">
+        <!-- 作品四：多角度展示 -->
+        <div class="card-wrapper">
+            <div class="card" style="background-image: url('https://img.adons.top/4.jpg');"></div>
+            <div>
                 <div class="card-title">多角度展示</div>
                 <div class="card-desc">从另一侧展现餐厅全貌<br>拱门、酒柜、墙饰细节完整<br>小女孩背影视角更具代入感<br>多角度帮助客户全面理解空间</div>
             </div>
