@@ -29,8 +29,6 @@
             margin: 0;
             line-height: 1.4;
         }
-
-        /* 新增：外层容器用于控制滑动 */
         .gallery-container {
             overflow: hidden;
             max-width: 1800px;
@@ -38,22 +36,19 @@
             padding: 0 60px 120px;
             flex: 1;
         }
-
         .gallery {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 60px 40px;
-            transition: transform 0.7s cubic-bezier(0.3, 0, 0.2, 1); /* 平滑高端动画 */
-            width: max-content; /* 关键：让内容宽度自适应，支持滑动 */
+            transition: transform 0.7s cubic-bezier(0.3, 0, 0.2, 1);
+            width: max-content;
         }
-
         .card-wrapper {
             display: flex;
             flex-direction: column;
             gap: 24px;
-            flex-shrink: 0; /* 防止压缩 */
+            flex-shrink: 0;
         }
-
         .card {
             width: 100%;
             height: 450px;
@@ -65,7 +60,6 @@
             backdrop-filter: blur(10px);
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-
         .card-title {
             font-size: 15px;
             font-weight: 600;
@@ -73,7 +67,6 @@
             color: #ffffff;
             text-align: left;
         }
-
         .card-desc {
             font-size: 15px;
             line-height: 1.6;
@@ -81,8 +74,6 @@
             margin: 0;
             text-align: left;
         }
-
-        /* 右下角箭头按钮 */
         .nav-buttons {
             position: fixed;
             right: 40px;
@@ -92,7 +83,6 @@
             gap: 16px;
             z-index: 10;
         }
-
         .nav-buttons button {
             background: rgba(255, 255, 255, 0.2);
             border: none;
@@ -106,14 +96,11 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             transition: background 0.3s;
         }
-
         .nav-buttons button:hover {
             background: rgba(255, 255, 255, 0.4);
         }
-
         @media (max-width: 1024px) {
             .header {
-                padding: 60px 30px 40px;
                 text-align: center;
             }
             .header h1 {
@@ -149,10 +136,8 @@
         <h1>无人场景<br>加多人&多角度</h1>
     </div>
 
-    <!-- 新增外层容器，用于滑动控制 -->
     <div class="gallery-container">
         <div class="gallery" id="gallery">
-            <!-- 作品一 -->
             <div class="card-wrapper">
                 <div class="card" style="background-image: url('https://img.adons.top/0.jpg');"></div>
                 <div>
@@ -161,74 +146,5 @@
                 </div>
             </div>
 
-            <!-- 作品二 -->
             <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/1.jpg');"></div>
-                <div>
-                    <div class="card-title">正面就餐视角</div>
-                    <div class="card-desc">一家五口其乐融融围坐用餐<br>老人、年轻夫妇和小女孩互动自然<br>食物细节丰富、氛围温馨<br>完美呈现家庭生活场景</div>
-                </div>
-            </div>
-
-            <!-- 作品三 -->
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/3.jpg');"></div>
-                <div>
-                    <div class="card-title">侧面自然光视角</div>
-                    <div class="card-desc">窗户光线柔和洒入<br>人物表情与动作清晰可见<br>爷爷微笑、奶奶关怀等细节突出<br>增强空间真实感和层次</div>
-                </div>
-            </div>
-
-            <!-- 作品四 -->
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/4.jpg');"></div>
-                <div>
-                    <div class="card-title">多角度展示</div>
-                    <div class="card-desc">从另一侧展现餐厅全貌<br>拱门、酒柜、墙饰细节完整<br>小女孩背影视角更具代入感<br>多角度帮助客户全面理解空间</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 右下角滑动控制按钮 -->
-    <div class="nav-buttons">
-        <button id="prev-btn">←</button>
-        <button id="next-btn">→</button>
-    </div>
-
-    <script>
-        const gallery = document.getElementById('gallery');
-        const items = document.querySelectorAll('.card-wrapper');
-        const totalItems = items.length;
-        let currentIndex = 0;
-
-        function updateSlide() {
-            // 计算每个卡片宽度（包括 gap）
-            const itemWidth = items[0].offsetWidth;
-            const gap = 40; // 与 CSS gap 一致（水平 gap 是 40px）
-            const offset = -(currentIndex * (itemWidth + gap));
-            gallery.style.transform = `translateX(${offset}px)`;
-        }
-
-        document.getElementById('next-btn').addEventListener('click', () => {
-            currentIndex = (currentIndex + 1) % totalItems;
-            updateSlide();
-        });
-
-        document.getElementById('prev-btn').addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + totalItems) % totalItems;
-            updateSlide();
-        });
-
-        // 窗口变化时重新计算位置（响应式支持）
-        window.addEventListener('resize', () => {
-            gallery.style.transition = 'none'; // 避免闪烁
-            updateSlide();
-            setTimeout(() => { gallery.style.transition = 'transform 0.7s cubic-bezier(0.3, 0, 0.2, 1)'; }, 50);
-        });
-
-        // 初始位置
-        updateSlide();
-    </script>
-</body>
-</html>
+                <div
