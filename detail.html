@@ -3,363 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的作品对比展示</title>
+    <title>我的作品集</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             background: #000;
             color: #fff;
-            font-family: Arial, sans-serif;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
         }
-        .tabs {
+        .header {
             text-align: center;
-            padding: 20px 0;
+            padding: 80px 20px 60px;
         }
-        .tabs button {
-            background: #333;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            margin: 0 5px;
-            cursor: pointer;
-            border-radius: 5px;
+        .header h1 {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 0;
+            line-height: 1.2;
         }
-        .tabs button.active {
-            background: #555;
-        }
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            padding: 0 20px 40px;
-            gap: 20px;
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-        .comparison-wrapper {
-            flex: 2;
-            min-width: 300px;
-            position: relative;
-            height: 80vh;
-            min-height: 500px;
-            background: #111;
-        }
-        .guide-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 28px;
-            font-weight: normal; /* 不加粗 */
-            color: rgba(255, 255, 255, 0.95);
-            background: rgba(0, 0, 0, 0.7);
-            padding: 15px 30px;
-            border-radius: 12px;
-            pointer-events: none;
-            z-index: 15;
-            transition: opacity 0.5s ease;
-            white-space: nowrap;
-        }
-        .comparison-wrapper:hover .guide-text {
-            opacity: 0;
-        }
-        .comparison {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            overflow: hidden;
-        }
-        .comparison img {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            object-fit: contain;
-        }
-        #edited {
-            clip-path: inset(0 50% 0 0);
-        }
-        .slider {
-            position: absolute;
-            top: 0; bottom: 0;
-            width: 2px;
-            background: white;
-            left: 50%;
-            pointer-events: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        .comparison-wrapper:hover .slider {
-            opacity: 1;
-        }
-        .slider::before {
-            content: "↔";
+        .header p {
             font-size: 24px;
-            background: none;
-            text-shadow: 0 0 8px rgba(0,0,0,0.8);
+            color: #ccc;
+            margin-top: 20px;
         }
-        .label {
-            position: absolute;
-            top: 20px;
-            font-size: 20px;
-            font-weight: normal;
-            z-index: 10;
-            background: rgba(0,0,0,0.4);
-            padding: 8px 20px;
-            border-radius: 8px;
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
-        .comparison-wrapper:hover .label {
-            opacity: 1;
-        }
-        .label-a { left: 20px; color: #ffffff; }
-        .label-b { right: 20px; color: #ffffff; }
-        .nav-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            color: white;
-            border: none;
-            font-size: 40px;
-            cursor: pointer;
-            z-index: 20;
-            text-shadow: 0 0 10px rgba(0,0,0,0.8);
-        }
-        .prev { left: 20px; }
-        .next { right: 20px; }
-        .thumbnails {
-            flex: 1;
-            min-width: 300px;
+        .gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 40px;
+            padding: 0 60px;
+            max-width: 1600px;
+            margin: 0 auto 80px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+        }
+        .card-images {
+            display: flex;
             gap: 10px;
-            align-content: start; /* 小图靠上对齐 */
+            padding: 20px 20px 0;
         }
-        .thumb {
-            width: 100%;
-            aspect-ratio: 1/1;
+        .card-images img {
+            width: 50%;
+            height: 300px;
             object-fit: cover;
-            cursor: pointer;
-            border: 2px solid #444;
-            transition: all 0.3s;
-            border-radius: 10px;
+            border-radius: 15px;
         }
-        .thumb:hover {
-            border-color: #888;
-            transform: scale(1.03);
-        }
-        .thumb.active {
-            border: 2px solid #ffffff;
-            transform: scale(1.03);
-        }
-
-        /* Lightbox 样式 */
-        .lightbox {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.9);
-            z-index: 100;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-        }
-        .lightbox img {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-            border-radius: 10px;
-        }
-        .lightbox-close {
-            position: absolute;
-            top: 30px;
-            right: 30px;
-            font-size: 40px;
-            color: white;
-            cursor: pointer;
-        }
-        .lightbox-prev, .lightbox-next {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 50px;
-            color: white;
-            cursor: pointer;
+        .card-info {
             padding: 20px;
+            text-align: left;
         }
-        .lightbox-prev { left: 30px; }
-        .lightbox-next { right: 30px; }
+        .card-info h3 {
+            font-size: 28px;
+            margin: 0 0 15px 0;
+            color: #9966ff; /* 紫色标题，像你的参考图 */
+        }
+        .card-info p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #ddd;
+            margin: 0;
+        }
+        @media (max-width: 1000px) {
+            .gallery {
+                grid-template-columns: 1fr;
+                padding: 0 30px;
+            }
+            .card-images {
+                flex-direction: column;
+            }
+            .card-images img {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="tabs">
-        <button class="active">类别一</button>
-        <button>类别二</button>
-        <button>类别三</button>
+    <div class="header">
+        <h1>无人场景<br>加多人&多角度</h1>
+        <p>专业室内设计效果图制作</p>
     </div>
-    <div class="container">
-        <div class="comparison-wrapper">
-            <div class="comparison">
-                <img id="original" src="">
-                <img id="edited" src="">
-                <div class="slider" id="slider"></div>
-                <div class="label label-a">原图</div>
-                <div class="label label-b">效果图</div>
-                <div class="guide-text">左右移动鼠标 查看对比</div>
+
+    <div class="gallery">
+        <!-- 作品系列一 -->
+        <div class="card">
+            <div class="card-images">
+                <img src="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/sA6N/2124X2832/0.jpg/webp" alt="无人场景">
+                <img src="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/sA6N/2124X2832/0.jpg/webp" alt="加人效果">
             </div>
-            <button class="nav-arrow prev" id="prev">‹</button>
-            <button class="nav-arrow next" id="next">›</button>
+            <div class="card-info">
+                <h3>作品系列一</h3>
+                <p>这一句话简单的介绍，<br>
+                   我能帮你又复工期时<br>
+                   现在利用技术AI技术将无人场景加入人物，<br>
+                   想加多少个都轻松搞定，<br>
+                   还可以同时显示不同角度，成功搞定</p>
+            </div>
         </div>
-        <div class="thumbnails" id="thumbnails">
-            <!-- 点击缩略图弹出大图查看 -->
-            <img class="thumb active" src="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/sA6N/2124X2832/0.jpg/webp"
-                 data-original="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/aZoT/2124X2832/1.jpg/webp"   
-                 data-edited="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/sA6N/2124X2832/0.jpg/webp"
-                 data-lightbox="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/sA6N/2124X2832/0.jpg/webp"> <!-- 用于 Lightbox -->
 
-            <img class="thumb" src="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/aZoT/2124X2832/1.jpg/webp"
-                 data-single="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/aZoT/2124X2832/1.jpg/webp"
-                 data-lightbox="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/aZoT/2124X2832/1.jpg/webp">
-            
-            <img class="thumb" src="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/j3Zz/2160X2906/3.jpg/webp"
-                 data-single="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/j3Zz/2160X2906/3.jpg/webp"
-                 data-lightbox="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/j3Zz/2160X2906/3.jpg/webp">
-            
-            <img class="thumb" src="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/JZqo/2160X2904/4.jpg/webp"
-                 data-single="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/JZqo/2160X2904/4.jpg/webp"
-                 data-lightbox="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/JZqo/2160X2904/4.jpg/webp">
-
-            <img class="thumb" src="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/kYKP/2160X2904/5.jpg/webp"
-                 data-single="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/kYKP/2160X2904/5.jpg/webp"
-                 data-lightbox="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/kYKP/2160X2904/5.jpg/webp">
-            <!-- 继续添加 -->
+        <!-- 作品系列二 -->
+        <div class="card">
+            <div class="card-images">
+                <img src="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/aZoT/2124X2832/1.jpg/webp" alt="无人场景">
+                <img src="https://test.fukit.cn/autoupload/f/WMDr4EFX-5wr95euGXl58w/20251219/aZoT/2124X2832/1.jpg/webp" alt="加人效果">
+            </div>
+            <div class="card-info">
+                <h3>作品系列二</h3>
+                <p>这一句话简单的介绍...</p>
+            </div>
         </div>
+
+        <!-- 继续添加更多系列 -->
     </div>
-
-    <!-- Lightbox 浮层 -->
-    <div class="lightbox" id="lightbox">
-        <span class="lightbox-close">×</span>
-        <span class="lightbox-prev">‹</span>
-        <span class="lightbox-next">›</span>
-        <img id="lightbox-img" src="">
-    </div>
-
-    <script>
-        // 原对比功能保持不变（你的代码）
-        const original = document.getElementById('original');
-        const edited = document.getElementById('edited');
-        const slider = document.getElementById('slider');
-        const wrapper = document.querySelector('.comparison-wrapper');
-        const thumbs = document.querySelectorAll('.thumb');
-        const prevBtn = document.getElementById('prev');
-        const nextBtn = document.getElementById('next');
-        let currentIndex = 0;
-
-        function loadImage(index) {
-            const thumb = thumbs[index];
-            original.src = thumb.dataset.original || '';
-            edited.src = thumb.dataset.edited || thumb.dataset.single || '';
-            original.style.display = thumb.dataset.original ? 'block' : 'none';
-            edited.style.display = 'block';
-            slider.style.display = thumb.dataset.original ? 'flex' : 'none';
-            thumbs.forEach(t => t.classList.remove('active'));
-            thumb.classList.add('active');
-            currentIndex = index;
-            updateSlider(50);
-        }
-
-        function updateSlider(percent) {
-            edited.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
-            slider.style.left = percent + '%';
-        }
-
-        wrapper.addEventListener('mousemove', (e) => {
-            const rect = wrapper.getBoundingClientRect();
-            let x = e.clientX - rect.left;
-            let percent = (x / rect.width) * 100;
-            percent = Math.max(0, Math.min(100, percent));
-            updateSlider(percent);
-        });
-
-        wrapper.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            const rect = wrapper.getBoundingClientRect();
-            let x = e.touches[0].clientX - rect.left;
-            let percent = (x / rect.width) * 100;
-            percent = Math.max(0, Math.min(100, percent));
-            updateSlider(percent);
-        });
-
-        thumbs.forEach((thumb, i) => thumb.addEventListener('click', () => loadImage(i)));
-        prevBtn.addEventListener('click', () => loadImage((currentIndex - 1 + thumbs.length) % thumbs.length));
-        nextBtn.addEventListener('click', () => loadImage((currentIndex + 1) % thumbs.length));
-        if (thumbs.length > 0) loadImage(0);
-
-        // 新增 Lightbox 功能
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        const closeBtn = document.querySelector('.lightbox-close');
-        const lightboxPrev = document.querySelector('.lightbox-prev');
-        const lightboxNext = document.querySelector('.lightbox-next');
-
-        // 点击缩略图弹出大图
-        thumbs.forEach((thumb, i) => {
-            thumb.addEventListener('click', (e) => {
-                e.stopPropagation(); // 防止触发对比切换
-                const bigImg = thumb.dataset.lightbox || thumb.dataset.edited || thumb.dataset.single || thumb.src;
-                lightboxImg.src = bigImg;
-                lightbox.style.display = 'flex';
-                currentIndex = i;
-            });
-        });
-
-        // 关闭
-        lightbox.addEventListener('click', () => {
-            lightbox.style.display = 'none';
-        });
-
-        // 左右切换
-        lightboxPrev.addEventListener('click', (e) => {
-            e.stopPropagation();
-            currentIndex = (currentIndex - 1 + thumbs.length) % thumbs.length;
-            const bigImg = thumbs[currentIndex].dataset.lightbox || thumbs[currentIndex].dataset.edited || thumbs[currentIndex].dataset.single || thumbs[currentIndex].src;
-            lightboxImg.src = bigImg;
-        });
-
-        lightboxNext.addEventListener('click', (e) => {
-            e.stopPropagation();
-            currentIndex = (currentIndex + 1) % thumbs.length;
-            const bigImg = thumbs[currentIndex].dataset.lightbox || thumbs[currentIndex].dataset.edited || thumbs[currentIndex].dataset.single || thumbs[currentIndex].src;
-            lightboxImg.src = bigImg;
-        });
-
-        // 键盘 ESC 关闭
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') lightbox.style.display = 'none';
-        });
-
-        // 键盘左右箭头切换大图
-document.addEventListener('keydown', (e) => {
-    if (lightbox.style.display !== 'flex') return; // 只有 Lightbox 打开时才响应
-
-    if (e.key === 'ArrowLeft') {
-        // 左箭头：上一张
-        e.preventDefault();
-        currentIndex = (currentIndex - 1 + thumbs.length) % thumbs.length;
-        const bigImg = thumbs[currentIndex].dataset.lightbox || thumbs[currentIndex].dataset.edited || thumbs[currentIndex].dataset.single || thumbs[currentIndex].src;
-        lightboxImg.src = bigImg;
-    } else if (e.key === 'ArrowRight') {
-        // 右箭头：下一张
-        e.preventDefault();
-        currentIndex = (currentIndex + 1) % thumbs.length;
-        const bigImg = thumbs[currentIndex].dataset.lightbox || thumbs[currentIndex].dataset.edited || thumbs[currentIndex].dataset.single || thumbs[currentIndex].src;
-        lightboxImg.src = bigImg;
-    }
-});
-    </script>
 </body>
 </html>
