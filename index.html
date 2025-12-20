@@ -82,37 +82,27 @@
             z-index: 1000; /* 提高层级，确保能点击 */
     pointer-events: auto; /* 确保能交互 */
         }
-       .nav-buttons button {
-    width: 36px;
-    height: 36px;
+    .nav-buttons button {
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
     border: none;
     background: rgba(255, 255, 255, 0.15);
     color: white;
-    font-size: 26px;        /* 原30px或36px，改成40px更粗壮 */
-    font-weight: bold;      /* 新增：加粗，像苹果一样厚实 */
-    line-height: 56px;      /* 新增：完美垂直居中 */
+    font-size: 28px;
+    font-weight: bold;
     cursor: pointer;
     backdrop-filter: blur(20px);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-
-           /* 新增下面这两行：完美水平垂直居中 */
-    display: flex;
-    align-items: center;     /* 垂直居中 */
-    justify-content: center; /* 水平居中 */
 }
-
-/* 正常hover效果 */
 .nav-buttons button:hover {
     background: rgba(255, 255, 255, 0.3);
     transform: scale(1.1);
 }
-
-/* 禁用状态：变灰 + 完全无反应 */
 .nav-buttons button:disabled {
     background: rgba(255, 255, 255, 0.08);
     opacity: 0.4;
@@ -262,7 +252,7 @@
 
         updateSlide();
         
-       // 简单手指滑动支持（不阻止其他交互）
+     // 手指滑动支持（修复版：灵敏 + 正常切换）
 let touchStartX = 0;
 
 gallery.addEventListener('touchstart', (e) => {
@@ -272,24 +262,24 @@ gallery.addEventListener('touchstart', (e) => {
 gallery.addEventListener('touchend', (e) => {
     if (!touchStartX) return;
     let touchEndX = e.changedTouches[0].clientX;
-    let deltaX = touchEndX - touchStartX;
+    let deltaX = touchStartX - touchEndX; // 修复符号：左滑 deltaX 正值
 
-    if (Math.abs(deltaX) > 50) { // 滑动距离 >50px 触发
+    if (Math.abs(deltaX) > 50) {
         if (deltaX > 0) {
-            // 向右滑：上一张
-            if (index > 0) {
-                index--;
-                updateSlide();
-            }
-        } else {
-            // 向左滑：下一张
+            // 左滑：下一张
             if (index < maxIndex) {
                 index++;
                 updateSlide();
             }
+        } else {
+            // 右滑：上一张
+            if (index > 0) {
+                index--;
+                updateSlide();
+            }
         }
     }
-    touchStartX = 0; // 重置
+    touchStartX = 0;
 });
       <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script> <!-- 可删，只是测试 -->
     </script>
