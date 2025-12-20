@@ -216,10 +216,13 @@
         const nextBtn = document.getElementById('next-btn');
 
         function getVisibleCount() {
-            const containerWidth = document.querySelector('.gallery-container').offsetWidth;
-            const cardWidth = items[0].offsetWidth + 20;
-            return Math.floor(containerWidth / cardWidth);
-        }
+    const containerWidth = document.querySelector('.gallery-container').offsetWidth;
+    const firstItem = items[0];
+    const itemWidth = firstItem.getBoundingClientRect().width;
+    const gap = 20;
+    const totalWidth = itemWidth + gap;
+    return Math.floor(containerWidth / totalWidth);
+}
 
         let maxIndex = total - getVisibleCount();
         if (maxIndex < 0) maxIndex = 0;
@@ -227,12 +230,15 @@
         let index = 0;
 
         function updateSlide() {
-            const width = items[0].offsetWidth + 20;
-            gallery.style.transform = `translateX(${-index * width}px)`;
-
-            prevBtn.disabled = index === 0;
-            nextBtn.disabled = index >= maxIndex;
-        }
+    const firstItem = items[0];
+    const itemWidth = firstItem.getBoundingClientRect().width; // 精确宽度
+    const gap = 20; // 你的 gap 值
+    const totalWidth = itemWidth + gap;
+    const offset = Math.round(index * totalWidth); // 消除亚像素误差
+    gallery.style.transform = `translateX(-${offset}px)`;
+    prevBtn.disabled = index === 0;
+    nextBtn.disabled = index >= maxIndex;
+}
 
         nextBtn.onclick = () => {
             if (index < maxIndex) {
