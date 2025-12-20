@@ -40,8 +40,7 @@
     gap: 20px;
     transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     padding-left: 0; /* 关键：左边不留空隙，对齐红线位置 */
-    -webkit-overflow-scrolling: touch; /* iOS 滑动更丝滑 */
-    touch-action: pan-x; /* 只允许水平滑动 */
+    
 }
         .card-wrapper {
             flex: 0 0 280px; /* 固定宽度 327px */
@@ -263,53 +262,34 @@
 
         updateSlide();
         
-        // 优化手指滑动：灵敏 + 不阻止点击箭头 + 防止双击放大
-let isScrolling = false;
+       // 简单手指滑动支持（不阻止其他交互）
+let touchStartX = 0;
 
 gallery.addEventListener('touchstart', (e) => {
     touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-    isScrolling = false;
-});
-
-gallery.addEventListener('touchmove', (e) => {
-    if (isScrolling) return;
-
-    const deltaX = e.touches[0].clientX - touchStartX;
-    const deltaY = e.touches[0].clientY - touchStartY;
-
-    // 如果上下滑动更多，允许页面滚动
-    if (Math.abs(deltaY) > Math.abs(deltaX)) {
-        isScrolling = true;
-        return;
-    }
-
-    // 左右滑动：阻止上下滚动
-    e.preventDefault();
-
-    // 实时跟随滑动（更丝滑）
-    const width = items[0].offsetWidth + 20; // gap 20px
-    gallery.style.transition = 'none';
-    gallery.style.transform = `translateX(${-index * width + deltaX}px)`;
 });
 
 gallery.addEventListener('touchend', (e) => {
-    if (isScrolling) return;
+    if (!touchStartX) return;
+    let touchEndX = e.changedTouches[0].clientX;
+    let deltaX = touchEndX - touchStartX;
 
-    const deltaX = e.changedTouches[0].clientX - touchStartX;
-
-    gallery.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-
-    if (Math.abs(deltaX) > 50) { // 阈值50px
+    if (Math.abs(deltaX) > 50) { // 滑动距离 >50px 触发
         if (deltaX > 0) {
             // 向右滑：上一张
-            if (index > 0) index--;
+            if (index > 0) {
+                index--;
+                updateSlide();
+            }
         } else {
             // 向左滑：下一张
-            if (index < maxIndex) index++;
+            if (index < maxIndex) {
+                index++;
+                updateSlide();
+            }
         }
     }
-    updateSlide(); // 回正位置
+    touchStartX = 0; // 重置
 });
       <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script> <!-- 可删，只是测试 -->
     </script>
