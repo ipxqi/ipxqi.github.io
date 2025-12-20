@@ -210,7 +210,7 @@
 </div>
 
     <script>
-        const gallery = document.getElementById('gallery');
+        const galleryContainer = document.querySelector('.gallery-container');
         const items = document.querySelectorAll('.card-wrapper');
         const total = items.length;
         const prevBtn = document.getElementById('prev-btn');
@@ -279,12 +279,12 @@
 let touchStartX = 0;
 let isSwiping = false;
 
-gallery.addEventListener('touchstart', (e) => {
+galleryContainer.addEventListener('touchstart', (e) => {
     touchStartX = e.touches[0].clientX;
     isSwiping = true;
 }, { passive: false });
 
-gallery.addEventListener('touchmove', (e) => {
+galleryContainer.addEventListener('touchmove', (e) => {
     if (!isSwiping) return;
 
     const deltaX = e.touches[0].clientX - touchStartX;
@@ -301,7 +301,7 @@ gallery.addEventListener('touchmove', (e) => {
     e.preventDefault(); // 禁止上下滚动
 }, { passive: false });
 
-gallery.addEventListener('touchend', (e) => {
+galleryContainer.addEventListener('touchend', (e) => {
     if (!isSwiping) {
         isSwiping = false;
         return;
