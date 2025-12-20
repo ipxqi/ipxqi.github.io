@@ -275,58 +275,58 @@
 
         updateSlide();
         
-   // 手指滑动支持（超丝滑版 + 完全禁止上下滚动）
+   // 手指滑动支持（最终丝滑版：多次滑动都生效 + 实时跟随）
 let touchStartX = 0;
-let isHorizontalSwipe = false;
+let isSwiping = false;
 
 gallery.addEventListener('touchstart', (e) => {
     touchStartX = e.touches[0].clientX;
-    isHorizontalSwipe = false;
+    isSwiping = true;
 }, { passive: false });
 
 gallery.addEventListener('touchmove', (e) => {
-    if (!touchStartX) return;
+    if (!isSwiping) return;
 
     const deltaX = e.touches[0].clientX - touchStartX;
-    const deltaY = e.touches[0].clientY - e.touches[0].clientY; // 初始Y不需记录
 
-    // 如果左右滑动更多，标记为水平滑动，并阻止默认（禁止上下滚动）
-    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 10) {
-        isHorizontalSwipe = true;
-        e.preventDefault(); // 关键：完全禁止页面上下滚动
-    }
+    // 实时跟随手指滑动（超丝滑）
+    const firstItem = items[0];
+    const itemWidth = firstItem.getBoundingClientRect().width;
+    const gap = 15; // 手机端 gap
+    const totalWidth = itemWidth + gap;
+    const currentOffset = -index * totalWidth;
+    gallery.style.transition = 'none';
+    gallery.style.transform = `translateX(${currentOffset + deltaX}px)`;
 
-    // 实时跟随手指滑动（丝滑无卡顿）
-    if (isHorizontalSwipe) {
-        const firstItem = items[0];
-        const itemWidth = firstItem.getBoundingClientRect().width;
-        const gap = 15; // 手机端 gap
-        const totalWidth = itemWidth + gap;
-        const currentOffset = -index * totalWidth;
-        gallery.style.transition = 'none'; // 关闭动画，实时跟随
-        gallery.style.transform = `translateX(${currentOffset + deltaX}px)`;
-    }
+    // 左右滑动时阻止上下滚动
+    e.preventDefault();
 }, { passive: false });
 
 gallery.addEventListener('touchend', (e) => {
-    if (!touchStartX || !isHorizontalSwipe) {
-        touchStartX = 0;
-        return;
-    }
+    if (!isSwiping) return;
 
     const deltaX = e.changedTouches[0].clientX - touchStartX;
 
-    gallery.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)'; // 恢复动画
+    gallery.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
 
-    if (Math.abs(deltaX) > 50) { // 阈值50px
+    if (Math.abs(deltaX) > 50) {
         if (deltaX > 0) {
             // 右滑：上一张
-            if (index > 0) index--;
+            if (index > 0) {
+                index--;
+            }
         } else {
             // 左滑：下一张
-            if (index < maxIndex) index++;
+            if (index < maxIndex) {
+                index++;
+            }
         }
     }
+
+    updateSlide(); // 回正位置
+    isSwiping = false; // 重置状态（关键！）
+    touchStartX = 0;
+});
 
     updateSlide(); // 回正位置
     touchStartX = 0;
