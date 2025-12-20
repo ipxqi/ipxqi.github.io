@@ -255,6 +255,34 @@
         });
 
         updateSlide();
+        
+        // 手机手指滑动支持
+let touchStartX = 0;
+let touchEndX = 0;
+
+gallery.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+});
+
+gallery.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    if (touchStartX - touchEndX > 50) {
+        // 向左滑：下一张
+        if (index < maxIndex) {
+            index++;
+            updateSlide();
+        }
+    }
+    if (touchEndX - touchStartX > 50) {
+        // 向右滑：上一张
+        if (index > 0) {
+            index--;
+            updateSlide();
+        }
+    }
+});
+        
     </script>
 </body>
 </html>
+
