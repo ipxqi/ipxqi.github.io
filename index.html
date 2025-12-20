@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <title>我的作品集</title>
     <style>
         body {
@@ -14,6 +14,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            touch-action: pan-y; /* 新增：允许上下滚动，但左右优先卡片 */
         }
         .header {
             padding: 80px 60px 60px;
@@ -252,34 +253,44 @@
 
         updateSlide();
         
-     // 手指滑动支持（修复版：灵敏 + 正常切换）
+   // 手指滑动支持（超灵敏版 + 优先左右滑动）
 let touchStartX = 0;
+let touchStartY = 0;
 
 gallery.addEventListener('touchstart', (e) => {
     touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
 });
 
 gallery.addEventListener('touchend', (e) => {
-    if (!touchStartX) return;
-    let touchEndX = e.changedTouches[0].clientX;
-    let deltaX = touchStartX - touchEndX; // 修复符号：左滑 deltaX 正值
+    if (!touchStartX || !touchStartY) return;
 
-    if (Math.abs(deltaX) > 50) {
+    let touchEndX = e.changedTouches[0].clientX;
+    let touchEndY = e.changedTouches[0].clientY;
+
+    let deltaX = touchEndX - touchStartX;
+    let deltaY = touchEndY - touchStartY;
+
+    // 如果左右滑动距离大于上下，且超过30px，就触发切换
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 30) {
         if (deltaX > 0) {
-            // 左滑：下一张
-            if (index < maxIndex) {
-                index++;
-                updateSlide();
-            }
-        } else {
             // 右滑：上一张
             if (index > 0) {
                 index--;
                 updateSlide();
             }
+        } else {
+            // 左滑：下一张
+            if (index < maxIndex) {
+                index++;
+                updateSlide();
+            }
         }
     }
+
+    // 重置
     touchStartX = 0;
+    touchStartY = 0;
 });
     
     </script>
