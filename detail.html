@@ -101,17 +101,17 @@
             text-shadow: 0 0 8px rgba(0,0,0,0.8);
         }
         .label {
-            position: absolute;
-            top: 20px;
-            font-size: 20px;
-            font-weight: normal;
-            z-index: 10;
-            background: rgba(0,0,0,0.4);
-            padding: 8px 20px;
-            border-radius: 8px;
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
+    position: absolute;
+    top: 20px;
+    font-size: 20px;
+    font-weight: normal;
+    z-index: 10;
+    background: rgba(0,0,0,0.4);
+    padding: 8px 20px;
+    border-radius: 8px;
+    opacity: 0; /* 默认隐藏，鼠标移入区域再显示 */
+    transition: opacity 0.4s ease; /* 加过渡，丝滑淡入淡出 */
+}
         .comparison-wrapper:hover .label {
             opacity: 1;
         }
@@ -252,8 +252,8 @@
                 <img id="original" src="">
                 <img id="edited" src="">
                 <div class="slider" id="slider"></div>
-                <div class="label label-a">原图</div>
-                <div class="label label-b">效果图</div>
+                <div class="label label-a" id="label-original">原图</div>
+                <div class="label label-b" id="label-edited">效果图</div>
                 <div class="guide-text">左右移动鼠标 查看对比</div>
             </div>
             <button class="nav-arrow prev" id="prev">‹</button>
@@ -331,13 +331,24 @@
         });
 
         wrapper.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            const rect = wrapper.getBoundingClientRect();
-            let x = e.touches[0].clientX - rect.left;
-            let percent = (x / rect.width) * 100;
-            percent = Math.max(0, Math.min(100, percent));
-            updateSlider(percent);
-        });
+    e.preventDefault();
+    const rect = wrapper.getBoundingClientRect();
+    let x = e.touches[0].clientX - rect.left;
+    let percent = (x / rect.width) * 100;
+    percent = Math.max(0, Math.min(100, percent));
+    updateSlider(percent);
+
+    // 手机端也控制标签透明
+    const labelOriginal = document.getElementById('label-original');
+    const labelEdited = document.getElementById('label-edited');
+    if (percent < 50) {
+        labelOriginal.style.opacity = '0.3';
+        labelEdited.style.opacity = '1';
+    } else {
+        labelOriginal.style.opacity = '1';
+        labelEdited.style.opacity = '0.3';
+    }
+});
 
         thumbs.forEach((thumb, i) => thumb.addEventListener('click', () => loadImage(i)));
         prevBtn.addEventListener('click', () => loadImage((currentIndex - 1 + thumbs.length) % thumbs.length));
@@ -405,6 +416,41 @@ document.addEventListener('keydown', (e) => {
         lightboxImg.src = bigImg;
     }
 });
+
+        // 鼠标在对比区域移动时，动态控制标签透明度
+wrapper.addEventListener('mousemove', (e) => {
+    const rect = wrapper.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const width = rect.width;
+    const percent = (x / width) * 100;
+
+    // 更新滑动条（原代码）
+    updateSlider(percent);
+
+    // 控制标签透明度
+    const labelOriginal = document.getElementById('label-original');
+    const labelEdited = document.getElementById('label-edited');
+
+    if (percent < 50) {
+        // 鼠标在左半边：原图标签透明，效果图标签显示
+        labelOriginal.style.opacity = '0.3';
+        labelEdited.style.opacity = '1';
+    } else {
+        // 鼠标在右半边：效果图标签透明，原图标签显示
+        labelOriginal.style.opacity = '1';
+        labelEdited.style.opacity = '0.3';
+    }
+});
+
+// 鼠标移出对比区域时，恢复默认（都显示）
+wrapper.addEventListener('mouseleave', () => {
+    document.getElementById('label-original').style.opacity = '1';
+    document.getElementById('label-edited').style.opacity = '1';
+});
+
+// 初始状态（鼠标没进时都显示）
+document.getElementById('label-original').style.opacity = '1';
+document.getElementById('label-edited').style.opacity = '1';
     </script>
 </body>
 </html>
