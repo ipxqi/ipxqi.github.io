@@ -323,12 +323,24 @@
         }
 
         wrapper.addEventListener('mousemove', (e) => {
-            const rect = wrapper.getBoundingClientRect();
-            let x = e.clientX - rect.left;
-            let percent = (x / rect.width) * 100;
-            percent = Math.max(0, Math.min(100, percent));
-            updateSlider(percent);
-        });
+    const rect = wrapper.getBoundingClientRect();
+    let x = e.clientX - rect.left;
+    let percent = (x / rect.width) * 100;
+    percent = Math.max(0, Math.min(100, percent));
+    updateSlider(percent);
+
+    // 实时渐变透明度：鼠标越靠左，原图标签越透明；越靠右，效果图标签越透明
+    const labelOriginal = document.getElementById('label-original');
+    const labelEdited = document.getElementById('label-edited');
+
+    // 原图标签：鼠标在左边完全显示，右边完全消失
+    labelOriginal.style.opacity = (percent / 50).toFixed(2); // 0-50% 时1→0，50-100%保持0
+    if (percent > 50) labelOriginal.style.opacity = '0';
+
+    // 效果图标签：鼠标在右边完全显示，左边完全消失
+    labelEdited.style.opacity = ((100 - percent) / 50).toFixed(2); // 0-50% 时0→1，50-100%保持1
+    if (percent < 50) labelEdited.style.opacity = '0';
+});
 
         wrapper.addEventListener('touchmove', (e) => {
     e.preventDefault();
@@ -337,6 +349,17 @@
     let percent = (x / rect.width) * 100;
     percent = Math.max(0, Math.min(100, percent));
     updateSlider(percent);
+
+    // 手机端也实时渐变标签透明度
+    const labelOriginal = document.getElementById('label-original');
+    const labelEdited = document.getElementById('label-edited');
+
+    labelOriginal.style.opacity = (percent / 50).toFixed(2);
+    if (percent > 50) labelOriginal.style.opacity = '0';
+
+    labelEdited.style.opacity = ((100 - percent) / 50).toFixed(2);
+    if (percent < 50) labelEdited.style.opacity = '0';
+});
 
     // 手机端也控制标签透明
     const labelOriginal = document.getElementById('label-original');
