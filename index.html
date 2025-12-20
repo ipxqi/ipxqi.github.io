@@ -129,7 +129,8 @@
         padding: 0 20px 140px 20px; /* 左边20px，贴近红线 */
     }
     .gallery {
-        padding-left: 0; /* 左对齐 */
+        padding-left: 0 !important; /* 强制左对齐 */
+        margin-left: 0 !important;
         gap: 15px; /* 间距稍小 */
     }
     .card-wrapper {
@@ -305,7 +306,22 @@ gallery.addEventListener('touchend', (e) => {
     touchStartX = 0;
     touchStartY = 0;
 });
-    
+        
+    // 手机端专属：每次滑动后强制对齐第一个卡片位置
+if (window.innerWidth <= 1024) {
+    const firstItem = items[0];
+    const containerPadding = 20; // 你的手机端左padding
+    const gap = 15; // 手机端 gap
+    const itemWidth = firstItem.getBoundingClientRect().width;
+    const totalWidth = itemWidth + gap;
+
+    updateSlide = function() {
+        const offset = Math.round(index * totalWidth) + containerPadding; // 加左padding
+        gallery.style.transform = `translateX(-${offset}px)`;
+        prevBtn.disabled = index === 0;
+        nextBtn.disabled = index >= maxIndex;
+    };
+}
     </script>
 </body>
 </html>
