@@ -91,9 +91,12 @@
     font-weight: bold;      /* 新增：加粗，像苹果一样厚实 */
     line-height: 56px;      /* 新增：完美垂直居中 */
     cursor: pointer;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(20px);
     box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-    transition: background 0.3s, transform 0.3s;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
            /* 新增下面这两行：完美水平垂直居中 */
     display: flex;
@@ -109,14 +112,15 @@
 
 /* 禁用状态：变灰 + 完全无反应 */
 .nav-buttons button:disabled {
-    opacity: 0.3;
-    cursor: default;                 /* 鼠标不变手型 */
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
+    opacity: 0.4;
+    cursor: default;
+    transform: none;
 }
 
 /* 关键：禁用时hover完全无效 */
 .nav-buttons button:disabled:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
     transform: none;
 }
    @media (max-width: 1024px) {
