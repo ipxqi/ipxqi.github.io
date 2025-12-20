@@ -217,7 +217,7 @@
 
         function getVisibleCount() {
             const containerWidth = document.querySelector('.gallery-container').offsetWidth;
-            const cardWidth = items[0].offsetWidth + 40;
+            const cardWidth = items[0].offsetWidth + 20;
             return Math.floor(containerWidth / cardWidth);
         }
 
@@ -227,7 +227,7 @@
         let index = 0;
 
         function updateSlide() {
-            const width = items[0].offsetWidth + 40;
+            const width = items[0].offsetWidth + 20;
             gallery.style.transform = `translateX(${-index * width}px)`;
 
             prevBtn.disabled = index === 0;
