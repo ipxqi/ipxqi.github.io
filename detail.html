@@ -332,18 +332,17 @@
     // 更新滑动条
     updateSlider(percent);
 
-    // 控制标签透明度（实时渐变）
+        // 控制标签透明度（实时渐变，根据鼠标位置）
     const labelOriginal = document.getElementById('label-original');
     const labelEdited = document.getElementById('label-edited');
 
-    // “原图”标签：鼠标从左到右逐渐消失
-    // 左边 (0%) 完全显示 opacity 1
-    // 右边 (100%) 完全消失 opacity 0
+    // “原图”标签：鼠标越靠左越清晰（opacity 1），越靠右越透明（opacity 0）
+    labelOriginal.style.opacity = percent / 100; // percent 0% (左) = opacity 0? 等待！！！错！！！
+
+    // 正确：鼠标越靠左越清晰（左边 opacity 1，右边 opacity 0）
     labelOriginal.style.opacity = 1 - (percent / 100);
 
-    // “效果图”标签：鼠标从左到右逐渐出现
-    // 左边 (0%) 完全消失 opacity 0
-    // 右边 (100%) 完全显示 opacity 1
+    // “效果图”标签：鼠标越靠右越清晰（右边 opacity 1，左边 opacity 0）
     labelEdited.style.opacity = percent / 100;
 });
 
@@ -355,7 +354,7 @@
     percent = Math.max(0, Math.min(100, percent));
     updateSlider(percent);
 
-    // 手机端实时渐变标签透明度
+        // 手机端实时渐变标签透明度
     const labelOriginal = document.getElementById('label-original');
     const labelEdited = document.getElementById('label-edited');
 
