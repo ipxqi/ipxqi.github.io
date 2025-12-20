@@ -40,6 +40,8 @@
     gap: 20px;
     transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     padding-left: 0; /* 关键：左边不留空隙，对齐红线位置 */
+    -webkit-overflow-scrolling: touch; /* iOS 滑动更丝滑 */
+    touch-action: pan-x; /* 只允许水平滑动 */
 }
         .card-wrapper {
             flex: 0 0 280px; /* 固定宽度 327px */
@@ -260,28 +262,48 @@
 
         updateSlide();
         
-        // 手机手指滑动支持
+        // 手机手指滑动支持（优化版：更灵敏 + 阻止页面上下滚动）
 let touchStartX = 0;
 let touchEndX = 0;
+let touchStartY = 0;
+let touchEndY = 0;
 
 gallery.addEventListener('touchstart', (e) => {
-    touchStartX = e.changedTouches[0].screenX;
-});
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+}, { passive: false }); // 允许阻止默认
+
+gallery.addEventListener('touchmove', (e) => {
+    touchEndX = e.touches[0].clientX;
+    touchEndY = e.touches[0].clientY;
+
+    const deltaX = Math.abs(touchEndX - touchStartX);
+    const deltaY = Math.abs(touchEndY - touchStartY);
+
+    // 如果左右滑动距离 > 上下滑动距离，阻止页面上下滚动，只允许左右滑卡片
+    if (deltaX > deltaY && deltaX > 10) {
+        e.preventDefault(); // 关键：阻止页面上下滚动
+    }
+}, { passive: false });
 
 gallery.addEventListener('touchend', (e) => {
-    touchEndX = e.changedTouches[0].screenX;
-    if (touchStartX - touchEndX > 50) {
-        // 向左滑：下一张
-        if (index < maxIndex) {
-            index++;
-            updateSlide();
-        }
-    }
-    if (touchEndX - touchStartX > 50) {
-        // 向右滑：上一张
-        if (index > 0) {
-            index--;
-            updateSlide();
+    const deltaX = touchEndX - touchStartX;
+    const deltaY = touchEndY - touchStartY;
+
+    // 左右滑动阈值 50px（灵敏度高）
+    if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY)) {
+        if (deltaX > 0) {
+            // 向右滑：上一张
+            if (index > 0) {
+                index--;
+                updateSlide();
+            }
+        } else {
+            // 向左滑：下一张
+            if (index < maxIndex) {
+                index++;
+                updateSlide();
+            }
         }
     }
 });
