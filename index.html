@@ -76,11 +76,14 @@
         }
         .nav-buttons {
             position: fixed;
-            right: 60px;
-            bottom: 160px;
-            display: flex;
-            gap: 16px;
-            z-index: 1000; /* 提高层级，确保能点击 */
+    left: auto;                 /* 取消左对齐 */
+    right: auto;                /* 取消右对齐 */
+    top: 100px;                 /* 标题下方一点（标题从80px开始） */
+    left: 50%;                  /* 水平居中 */
+    transform: translateX(-50%); /* 精确居中 */
+    display: flex;
+    gap: 20px;
+    z-index: 1000; /* 提高层级，确保能点击 */
     pointer-events: auto; /* 确保能交互 */
         }
     .nav-buttons button {
@@ -145,8 +148,9 @@
         font-size: 14px;
     }
     .nav-buttons {
-        right: 30px;
-        bottom: 160px;
+        top: 80px;
+        left: 50%;
+        transform: translateX(-50%);
     }
     .nav-buttons button {
         width: 50px;
