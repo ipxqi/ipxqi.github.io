@@ -74,16 +74,16 @@
             margin: 8px 0 0 0;
             text-align: left;
         }
-        .nav-buttons {
-            position: fixed;
-    left: 50%;                          /* 从左50%开始 */
-    transform: translateX(-50%);        /* 自身向左偏移一半，实现居中 */
-    top: 100px;                         /* 与标题底部对齐（根据你的标题高度调整90-110px） */
+       .nav-buttons {
+    position: fixed;
+    left: 55%;                          /* 整体向右移（50%居中，55%偏右一点） */
+    transform: translateX(-50%);        /* 按钮组自身居中 */
+    top: 90px;                          /* 垂直对齐标题底部 */
     display: flex;
     gap: 20px;
     z-index: 1000;
-    pointer-events: auto; /* 确保能交互 */
-        }
+    pointer-events: auto;
+}
     .nav-buttons button {
     width: 56px;
     height: 56px;
