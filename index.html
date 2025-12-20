@@ -216,6 +216,7 @@
         const nextBtn = document.getElementById('next-btn');
 
         function getVisibleCount() {
+    if (items.length === 0) return 0;
     const containerWidth = document.querySelector('.gallery-container').offsetWidth;
     const firstItem = items[0];
     const itemWidth = firstItem.getBoundingClientRect().width;
@@ -230,11 +231,12 @@
         let index = 0;
 
         function updateSlide() {
+    if (items.length === 0) return;
     const firstItem = items[0];
-    const itemWidth = firstItem.getBoundingClientRect().width; // 精确宽度
+    const itemWidth = firstItem.getBoundingClientRect().width; // 精确实际宽度
     const gap = 20; // 你的 gap 值
     const totalWidth = itemWidth + gap;
-    const offset = Math.round(index * totalWidth); // 消除亚像素误差
+    const offset = Math.round(index * totalWidth); // 四舍五入消除亚像素误差
     gallery.style.transform = `translateX(-${offset}px)`;
     prevBtn.disabled = index === 0;
     nextBtn.disabled = index >= maxIndex;
