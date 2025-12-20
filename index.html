@@ -291,7 +291,7 @@ gallery.addEventListener('touchend', (e) => {
     const deltaY = touchEndY - touchStartY;
 
     // 左右滑动阈值 50px（灵敏度高）
-    if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY)) {
+    if (Math.abs(deltaX) > 30 && Math.abs(deltaX) > Math.abs(deltaY)) {
         if (deltaX > 0) {
             // 向右滑：上一张
             if (index > 0) {
@@ -307,7 +307,7 @@ gallery.addEventListener('touchend', (e) => {
         }
     }
 });
-        
+      <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script> <!-- 可删，只是测试 -->
     </script>
 </body>
 </html>
