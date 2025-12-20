@@ -221,7 +221,7 @@
     const containerWidth = document.querySelector('.gallery-container').offsetWidth;
     const firstItem = items[0];
     const itemWidth = firstItem.getBoundingClientRect().width;
-    const gap = 20;
+    const gap = 15; // 手机端 gap
     const totalWidth = itemWidth + gap;
     return Math.floor(containerWidth / totalWidth);
 }
@@ -233,15 +233,23 @@
 
         function updateSlide() {
     if (items.length === 0) return;
+
     const firstItem = items[0];
-    const itemRect = firstItem.getBoundingClientRect();
-    const itemWidth = itemRect.width; // 精确宽度（包括小数）
-    const gap = 20; // 你的 gap 值
+    const itemWidth = firstItem.getBoundingClientRect().width; // 精确到小数
+    const gap = 15; // 手机端 gap 是 15px
     const totalWidth = itemWidth + gap;
-    const offset = Math.round(index * totalWidth); // 四舍五入消除累积误差
+
+    // 手机端强制加左padding并四舍五入
+    const offset = Math.round(index * totalWidth + 20); // +20 是手机端左padding
     gallery.style.transform = `translateX(-${offset}px)`;
+
     prevBtn.disabled = index === 0;
     nextBtn.disabled = index >= maxIndex;
+
+    // 额外强制对齐第一张（防止回第一张跳变）
+    if (index === 0) {
+        gallery.style.transform = `translateX(-20px)`; // 直接写左padding值
+    }
 }
 
         nextBtn.onclick = () => {
