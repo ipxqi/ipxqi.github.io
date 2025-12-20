@@ -342,12 +342,14 @@
     const labelOriginal = document.getElementById('label-original');
     const labelEdited = document.getElementById('label-edited');
     if (percent < 50) {
-        labelOriginal.style.opacity = '0.3';
-        labelEdited.style.opacity = '1';
-    } else {
-        labelOriginal.style.opacity = '1';
-        labelEdited.style.opacity = '0.3';
-    }
+    // 鼠标在左半边：原图标签完全消失，效果图标签显示
+    labelOriginal.style.opacity = '0';
+    labelEdited.style.opacity = '1';
+} else {
+    // 鼠标在右半边：效果图标签完全消失，原图标签显示
+    labelOriginal.style.opacity = '1';
+    labelEdited.style.opacity = '0';
+}
 });
 
         thumbs.forEach((thumb, i) => thumb.addEventListener('click', () => loadImage(i)));
@@ -433,12 +435,12 @@ wrapper.addEventListener('mousemove', (e) => {
 
     if (percent < 50) {
         // 鼠标在左半边：原图标签透明，效果图标签显示
-        labelOriginal.style.opacity = '0.3';
+        labelOriginal.style.opacity = '0';
         labelEdited.style.opacity = '1';
     } else {
         // 鼠标在右半边：效果图标签透明，原图标签显示
         labelOriginal.style.opacity = '1';
-        labelEdited.style.opacity = '0.3';
+        labelEdited.style.opacity = '0';
     }
 });
 
