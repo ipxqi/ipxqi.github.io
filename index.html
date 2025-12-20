@@ -14,7 +14,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            touch-action: pan-y; /* 新增：允许上下滚动，但左右优先卡片 */
+            touch-action: pan-x; /* 改成 pan-x，只允许左右滑动，禁止上下 */
         }
         .header {
             padding: 80px 60px 60px;
@@ -275,44 +275,62 @@
 
         updateSlide();
         
-   // 手指滑动支持（超灵敏版 + 优先左右滑动）
+   // 手指滑动支持（超丝滑版 + 完全禁止上下滚动）
 let touchStartX = 0;
-let touchStartY = 0;
+let isHorizontalSwipe = false;
 
 gallery.addEventListener('touchstart', (e) => {
     touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-});
+    isHorizontalSwipe = false;
+}, { passive: false });
+
+gallery.addEventListener('touchmove', (e) => {
+    if (!touchStartX) return;
+
+    const deltaX = e.touches[0].clientX - touchStartX;
+    const deltaY = e.touches[0].clientY - e.touches[0].clientY; // 初始Y不需记录
+
+    // 如果左右滑动更多，标记为水平滑动，并阻止默认（禁止上下滚动）
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 10) {
+        isHorizontalSwipe = true;
+        e.preventDefault(); // 关键：完全禁止页面上下滚动
+    }
+
+    // 实时跟随手指滑动（丝滑无卡顿）
+    if (isHorizontalSwipe) {
+        const firstItem = items[0];
+        const itemWidth = firstItem.getBoundingClientRect().width;
+        const gap = 15; // 手机端 gap
+        const totalWidth = itemWidth + gap;
+        const currentOffset = -index * totalWidth;
+        gallery.style.transition = 'none'; // 关闭动画，实时跟随
+        gallery.style.transform = `translateX(${currentOffset + deltaX}px)`;
+    }
+}, { passive: false });
 
 gallery.addEventListener('touchend', (e) => {
-    if (!touchStartX || !touchStartY) return;
+    if (!touchStartX || !isHorizontalSwipe) {
+        touchStartX = 0;
+        return;
+    }
 
-    let touchEndX = e.changedTouches[0].clientX;
-    let touchEndY = e.changedTouches[0].clientY;
+    const deltaX = e.changedTouches[0].clientX - touchStartX;
 
-    let deltaX = touchEndX - touchStartX;
-    let deltaY = touchEndY - touchStartY;
+    gallery.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)'; // 恢复动画
 
-    // 如果左右滑动距离大于上下，且超过30px，就触发切换
-    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 30) {
+    if (Math.abs(deltaX) > 50) { // 阈值50px
         if (deltaX > 0) {
             // 右滑：上一张
-            if (index > 0) {
-                index--;
-                updateSlide();
-            }
+            if (index > 0) index--;
         } else {
             // 左滑：下一张
-            if (index < maxIndex) {
-                index++;
-                updateSlide();
-            }
+            if (index < maxIndex) index++;
         }
     }
 
-    // 重置
+    updateSlide(); // 回正位置
     touchStartX = 0;
-    touchStartY = 0;
+    isHorizontalSwipe = false;
 });
         
     // 手机端专属：每次滑动后强制对齐第一个卡片位置
