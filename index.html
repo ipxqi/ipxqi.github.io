@@ -275,7 +275,7 @@
 
         updateSlide();
         
-   // 手指滑动支持（最终丝滑版：多次滑动都生效 + 实时跟随）
+   // 手指滑动支持（修复版：多次滑动都生效 + 丝滑 + 保持现有位置对齐）
 let touchStartX = 0;
 let isSwiping = false;
 
@@ -289,7 +289,7 @@ gallery.addEventListener('touchmove', (e) => {
 
     const deltaX = e.touches[0].clientX - touchStartX;
 
-    // 实时跟随手指滑动（超丝滑）
+    // 实时跟随手指（丝滑）
     const firstItem = items[0];
     const itemWidth = firstItem.getBoundingClientRect().width;
     const gap = 15; // 手机端 gap
@@ -298,12 +298,14 @@ gallery.addEventListener('touchmove', (e) => {
     gallery.style.transition = 'none';
     gallery.style.transform = `translateX(${currentOffset + deltaX}px)`;
 
-    // 左右滑动时阻止上下滚动
-    e.preventDefault();
+    e.preventDefault(); // 禁止上下滚动
 }, { passive: false });
 
 gallery.addEventListener('touchend', (e) => {
-    if (!isSwiping) return;
+    if (!isSwiping) {
+        isSwiping = false;
+        return;
+    }
 
     const deltaX = e.changedTouches[0].clientX - touchStartX;
 
@@ -311,26 +313,14 @@ gallery.addEventListener('touchend', (e) => {
 
     if (Math.abs(deltaX) > 50) {
         if (deltaX > 0) {
-            // 右滑：上一张
-            if (index > 0) {
-                index--;
-            }
+            if (index > 0) index--;
         } else {
-            // 左滑：下一张
-            if (index < maxIndex) {
-                index++;
-            }
+            if (index < maxIndex) index++;
         }
     }
 
-    updateSlide(); // 回正位置
-    isSwiping = false; // 重置状态（关键！）
-    touchStartX = 0;
-});
-
-    updateSlide(); // 回正位置
-    touchStartX = 0;
-    isHorizontalSwipe = false;
+    updateSlide(); // 使用你现有的 updateSlide（保持完美对齐）
+    isSwiping = false; // 重置状态（关键！解决只滑一次）
 });
         
     // 手机端专属：每次滑动后强制对齐第一个卡片位置
