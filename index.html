@@ -34,12 +34,12 @@
             text-align: left;
         }
         .gallery-container {
-            overflow: visible; /* 关键：改为 visible，允许卡片延伸超出容器 */
-            padding: 0 60px 140px 60px; /* 保持左80px对齐红线 */
-            width: 100%;
-            box-sizing: border-box;
-            flex: 1;
-        }
+    overflow: hidden; /* 改回 hidden，彻底隐藏滚动条 */
+    padding: 0 60px 140px 60px;
+    width: 100%;
+    box-sizing: border-box;
+    flex: 1;
+}
         .gallery {
             display: flex;
             gap: 20px;
