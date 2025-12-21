@@ -8,11 +8,11 @@
     <title>AI智能加人物</title>
     <style>
         html, body {
-    overflow-x: hidden; /* 关键：隐藏水平滚动条 */
-}
-        body {
-            margin: 0 auto;
+            overflow-x: hidden; /* 彻底隐藏水平滚动条 */
+            margin: 0;
             padding: 0;
+        }
+        body {
             background: #000;
             color: #fff;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
@@ -20,10 +20,10 @@
             display: flex;
             flex-direction: column;
             touch-action: pan-x;
-            max-width: 1440px; /* 内容最大宽度1440px，拉宽时居中留白 */
+            max-width: 1440px; /* 内容最大宽度，拉宽时居中留白 */
+            margin: 0 auto; /* 居中 */
             width: 100%;
             box-sizing: border-box;
-            overflow-x: hidden;
         }
         .header {
             padding: 80px 60px 60px 60px;
@@ -38,19 +38,17 @@
             text-align: left;
         }
         .gallery-container {
-            overflow: visible; /* 关键：改为 visible，允许卡片延伸超出容器 */
-            padding: 0 60px 140px 60px; /* 保持左80px对齐红线 */
+            overflow: hidden; /* 隐藏溢出，防止滚动条 */
+            padding: 0 60px 140px 80px; /* 保持左80px对齐红线，右60px */
             width: 100%;
             box-sizing: border-box;
             flex: 1;
-            overflow-x: visible;
-            overflow-y: hidden;
         }
         .gallery {
             display: flex;
             gap: 20px;
             transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            width: fit-content; /* 允许画廊宽度自适应延伸 */
+            width: fit-content; /* 允许延伸显示所有卡片 */
             min-width: 100%;
         }
         .card-wrapper {
@@ -85,15 +83,15 @@
             text-align: left;
         }
         .nav-buttons {
-    position: fixed;
-    right: max(60px, calc((100vw - 1440px) / 2 + 60px)); /* 关键：加 max() 保证最小60px */
-    top: 130px;
-    display: flex;
-    gap: 20px;
-    z-index: 1000;
-    pointer-events: auto;
-    transition: right 0.3s ease; /* 平滑移动 */
-}
+            position: fixed;
+            right: max(60px, calc((100vw - 1440px) / 2 + 60px)); /* 自适应右边距，始终可见 */
+            top: 130px;
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+            pointer-events: auto;
+            transition: right 0.3s ease;
+        }
         .nav-buttons button {
             width: 38px;
             height: 38px;
@@ -135,11 +133,8 @@
             }
             .gallery-container {
                 padding: 0 20px 140px 50px;
-                overflow: hidden; /* 手机端恢复 hidden */
             }
             .gallery {
-                padding-left: 0 !important;
-                margin-left: 0 !important;
                 gap: 15px;
                 width: auto;
                 min-width: auto;
@@ -167,7 +162,6 @@
                 width: 38px;
                 height: 38px;
                 font-size: 18px;
-                line-height: 50px;
             }
         }
     </style>
@@ -208,21 +202,21 @@
                     <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
                 </div>
             </div>
-             <div class="card-wrapper">
+            <div class="card-wrapper">
                 <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
                 <div>
                     <div class="card-title">空荡吧台瞬间生动</div>
                     <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
                 </div>
             </div>
-             <div class="card-wrapper">
+            <div class="card-wrapper">
                 <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
                 <div>
                     <div class="card-title">空荡吧台瞬间生动</div>
                     <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
                 </div>
             </div>
-             <div class="card-wrapper">
+            <div class="card-wrapper">
                 <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
                 <div>
                     <div class="card-title">空荡吧台瞬间生动</div>
@@ -244,27 +238,24 @@
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
 
-        let maxIndex = total - Math.floor(galleryContainer.offsetWidth / (327 + 20)); // 电脑端计算可见数量
-        if (maxIndex < 0) maxIndex = 0;
+        let maxIndex = 0;
         let index = 0;
 
         function updateSlide() {
             if (items.length === 0) return;
 
             const itemWidth = items[0].getBoundingClientRect().width;
-            const gap = 20; // 电脑端 gap
+            const gap = window.innerWidth > 1024 ? 20 : 15;
             const totalWidth = itemWidth + gap;
 
             let offset = index * totalWidth;
 
-            if (window.innerWidth > 1024) {
-                // 电脑端：第一张对齐左80px，滑动时自然延伸
-                if (index === 0) offset = 0;
-            } else {
-                // 手机端原有逻辑
-                offset = index * (itemWidth + 15) + 20;
+            if (window.innerWidth <= 1024) {
+                offset += 20; // 手机端左padding补偿
                 if (index === 0) {
                     gallery.style.transform = `translateX(-20px)`;
+                    prevBtn.disabled = true;
+                    nextBtn.disabled = index >= maxIndex;
                     return;
                 }
             }
@@ -290,8 +281,8 @@
         };
 
         window.addEventListener('resize', () => {
-            const visible = Math.floor(galleryContainer.offsetWidth / (window.innerWidth > 1024 ? 347 : 275));
-            maxIndex = total - visible;
+            const visibleCount = Math.floor(galleryContainer.offsetWidth / (items[0].getBoundingClientRect().width + (window.innerWidth > 1024 ? 20 : 15)));
+            maxIndex = total - visibleCount;
             if (maxIndex < 0) maxIndex = 0;
             if (index > maxIndex) index = maxIndex;
             updateSlide();
@@ -299,7 +290,7 @@
 
         updateSlide();
 
-        // 手机端触屏滑动（保持原有）
+        // 手机端触屏滑动
         let touchStartX = 0;
         let isSwiping = false;
         galleryContainer.addEventListener('touchstart', (e) => {
