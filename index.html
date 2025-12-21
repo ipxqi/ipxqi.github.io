@@ -8,24 +8,21 @@
     <title>AI智能加人物</title>
     <style>
         body {
-    margin: 0 auto; /* 新增：水平居中 */
-    padding: 0;
-    background: #000;
-    color: #fff;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    touch-action: pan-x;
-    /* max-width: 1440px; /* 新增：最大宽度，像苹果官网一样 */
-    width: 100%; /* 保证小屏占满 */
-    box-sizing: border-box;
-}
-       .header {
-    padding: 80px 60px 60px 60px; /* 左右对称 60px */
-    width: 100%;
-    box-sizing: border-box;
-}
+            margin: 0;
+            padding: 0;
+            background: #000;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            touch-action: pan-x;
+        }
+        .header {
+            padding: 80px 60px 60px 60px;
+            width: 100%;
+            box-sizing: border-box;
+        }
         .header h1 {
             font-size: 32px;
             font-weight: 500;
@@ -33,31 +30,29 @@
             line-height: 1.4;
             text-align: left;
         }
-     .gallery-container {
-    overflow: hidden;
-    padding: 0 60px 140px 80px; /* 左右对称 60px（你之前左80改成左右60） */
-    width: 100%;
-    box-sizing: border-box;
-    flex: 1;
-}
-
-.gallery {
-    display: flex;
-    gap: 20px;
-    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    width: fit-content; /* 新增：内容自适应宽度 */
-    padding-left: calc(100vw - 80px - 80px); /* 新增关键！ */
-    /* 解释：100vw 全屏宽 - 左padding 80px - 右padding 60px，让第一张卡片对齐左80px，同时最后一张能延伸到右边缘 */
-}
+        .gallery-container {
+            overflow: hidden;
+            padding: 0 60px 140px 80px; /* 保持你原来有效的左80px（对齐红线） */
+            width: 100%;
+            box-sizing: border-box;
+            flex: 1;
+        }
+        .gallery {
+            display: flex;
+            gap: 20px;
+            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            width: fit-content; /* 关键：让画廊宽度自适应，允许延伸 */
+            min-width: 100%;     /* 最小占满容器 */
+        }
         .card-wrapper {
-            flex: 0 0 327px; /* 固定宽度 327px */
+            flex: 0 0 327px;
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
         .card {
-            width: 327px; /* 关键！让卡片宽度100%填满 wrapper */
-            height: 450px; /* 高度改为 450px */
+            width: 327px;
+            height: 450px;
             background-size: cover;
             background-position: center;
             border-radius: 28px;
@@ -80,90 +75,86 @@
             margin: 8px 0 0 0;
             text-align: left;
         }
-    .nav-buttons {
-    position: fixed;
-    right: 60px; /* 改成右对齐 60px（和内容右边距一致） */
-    top: 130px;
-    display: flex;
-    gap: 20px;
-    z-index: 1000;
-    pointer-events: auto;
-}
-/* 删除原来的 left: 90% 和 transform */
-    .nav-buttons button {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    border: none;
-    background: rgba(255, 255, 255, 0.15);
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    backdrop-filter: blur(20px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.nav-buttons button:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: scale(1.1);
-}
-.nav-buttons button:disabled {
-    background: rgba(255, 255, 255, 0.08);
-    opacity: 0.4;
-    cursor: default;
-    transform: none;
-}
-
-/* 关键：禁用时hover完全无效 */
-.nav-buttons button:disabled:hover {
-    background: rgba(255, 255, 255, 0.08);
-    transform: none;
-}
-   @media (max-width: 1024px) {
-    .header {
-        padding: 60px 30px 40px;
-    }
-    .header h1 {
-        font-size: 28px;
-        text-align: left;
-    }
-    .gallery-container {
-        padding: 0 20px 140px 50px; /* 左边20px，贴近红线 */
-    }
-    .gallery {
-        padding-left: 0 !important; /* 强制左对齐 */
-        margin-left: 0 !important;
-        gap: 15px; /* 间距稍小 */
-    }
-    .card-wrapper {
-        flex: 0 0 260px; /* 你想要的宽度 */
-    }
-    .card {
-        width: 260px;
-        height: 314px;
-    }
-    .card-title {
-        font-size: 15px;
-    }
-    .card-desc {
-        font-size: 14px;
-    }
-    .nav-buttons {
-        top: 100px;
-        left: 80%;
-        transform: translateX(-50%);
-    }
-    .nav-buttons button {
-        width: 38px;
-        height: 38px;
-        font-size: 18px;
-        line-height: 50px;
-    }
-}
+        .nav-buttons {
+            position: fixed;
+            right: 60px;
+            top: 130px;
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+            pointer-events: auto;
+        }
+        .nav-buttons button {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .nav-buttons button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+        .nav-buttons button:disabled {
+            background: rgba(255, 255, 255, 0.08);
+            opacity: 0.4;
+            cursor: default;
+            transform: none;
+        }
+        .nav-buttons button:disabled:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: none;
+        }
+        @media (max-width: 1024px) {
+            .header {
+                padding: 60px 30px 40px;
+            }
+            .header h1 {
+                font-size: 28px;
+                text-align: left;
+            }
+            .gallery-container {
+                padding: 0 20px 140px 50px;
+            }
+            .gallery {
+                padding-left: 0 !important;
+                margin-left: 0 !important;
+                gap: 15px;
+            }
+            .card-wrapper {
+                flex: 0 0 260px;
+            }
+            .card {
+                width: 260px;
+                height: 314px;
+            }
+            .card-title {
+                font-size: 15px;
+            }
+            .card-desc {
+                font-size: 14px;
+            }
+            .nav-buttons {
+                top: 100px;
+                left: 80%;
+                transform: translateX(-50%);
+            }
+            .nav-buttons button {
+                width: 38px;
+                height: 38px;
+                font-size: 18px;
+                line-height: 50px;
+            }
         }
     </style>
 </head>
@@ -171,19 +162,17 @@
     <div class="header">
         <h1>无人场景加多人<br>多角度展示</h1>
     </div>
-
     <div class="gallery-container">
         <div class="gallery" id="gallery">
             <a href="detail.html" style="text-decoration: none; color: inherit;">
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/01/0.jpg');"></div>
-                <div>
-                    <div class="card-title">快速添加一家五口自然就餐</div>
-                    <div class="card-desc">人物姿势真实、灯光协调<br>食物细节丰富、氛围温馨<br>完美呈现家庭生活场景</div>
+                <div class="card-wrapper">
+                    <div class="card" style="background-image: url('https://img.adons.top/01/0.jpg');"></div>
+                    <div>
+                        <div class="card-title">快速添加一家五口自然就餐</div>
+                        <div class="card-desc">人物姿势真实、灯光协调<br>食物细节丰富、氛围温馨<br>完美呈现家庭生活场景</div>
+                    </div>
                 </div>
-            </div>
-                </a>
-
+            </a>
             <div class="card-wrapper">
                 <div class="card" style="background-image: url('https://img.adons.top/2-1.jpg');"></div>
                 <div>
@@ -191,7 +180,6 @@
                     <div class="card-desc">情侣相对而坐共享晚餐<br>姿态放松、表情生动真实<br><br></div>
                 </div>
             </div>
-
             <div class="card-wrapper">
                 <div class="card" style="background-image: url('https://img.adons.top/03/1.jfif');"></div>
                 <div>
@@ -199,23 +187,6 @@
                     <div class="card-desc">完美呈现友情温暖的日常时光<br>每个人动作协调、表情自然<br>食物摆盘精致、茶壶蒸汽可见</div>
                 </div>
             </div>
-
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/03/1.jfif');"></div>
-                <div>
-                    <div class="card-title">空荡吧台瞬间生动</div>
-                    <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
-                </div>
-            </div>
-
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/03/1.jfif');"></div>
-                <div>
-                    <div class="card-title">AI瞬间点亮三人欢乐茶歇</div>
-                    <div class="card-desc">完美呈现友情温暖的日常时光<br>每个人动作协调、表情自然<br>食物摆盘精致、茶壶蒸汽可见</div>
-                </div>
-            </div>
-
             <div class="card-wrapper">
                 <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
                 <div>
@@ -225,11 +196,10 @@
             </div>
         </div>
     </div>
-
     <div class="nav-buttons">
-    <button id="prev-btn">❮</button>
-    <button id="next-btn">❯</button>
-</div>
+        <button id="prev-btn">❮</button>
+        <button id="next-btn">❯</button>
+    </div>
 
     <script>
         const galleryContainer = document.querySelector('.gallery-container');
@@ -239,40 +209,46 @@
         const nextBtn = document.getElementById('next-btn');
 
         function getVisibleCount() {
-    if (items.length === 0) return 0;
-    const containerWidth = document.querySelector('.gallery-container').offsetWidth;
-    const firstItem = items[0];
-    const itemWidth = firstItem.getBoundingClientRect().width;
-    const gap = 15; // 手机端 gap
-    const totalWidth = itemWidth + gap;
-    return Math.floor(containerWidth / totalWidth);
-}
+            if (items.length === 0) return 0;
+            const containerWidth = document.querySelector('.gallery-container').offsetWidth;
+            const firstItem = items[0];
+            const itemWidth = firstItem.getBoundingClientRect().width;
+            const gap = 20; // 电脑端 gap 是 20px
+            const totalWidth = itemWidth + gap;
+            return Math.floor(containerWidth / totalWidth);
+        }
 
         let maxIndex = total - getVisibleCount();
         if (maxIndex < 0) maxIndex = 0;
-
         let index = 0;
 
         function updateSlide() {
-    if (items.length === 0) return;
+            if (items.length === 0) return;
 
-    const firstItem = items[0];
-    const itemWidth = firstItem.getBoundingClientRect().width; // 精确到小数
-    const gap = 15; // 手机端 gap 是 15px
-    const totalWidth = itemWidth + gap;
+            const firstItem = items[0];
+            const itemWidth = firstItem.getBoundingClientRect().width;
+            const gap = 20; // 电脑端 gap 20px
+            const totalWidth = itemWidth + gap;
 
-    // 手机端强制加左padding并四舍五入
-    const offset = Math.round(index * totalWidth + 20); // +20 是手机端左padding
-    gallery.style.transform = `translateX(-${offset}px)`;
+            let offset = Math.round(index * totalWidth);
 
-    prevBtn.disabled = index === 0;
-    nextBtn.disabled = index >= maxIndex;
+            // 电脑端：不加额外padding，靠容器80px左边距自然对齐
+            if (window.innerWidth > 1024) {
+                if (index === 0) offset = 0; // 第一张时 offset = 0
+            } else {
+                // 手机端保持你原来的逻辑
+                offset = Math.round(index * totalWidth + 20);
+                if (index === 0) {
+                    gallery.style.transform = `translateX(-20px)`;
+                    return;
+                }
+            }
 
-    // 额外强制对齐第一张（防止回第一张跳变）
-    if (index === 0) {
-        gallery.style.transform = `translateX(-20px)`; // 直接写左padding值
-    }
-}
+            gallery.style.transform = `translateX(-${offset}px)`;
+
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index >= maxIndex;
+        }
 
         nextBtn.onclick = () => {
             if (index < maxIndex) {
@@ -296,70 +272,57 @@
         });
 
         updateSlide();
-        
-   // 手指滑动支持（修复版：多次滑动都生效 + 丝滑 + 保持现有位置对齐）
-let touchStartX = 0;
-let isSwiping = false;
 
-galleryContainer.addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].clientX;
-    isSwiping = true;
-}, { passive: false });
+        // 手指滑动支持（手机端）
+        let touchStartX = 0;
+        let isSwiping = false;
+        galleryContainer.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            isSwiping = true;
+        }, { passive: false });
 
-galleryContainer.addEventListener('touchmove', (e) => {
-    if (!isSwiping) return;
+        galleryContainer.addEventListener('touchmove', (e) => {
+            if (!isSwiping) return;
+            const deltaX = e.touches[0].clientX - touchStartX;
+            const firstItem = items[0];
+            const itemWidth = firstItem.getBoundingClientRect().width;
+            const gap = 15;
+            const totalWidth = itemWidth + gap;
+            const currentOffset = -index * totalWidth;
+            gallery.style.transition = 'none';
+            gallery.style.transform = `translateX(${currentOffset + deltaX}px)`;
+            e.preventDefault();
+        }, { passive: false });
 
-    const deltaX = e.touches[0].clientX - touchStartX;
+        galleryContainer.addEventListener('touchend', (e) => {
+            if (!isSwiping) return;
+            const deltaX = e.changedTouches[0].clientX - touchStartX;
+            gallery.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            if (Math.abs(deltaX) > 50) {
+                if (deltaX > 0) {
+                    if (index > 0) index--;
+                } else {
+                    if (index < maxIndex) index++;
+                }
+            }
+            updateSlide();
+            isSwiping = false;
+        });
 
-    // 实时跟随手指（丝滑）
-    const firstItem = items[0];
-    const itemWidth = firstItem.getBoundingClientRect().width;
-    const gap = 15; // 手机端 gap
-    const totalWidth = itemWidth + gap;
-    const currentOffset = -index * totalWidth;
-    gallery.style.transition = 'none';
-    gallery.style.transform = `translateX(${currentOffset + deltaX}px)`;
-
-    e.preventDefault(); // 禁止上下滚动
-}, { passive: false });
-
-galleryContainer.addEventListener('touchend', (e) => {
-    if (!isSwiping) {
-        isSwiping = false;
-        return;
-    }
-
-    const deltaX = e.changedTouches[0].clientX - touchStartX;
-
-    gallery.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-
-    if (Math.abs(deltaX) > 50) {
-        if (deltaX > 0) {
-            if (index > 0) index--;
-        } else {
-            if (index < maxIndex) index++;
+        // 手机端专属强制对齐
+        if (window.innerWidth <= 1024) {
+            const firstItem = items[0];
+            const containerPadding = 20;
+            const gap = 15;
+            const itemWidth = firstItem.getBoundingClientRect().width;
+            const totalWidth = itemWidth + gap;
+            updateSlide = function() {
+                const offset = Math.round(index * totalWidth) + containerPadding;
+                gallery.style.transform = `translateX(-${offset}px)`;
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index >= maxIndex;
+            };
         }
-    }
-
-    updateSlide(); // 使用你现有的 updateSlide（保持完美对齐）
-    isSwiping = false; // 重置状态（关键！解决只滑一次）
-});
-        
-    // 手机端专属：每次滑动后强制对齐第一个卡片位置
-if (window.innerWidth <= 1024) {
-    const firstItem = items[0];
-    const containerPadding = 20; // 你的手机端左padding
-    const gap = 15; // 手机端 gap
-    const itemWidth = firstItem.getBoundingClientRect().width;
-    const totalWidth = itemWidth + gap;
-
-    updateSlide = function() {
-        const offset = Math.round(index * totalWidth) + containerPadding; // 加左padding
-        gallery.style.transform = `translateX(-${offset}px)`;
-        prevBtn.disabled = index === 0;
-        nextBtn.disabled = index >= maxIndex;
-    };
-}
     </script>
 </body>
 </html>
