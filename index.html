@@ -7,6 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <title>AI智能加人物</title>
     <style>
+        html, body {
+    overflow-x: hidden; /* 关键：隐藏水平滚动条 */
+}
         body {
             margin: 0 auto;
             padding: 0;
@@ -20,6 +23,7 @@
             max-width: 1440px; /* 内容最大宽度1440px，拉宽时居中留白 */
             width: 100%;
             box-sizing: border-box;
+            overflow-x: hidden;
         }
         .header {
             padding: 80px 60px 60px 60px;
@@ -39,6 +43,8 @@
             width: 100%;
             box-sizing: border-box;
             flex: 1;
+            overflow-x: visible;
+            overflow-y: hidden;
         }
         .gallery {
             display: flex;
