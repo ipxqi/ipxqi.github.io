@@ -242,34 +242,36 @@
         let currentIndex = 0;
 
         function loadImage(index) {
-            const thumb = thumbs[index];
-            const isCompare = thumb.classList.contains('thumb-compare');
+    const thumb = thumbs[index];
+    const isCompare = thumb.classList.contains('thumb-compare');
 
-            if (isCompare) {
-                original.src = thumb.dataset.original || '';
-                edited.src = thumb.dataset.edited || '';
-                original.style.display = 'block';
-                edited.style.display = 'block';
-                slider.style.display = 'flex';
-                labelOriginal.style.opacity = '1';
-                labelEdited.style.opacity = '1';
-                guideText.style.opacity = '1';
-            } else {
-                original.src = thumb.dataset.single || thumb.src;
-                edited.src = '';
-                original.style.display = 'block';
-                edited.style.display = 'none';
-                slider.style.display = 'none';
-                labelOriginal.style.opacity = '0';
-                labelEdited.style.opacity = '0';
-                guideText.style.opacity = '0';
-            }
+    if (isCompare) {
+        original.src = thumb.dataset.original || '';
+        edited.src = thumb.dataset.edited || '';
+        original.style.display = 'block';
+        edited.style.display = 'block';
+        slider.style.display = 'flex';
+        document.getElementById('label-original').style.opacity = '1';
+        document.getElementById('label-edited').style.opacity = '1';
+        guideText.style.opacity = '1'; // 默认显示（鼠标未进入时）
+        guideText.style.opacity = '0'; // 新增：强制隐藏（因为切换时鼠标通常已在区域内）
+    } else {
+        // 单图模式保持不变
+        original.src = thumb.dataset.single || thumb.src;
+        edited.src = '';
+        original.style.display = 'block';
+        edited.style.display = 'none';
+        slider.style.display = 'none';
+        document.getElementById('label-original').style.opacity = '0';
+        document.getElementById('label-edited').style.opacity = '0';
+        guideText.style.opacity = '0';
+    }
 
-            thumbs.forEach(t => t.classList.remove('active'));
-            thumb.classList.add('active');
-            currentIndex = index;
-            updateSlider(50);
-        }
+    thumbs.forEach(t => t.classList.remove('active'));
+    thumb.classList.add('active');
+    currentIndex = index;
+    updateSlider(50);
+}
 
         function updateSlider(percent) {
             edited.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
