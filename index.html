@@ -46,17 +46,16 @@
             position: relative;
         }
         .gallery-wrapper {
-            width: 100%;
-            height: 100%;
+            width: calc(100% + 60px); /* 关键：wrapper宽度增加右边距补偿，让最后一张卡片能延伸到右60px位置 */
+            margin-left: -60px; /* 补偿左边距，让第一张卡片保持左80px对齐 */
             overflow: hidden; /* 只在这里隐藏溢出，防止滚动条 */
-            position: relative;
+            height: 100%;
         }
         .gallery {
             display: flex;
             gap: 20px;
             transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             width: fit-content;
-            min-width: 100%;
         }
         .card-wrapper {
             flex: 0 0 327px;
@@ -142,7 +141,8 @@
                 overflow: hidden;
             }
             .gallery-wrapper {
-                overflow: hidden;
+                width: 100%;
+                margin-left: 0;
             }
             .gallery {
                 gap: 15px;
