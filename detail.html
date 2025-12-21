@@ -261,10 +261,10 @@
         </div>
         <div class="thumbnails" id="thumbnails">
             <!-- 点击缩略图弹出大图查看 -->
-            <img class="thumb active" src="https://img.adons.top/0.jpg"
-                 data-original="https://img.adons.top/1.jpg"   
-                 data-edited="https://img.adons.top/0.jpg"
-                 data-lightbox="https://img.adons.top/0.jpg"> <!-- 用于 Lightbox -->
+            <img class="thumb active thumb-compare" src="https://img.adons.top/0.jpg"
+     data-original="https://img.adons.top/1.jpg"
+     data-edited="https://img.adons.top/0.jpg"
+     data-lightbox="https://img.adons.top/0.jpg"> <!-- 用于 Lightbox -->
 
             <img class="thumb" src="https://img.adons.top/1.jpg"
                  data-single="https://img.adons.top/1.jpg"
@@ -305,17 +305,36 @@
         let currentIndex = 0;
 
         function loadImage(index) {
-            const thumb = thumbs[index];
-            original.src = thumb.dataset.original || '';
-            edited.src = thumb.dataset.edited || thumb.dataset.single || '';
-            original.style.display = thumb.dataset.original ? 'block' : 'none';
-            edited.style.display = 'block';
-            slider.style.display = thumb.dataset.original ? 'flex' : 'none';
-            thumbs.forEach(t => t.classList.remove('active'));
-            thumb.classList.add('active');
-            currentIndex = index;
-            updateSlider(50);
-        }
+    const thumb = thumbs[index];
+    const isCompareMode = thumb.classList.contains('thumb-compare'); // 是否是对比图
+
+    if (isCompareMode) {
+        // 第一张：恢复对比模式
+        original.src = thumb.dataset.original || '';
+        edited.src = thumb.dataset.edited || '';
+        original.style.display = 'block';
+        edited.style.display = 'block';
+        slider.style.display = 'flex';
+        document.getElementById('label-original').style.opacity = '1';
+        document.getElementById('label-edited').style.opacity = '1';
+    } else {
+        // 其他图片：单张全屏展示
+        original.src = thumb.dataset.single || thumb.src;
+        edited.src = ''; // 清空效果图
+        original.style.display = 'block';
+        edited.style.display = 'none';
+        slider.style.display = 'none';
+        // 隐藏两个标签
+        document.getElementById('label-original').style.opacity = '0';
+        document.getElementById('label-edited').style.opacity = '0';
+    }
+
+    // 更新激活状态
+    thumbs.forEach(t => t.classList.remove('active'));
+    thumb.classList.add('active');
+    currentIndex = index;
+    updateSlider(50); // 保持滑动条位置（单图模式无影响）
+}
 
         function updateSlider(percent) {
             edited.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
@@ -383,16 +402,7 @@
         const lightboxPrev = document.querySelector('.lightbox-prev');
         const lightboxNext = document.querySelector('.lightbox-next');
 
-        // 点击缩略图弹出大图
-        thumbs.forEach((thumb, i) => {
-            thumb.addEventListener('click', (e) => {
-                e.stopPropagation(); // 防止触发对比切换
-                const bigImg = thumb.dataset.lightbox || thumb.dataset.edited || thumb.dataset.single || thumb.src;
-                lightboxImg.src = bigImg;
-                lightbox.style.display = 'flex';
-                currentIndex = i;
-            });
-        });
+        
 
         // 关闭
         lightbox.addEventListener('click', () => {
