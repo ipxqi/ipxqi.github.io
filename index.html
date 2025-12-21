@@ -17,16 +17,14 @@
             display: flex;
             flex-direction: column;
             touch-action: pan-x;
-            max-width: 1440px; /* 新增：最大宽度 1440px */
-    width: 100%;
-    box-sizing: border-box;
+            max-width: 1440px; /* 内容最大宽度1440px，拉宽时居中留白 */
+            width: 100%;
+            box-sizing: border-box;
         }
         .header {
             padding: 80px 60px 60px 60px;
             width: 100%;
-            max-width: 1440px; /* 新增：防止超出 body */
-    margin: 0 auto;    /* 新增：居中 */
-    box-sizing: border-box;
+            box-sizing: border-box;
         }
         .header h1 {
             font-size: 32px;
@@ -36,11 +34,9 @@
             text-align: left;
         }
         .gallery-container {
-            overflow: hidden;
-            padding: 0 60px 140px 80px; /* 保持你原来有效的左80px（对齐红线） */
+            overflow: visible; /* 关键：改为 visible，允许卡片延伸超出容器 */
+            padding: 0 60px 140px 80px; /* 保持左80px对齐红线 */
             width: 100%;
-            max-width: 1440px; /* 新增：和 body 一致 */
-    margin: 0 auto;    /* 新增：居中 */
             box-sizing: border-box;
             flex: 1;
         }
@@ -48,8 +44,8 @@
             display: flex;
             gap: 20px;
             transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            width: fit-content; /* 关键：让画廊宽度自适应，允许延伸 */
-            min-width: 100%;     /* 最小占满容器 */
+            width: fit-content; /* 允许画廊宽度自适应延伸 */
+            min-width: 100%;
         }
         .card-wrapper {
             flex: 0 0 327px;
@@ -84,7 +80,7 @@
         }
         .nav-buttons {
             position: fixed;
-            right: calc((100vw - 1440px) / 2 + 60px); /* 关键：随窗口拉宽自动调整位置，始终对齐内容右边60px */
+            right: 60px;
             top: 130px;
             display: flex;
             gap: 20px;
@@ -132,11 +128,14 @@
             }
             .gallery-container {
                 padding: 0 20px 140px 50px;
+                overflow: hidden; /* 手机端恢复 hidden */
             }
             .gallery {
                 padding-left: 0 !important;
                 margin-left: 0 !important;
                 gap: 15px;
+                width: auto;
+                min-width: auto;
             }
             .card-wrapper {
                 flex: 0 0 260px;
@@ -155,6 +154,7 @@
                 top: 100px;
                 left: 80%;
                 transform: translateX(-50%);
+                right: auto;
             }
             .nav-buttons button {
                 width: 38px;
@@ -201,27 +201,6 @@
                     <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
                 </div>
             </div>
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
-                <div>
-                    <div class="card-title">空荡吧台瞬间生动</div>
-                    <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
-                </div>
-            </div>
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
-                <div>
-                    <div class="card-title">空荡吧台瞬间生动</div>
-                    <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
-                </div>
-            </div>
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
-                <div>
-                    <div class="card-title">空荡吧台瞬间生动</div>
-                    <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
-                </div>
-            </div>
         </div>
     </div>
     <div class="nav-buttons">
@@ -231,41 +210,31 @@
 
     <script>
         const galleryContainer = document.querySelector('.gallery-container');
+        const gallery = document.getElementById('gallery');
         const items = document.querySelectorAll('.card-wrapper');
         const total = items.length;
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
 
-        function getVisibleCount() {
-            if (items.length === 0) return 0;
-            const containerWidth = document.querySelector('.gallery-container').offsetWidth;
-            const firstItem = items[0];
-            const itemWidth = firstItem.getBoundingClientRect().width;
-            const gap = 20; // 电脑端 gap 是 20px
-            const totalWidth = itemWidth + gap;
-            return Math.floor(containerWidth / totalWidth);
-        }
-
-        let maxIndex = total - getVisibleCount();
+        let maxIndex = total - Math.floor(galleryContainer.offsetWidth / (327 + 20)); // 电脑端计算可见数量
         if (maxIndex < 0) maxIndex = 0;
         let index = 0;
 
         function updateSlide() {
             if (items.length === 0) return;
 
-            const firstItem = items[0];
-            const itemWidth = firstItem.getBoundingClientRect().width;
-            const gap = 20; // 电脑端 gap 20px
+            const itemWidth = items[0].getBoundingClientRect().width;
+            const gap = 20; // 电脑端 gap
             const totalWidth = itemWidth + gap;
 
-            let offset = Math.round(index * totalWidth);
+            let offset = index * totalWidth;
 
-            // 电脑端：不加额外padding，靠容器80px左边距自然对齐
             if (window.innerWidth > 1024) {
-                if (index === 0) offset = 0; // 第一张时 offset = 0
+                // 电脑端：第一张对齐左80px，滑动时自然延伸
+                if (index === 0) offset = 0;
             } else {
-                // 手机端保持你原来的逻辑
-                offset = Math.round(index * totalWidth + 20);
+                // 手机端原有逻辑
+                offset = index * (itemWidth + 15) + 20;
                 if (index === 0) {
                     gallery.style.transform = `translateX(-20px)`;
                     return;
@@ -293,7 +262,8 @@
         };
 
         window.addEventListener('resize', () => {
-            maxIndex = total - getVisibleCount();
+            const visible = Math.floor(galleryContainer.offsetWidth / (window.innerWidth > 1024 ? 347 : 275));
+            maxIndex = total - visible;
             if (maxIndex < 0) maxIndex = 0;
             if (index > maxIndex) index = maxIndex;
             updateSlide();
@@ -301,7 +271,7 @@
 
         updateSlide();
 
-        // 手指滑动支持（手机端）
+        // 手机端触屏滑动（保持原有）
         let touchStartX = 0;
         let isSwiping = false;
         galleryContainer.addEventListener('touchstart', (e) => {
@@ -312,45 +282,23 @@
         galleryContainer.addEventListener('touchmove', (e) => {
             if (!isSwiping) return;
             const deltaX = e.touches[0].clientX - touchStartX;
-            const firstItem = items[0];
-            const itemWidth = firstItem.getBoundingClientRect().width;
-            const gap = 15;
-            const totalWidth = itemWidth + gap;
-            const currentOffset = -index * totalWidth;
+            const currentOffset = index * (items[0].getBoundingClientRect().width + 15);
             gallery.style.transition = 'none';
-            gallery.style.transform = `translateX(${currentOffset + deltaX}px)`;
+            gallery.style.transform = `translateX(${ -currentOffset + deltaX }px)`;
             e.preventDefault();
         }, { passive: false });
 
-        galleryContainer.addEventListener('touchend', (e) => {
+        galleryContainer.addEventListener('touchend', () => {
             if (!isSwiping) return;
-            const deltaX = e.changedTouches[0].clientX - touchStartX;
+            const deltaX = event.changedTouches[0].clientX - touchStartX;
             gallery.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
             if (Math.abs(deltaX) > 50) {
-                if (deltaX > 0) {
-                    if (index > 0) index--;
-                } else {
-                    if (index < maxIndex) index++;
-                }
+                if (deltaX > 0 && index > 0) index--;
+                else if (deltaX < 0 && index < maxIndex) index++;
             }
             updateSlide();
             isSwiping = false;
         });
-
-        // 手机端专属强制对齐
-        if (window.innerWidth <= 1024) {
-            const firstItem = items[0];
-            const containerPadding = 20;
-            const gap = 15;
-            const itemWidth = firstItem.getBoundingClientRect().width;
-            const totalWidth = itemWidth + gap;
-            updateSlide = function() {
-                const offset = Math.round(index * totalWidth) + containerPadding;
-                gallery.style.transform = `translateX(-${offset}px)`;
-                prevBtn.disabled = index === 0;
-                nextBtn.disabled = index >= maxIndex;
-            };
-        }
     </script>
 </body>
 </html>
