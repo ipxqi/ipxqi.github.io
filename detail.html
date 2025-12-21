@@ -57,7 +57,7 @@
             border-radius: 12px;
             pointer-events: none;
             z-index: 15;
-            opacity: 0; /* 默认隐藏 */
+            opacity: 0;
             transition: opacity 0.5s ease;
         }
         .comparison {
@@ -106,11 +106,11 @@
             background: rgba(0,0,0,0.4);
             padding: 8px 20px;
             border-radius: 8px;
-            opacity: 1;
+            opacity: 0;
             transition: opacity 0.4s ease;
         }
-        .label-a { left: 20px; color: #ffffff; }
-        .label-b { right: 20px; color: #ffffff; }
+        .label-a { left: 20px; }
+        .label-b { right: 20px; }
         .nav-arrow {
             position: absolute;
             top: 50%;
@@ -198,6 +198,7 @@
         <button>类别二</button>
         <button>类别三</button>
     </div>
+
     <div class="container">
         <div class="comparison-wrapper">
             <div class="comparison">
@@ -211,18 +212,15 @@
             <button class="nav-arrow prev" id="prev">‹</button>
             <button class="nav-arrow next" id="next">›</button>
         </div>
+
         <div class="thumbnails" id="thumbnails">
             <img class="thumb active thumb-compare" src="https://img.adons.top/0.jpg"
                  data-original="https://img.adons.top/1.jpg"
                  data-edited="https://img.adons.top/0.jpg">
-            <img class="thumb" src="https://img.adons.top/1.jpg"
-                 data-single="https://img.adons.top/1.jpg">
-            <img class="thumb" src="https://img.adons.top/3.jpg"
-                 data-single="https://img.adons.top/3.jpg">
-            <img class="thumb" src="https://img.adons.top/4.jpg"
-                 data-single="https://img.adons.top/4.jpg">
-            <img class="thumb" src="https://img.adons.top/5.jpg"
-                 data-single="https://img.adons.top/5.jpg">
+            <img class="thumb" src="https://img.adons.top/1.jpg" data-single="https://img.adons.top/1.jpg">
+            <img class="thumb" src="https://img.adons.top/3.jpg" data-single="https://img.adons.top/3.jpg">
+            <img class="thumb" src="https://img.adons.top/4.jpg" data-single="https://img.adons.top/4.jpg">
+            <img class="thumb" src="https://img.adons.top/5.jpg" data-single="https://img.adons.top/5.jpg">
         </div>
     </div>
 
@@ -234,6 +232,8 @@
         const thumbs = document.querySelectorAll('.thumb');
         const prevBtn = document.getElementById('prev');
         const nextBtn = document.getElementById('next');
+        const labelOriginal = document.getElementById('label-original');
+        const labelEdited = document.getElementById('label-edited');
         const guideText = document.querySelector('.guide-text');
         let currentIndex = 0;
 
@@ -242,24 +242,22 @@
             const isCompare = thumb.classList.contains('thumb-compare');
 
             if (isCompare) {
-                // 对比模式
                 original.src = thumb.dataset.original || '';
                 edited.src = thumb.dataset.edited || '';
                 original.style.display = 'block';
                 edited.style.display = 'block';
                 slider.style.display = 'flex';
-                document.getElementById('label-original').style.opacity = '1';
-                document.getElementById('label-edited').style.opacity = '1';
-                guideText.style.opacity = '0'; // 对比模式下不显示引导文字
+                labelOriginal.style.opacity = '1';
+                labelEdited.style.opacity = '1';
+                guideText.style.opacity = '0';
             } else {
-                // 单图模式
                 original.src = thumb.dataset.single || thumb.src;
                 edited.src = '';
                 original.style.display = 'block';
                 edited.style.display = 'none';
                 slider.style.display = 'none';
-                document.getElementById('label-original').style.opacity = '0';
-                document.getElementById('label-edited').style.opacity = '0';
+                labelOriginal.style.opacity = '0';
+                labelEdited.style.opacity = '0';
                 guideText.style.opacity = '0';
             }
 
@@ -274,7 +272,6 @@
             slider.style.left = percent + '%';
         }
 
-        // 鼠标移动：分隔线跟随 + 标签控制
         wrapper.addEventListener('mousemove', (e) => {
             const rect = wrapper.getBoundingClientRect();
             const x = e.clientX - rect.left;
@@ -282,31 +279,6 @@
             percent = Math.max(0, Math.min(100, percent));
 
             updateSlider(percent);
-
-            const labelOriginal = document.getElementById('label-original');
-            const labelEdited = document.getElementById('label-edited');
-
-            if (percent < 50) {
-                labelOriginal.style.opacity = '1';
-                labelEdited.style.opacity = '0'; // 左半边：效果图完全隐藏
-            } else {
-                labelOriginal.style.opacity = '0';
-                labelEdited.style.opacity = '1';
-            }
-        });
-
-        // 触屏移动
-        wrapper.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            const rect = wrapper.getBoundingClientRect();
-            const x = e.touches[0].clientX - rect.left;
-            let percent = (x / rect.width) * 100;
-            percent = Math.max(0, Math.min(100, percent));
-
-            updateSlider(percent);
-
-            const labelOriginal = document.getElementById('label-original');
-            const labelEdited = document.getElementById('label-edited');
 
             if (percent < 50) {
                 labelOriginal.style.opacity = '1';
@@ -317,14 +289,36 @@
             }
         });
 
-        // 缩略图点击切换
-        thumbs.forEach((thumb, i) => thumb.addEventListener('click', () => loadImage(i)));
+        wrapper.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const rect = wrapper.getBoundingClientRect();
+            const x = e.touches[0].clientX - rect.left;
+            let percent = (x / rect.width) * 100;
+            percent = Math.max(0, Math.min(100, percent));
 
-        // 左右箭头切换
-        prevBtn.addEventListener('click', () => loadImage((currentIndex - 1 + thumbs.length) % thumbs.length));
-        nextBtn.addEventListener('click', () => loadImage((currentIndex + 1) % thumbs.length));
+            updateSlider(percent);
 
-        // 初始化
+            if (percent < 50) {
+                labelOriginal.style.opacity = '1';
+                labelEdited.style.opacity = '0';
+            } else {
+                labelOriginal.style.opacity = '0';
+                labelEdited.style.opacity = '1';
+            }
+        });
+
+        thumbs.forEach((thumb, i) => {
+            thumb.addEventListener('click', () => loadImage(i));
+        });
+
+        prevBtn.addEventListener('click', () => {
+            loadImage((currentIndex - 1 + thumbs.length) % thumbs.length);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            loadImage((currentIndex + 1) % thumbs.length);
+        });
+
         if (thumbs.length > 0) loadImage(0);
     </script>
 </body>
