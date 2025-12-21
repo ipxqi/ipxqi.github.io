@@ -192,6 +192,11 @@
 
    
 
+<!-- 左上角返回按钮（38px 小圆版，完美居中） -->
+<div class="back-button">
+    <a href="index.html">‹</a>
+</div>
+
 <style>
     .back-button {
         position: fixed;
@@ -203,43 +208,36 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 56px;
-        height: 56px;
+        width: 38px;               /* 圆圈大小 38px */
+        height: 38px;
         background: rgba(255, 255, 255, 0.12);
         border-radius: 50%;
         color: white;
-        font-size: 36px;           /* 更大更粗 */
-        font-weight: 600;          /* 适度加粗 */
+        font-size: 24px;           /* 箭头大小适配 */
+        font-weight: 600;
         text-decoration: none;
         backdrop-filter: blur(20px);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.37);
         transition: all 0.3s ease;
-        line-height: 1;            /* 消除行高偏移 */
-        padding-bottom: 2px;       /* 微调垂直位置，完美居中 */
+        line-height: 1;
     }
     .back-button a:hover {
         background: rgba(255, 255, 255, 0.25);
-        transform: scale(1.08);
+        transform: scale(1.1);
     }
-    /* 手机端适配 */
+    /* 手机端适配：更小一点 */
     @media (max-width: 768px) {
         .back-button {
             top: 20px;
             left: 20px;
         }
         .back-button a {
-            width: 50px;
-            height: 50px;
-            font-size: 32px;
-            padding-bottom: 1px;
+            width: 34px;
+            height: 34px;
+            font-size: 22px;
         }
     }
 </style>
-    
-   <!-- 左上角返回按钮（完美居中版） -->
-<div class="back-button">
-    <a href="index.html">‹</a>
-</div>
 
     <div class="tabs">
         <button class="active">类别一</button>
