@@ -45,24 +45,22 @@
             background: #111;
         }
         .guide-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 28px;
-            font-weight: normal; /* 不加粗 */
-            color: rgba(255, 255, 255, 0.95);
-            background: rgba(0, 0, 0, 0.7);
-            padding: 15px 30px;
-            border-radius: 12px;
-            pointer-events: none;
-            z-index: 15;
-            transition: opacity 0.5s ease;
-            white-space: nowrap;
-        }
-        .comparison-wrapper:hover .guide-text {
-            opacity: 0;
-        }
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 28px;
+    font-weight: normal;
+    color: rgba(255, 255, 255, 0.95);
+    background: rgba(0, 0, 0, 0.7);
+    padding: 15px 30px;
+    border-radius: 12px;
+    pointer-events: none;
+    z-index: 15;
+    opacity: 0; /* 默认隐藏 */
+    transition: opacity 0.5s ease;
+}
+        
         .comparison {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -304,12 +302,12 @@
         const nextBtn = document.getElementById('next');
         let currentIndex = 0;
 
-        function loadImage(index) {
+       function loadImage(index) {
     const thumb = thumbs[index];
-    const isCompareMode = thumb.classList.contains('thumb-compare'); // 是否是对比图
+    const isCompare = thumb.classList.contains('thumb-compare'); // 是否是对比图（第一张）
 
-    if (isCompareMode) {
-        // 第一张：恢复对比模式
+    if (isCompare) {
+        // 第一张：对比模式 - 显示所有对比元素
         original.src = thumb.dataset.original || '';
         edited.src = thumb.dataset.edited || '';
         original.style.display = 'block';
@@ -317,25 +315,25 @@
         slider.style.display = 'flex';
         document.getElementById('label-original').style.opacity = '1';
         document.getElementById('label-edited').style.opacity = '1';
+        document.querySelector('.').style.opacity = '1'; // 显示引导文字
     } else {
-        // 其他图片：单张全屏展示
+        // 其他图片：单图模式 - 隐藏所有对比元素
         original.src = thumb.dataset.single || thumb.src;
-        edited.src = ''; // 清空效果图
+        edited.src = '';
         original.style.display = 'block';
         edited.style.display = 'none';
         slider.style.display = 'none';
-        // 隐藏两个标签
         document.getElementById('label-original').style.opacity = '0';
         document.getElementById('label-edited').style.opacity = '0';
+        document.querySelector('.').style.opacity = '0'; // 隐藏引导文字
     }
 
     // 更新激活状态
     thumbs.forEach(t => t.classList.remove('active'));
     thumb.classList.add('active');
     currentIndex = index;
-    updateSlider(50); // 保持滑动条位置（单图模式无影响）
+    updateSlider(50);
 }
-
         function updateSlider(percent) {
             edited.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
             slider.style.left = percent + '%';
