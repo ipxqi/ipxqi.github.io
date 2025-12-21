@@ -352,6 +352,8 @@
         // 控制标签透明度（实时渐变，根据鼠标位置）
     const labelOriginal = document.getElementById('label-original');
     const labelEdited = document.getElementById('label-edited');
+            labelOriginal.style.opacity = 1 - (percent / 100);
+    labelEdited.style.opacity = percent / 100;
 
     // “原图”标签：鼠标越靠左越清晰（opacity 1），越靠右越透明（opacity 0）
     labelOriginal.style.opacity = percent / 100; // percent 0% (左) = opacity 0? 等待！！！错！！！
@@ -446,12 +448,7 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-        // 鼠标在对比区域移动时，动态控制标签透明度
-wrapper.addEventListener('mousemove', (e) => {
-    const rect = wrapper.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const width = rect.width;
-    const percent = (x / width) * 100;
+       
 
     // 更新滑动条（原代码）
     updateSlider(percent);
