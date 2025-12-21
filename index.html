@@ -7,21 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <title>AI智能加人物</title>
     <style>
-        html, body {
-            margin: 0;
+        body {
+            margin: 0 auto;
             padding: 0;
             background: #000;
-            overflow-x: hidden;
-        }
-        body {
             color: #fff;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             touch-action: pan-x;
-            max-width: 1440px;
-            margin: 0 auto;
+            max-width: 1440px; /* 内容最大宽度1440px，拉宽时居中留白 */
             width: 100%;
             box-sizing: border-box;
         }
@@ -38,24 +34,18 @@
             text-align: left;
         }
         .gallery-container {
-            padding: 0 60px 140px 80px; /* 左80px对齐红线，右60px */
+            overflow: visible; /* 关键：改为 visible，允许卡片延伸超出容器 */
+            padding: 0 60px 140px 80px; /* 保持左80px对齐红线 */
             width: 100%;
             box-sizing: border-box;
             flex: 1;
-            overflow: visible; /* 允许卡片延伸 */
-            position: relative;
-        }
-        .gallery-wrapper {
-            width: calc(100% + 60px); /* 关键：wrapper宽度增加右边距补偿，让最后一张卡片能延伸到右60px位置 */
-            margin-left: -60px; /* 补偿左边距，让第一张卡片保持左80px对齐 */
-            overflow: hidden; /* 只在这里隐藏溢出，防止滚动条 */
-            height: 100%;
         }
         .gallery {
             display: flex;
             gap: 20px;
             transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            width: fit-content;
+            width: fit-content; /* 允许画廊宽度自适应延伸 */
+            min-width: 100%;
         }
         .card-wrapper {
             flex: 0 0 327px;
@@ -89,15 +79,15 @@
             text-align: left;
         }
         .nav-buttons {
-            position: fixed;
-            right: max(60px, calc((100vw - 1440px) / 2 + 60px));
-            top: 130px;
-            display: flex;
-            gap: 20px;
-            z-index: 1000;
-            pointer-events: auto;
-            transition: right 0.3s ease;
-        }
+    position: fixed;
+    right: max(60px, calc((100vw - 1440px) / 2 + 60px)); /* 关键：加 max() 保证最小60px */
+    top: 130px;
+    display: flex;
+    gap: 20px;
+    z-index: 1000;
+    pointer-events: auto;
+    transition: right 0.3s ease; /* 平滑移动 */
+}
         .nav-buttons button {
             width: 38px;
             height: 38px;
@@ -135,17 +125,18 @@
             }
             .header h1 {
                 font-size: 28px;
+                text-align: left;
             }
             .gallery-container {
                 padding: 0 20px 140px 50px;
-                overflow: hidden;
-            }
-            .gallery-wrapper {
-                width: 100%;
-                margin-left: 0;
+                overflow: hidden; /* 手机端恢复 hidden */
             }
             .gallery {
+                padding-left: 0 !important;
+                margin-left: 0 !important;
                 gap: 15px;
+                width: auto;
+                min-width: auto;
             }
             .card-wrapper {
                 flex: 0 0 260px;
@@ -166,6 +157,12 @@
                 transform: translateX(-50%);
                 right: auto;
             }
+            .nav-buttons button {
+                width: 38px;
+                height: 38px;
+                font-size: 18px;
+                line-height: 50px;
+            }
         }
     </style>
 </head>
@@ -174,58 +171,56 @@
         <h1>无人场景加多人<br>多角度展示</h1>
     </div>
     <div class="gallery-container">
-        <div class="gallery-wrapper">
-            <div class="gallery" id="gallery">
-                <a href="detail.html" style="text-decoration: none; color: inherit;">
-                    <div class="card-wrapper">
-                        <div class="card" style="background-image: url('https://img.adons.top/01/0.jpg');"></div>
-                        <div>
-                            <div class="card-title">快速添加一家五口自然就餐</div>
-                            <div class="card-desc">人物姿势真实、灯光协调<br>食物细节丰富、氛围温馨<br>完美呈现家庭生活场景</div>
-                        </div>
-                    </div>
-                </a>
+        <div class="gallery" id="gallery">
+            <a href="detail.html" style="text-decoration: none; color: inherit;">
                 <div class="card-wrapper">
-                    <div class="card" style="background-image: url('https://img.adons.top/2-1.jpg');"></div>
+                    <div class="card" style="background-image: url('https://img.adons.top/01/0.jpg');"></div>
                     <div>
-                        <div class="card-title">AI智能填充情侣温馨就餐</div>
-                        <div class="card-desc">情侣相对而坐共享晚餐<br>姿态放松、表情生动真实<br><br></div>
+                        <div class="card-title">快速添加一家五口自然就餐</div>
+                        <div class="card-desc">人物姿势真实、灯光协调<br>食物细节丰富、氛围温馨<br>完美呈现家庭生活场景</div>
                     </div>
                 </div>
-                <div class="card-wrapper">
-                    <div class="card" style="background-image: url('https://img.adons.top/03/1.jfif');"></div>
-                    <div>
-                        <div class="card-title">AI瞬间点亮三人欢乐茶歇</div>
-                        <div class="card-desc">完美呈现友情温暖的日常时光<br>每个人动作协调、表情自然<br>食物摆盘精致、茶壶蒸汽可见</div>
-                    </div>
+            </a>
+            <div class="card-wrapper">
+                <div class="card" style="background-image: url('https://img.adons.top/2-1.jpg');"></div>
+                <div>
+                    <div class="card-title">AI智能填充情侣温馨就餐</div>
+                    <div class="card-desc">情侣相对而坐共享晚餐<br>姿态放松、表情生动真实<br><br></div>
                 </div>
-                <div class="card-wrapper">
-                    <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
-                    <div>
-                        <div class="card-title">空荡吧台瞬间生动</div>
-                        <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
-                    </div>
+            </div>
+            <div class="card-wrapper">
+                <div class="card" style="background-image: url('https://img.adons.top/03/1.jfif');"></div>
+                <div>
+                    <div class="card-title">AI瞬间点亮三人欢乐茶歇</div>
+                    <div class="card-desc">完美呈现友情温暖的日常时光<br>每个人动作协调、表情自然<br>食物摆盘精致、茶壶蒸汽可见</div>
                 </div>
-                <div class="card-wrapper">
-                    <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
-                    <div>
-                        <div class="card-title">这是一个案例，不能删除</div>
-                        <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
-                    </div>
+            </div>
+            <div class="card-wrapper">
+                <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
+                <div>
+                    <div class="card-title">空荡吧台瞬间生动</div>
+                    <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
                 </div>
-                <div class="card-wrapper">
-                    <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
-                    <div>
-                        <div class="card-title">不能删除，懂吗</div>
-                        <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
-                    </div>
+            </div>
+            <div class="card-wrapper">
+                <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
+                <div>
+                    <div class="card-title">这是一个案例，不能删除</div>
+                    <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
                 </div>
-                <div class="card-wrapper">
-                    <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
-                    <div>
-                        <div class="card-title">不可以删这里</div>
-                        <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
-                    </div>
+            </div>
+            <div class="card-wrapper">
+                <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
+                <div>
+                    <div class="card-title">不能删除，懂吗</div>
+                    <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
+                </div>
+            </div>
+            <div class="card-wrapper">
+                <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
+                <div>
+                    <div class="card-title">不可以删这里</div>
+                    <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
                 </div>
             </div>
         </div>
@@ -236,34 +231,39 @@
     </div>
 
     <script>
+        const galleryContainer = document.querySelector('.gallery-container');
         const gallery = document.getElementById('gallery');
         const items = document.querySelectorAll('.card-wrapper');
         const total = items.length;
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
 
+        let maxIndex = total - Math.floor(galleryContainer.offsetWidth / (327 + 20)); // 电脑端计算可见数量
+        if (maxIndex < 0) maxIndex = 0;
         let index = 0;
-        let maxIndex = total - 1;
 
         function updateSlide() {
             if (items.length === 0) return;
 
             const itemWidth = items[0].getBoundingClientRect().width;
-            const gap = window.innerWidth > 1024 ? 20 : 15;
+            const gap = 20; // 电脑端 gap
             const totalWidth = itemWidth + gap;
 
             let offset = index * totalWidth;
 
-            if (window.innerWidth <= 1024) {
-                offset += 20;
+            if (window.innerWidth > 1024) {
+                // 电脑端：第一张对齐左80px，滑动时自然延伸
+                if (index === 0) offset = 0;
+            } else {
+                // 手机端原有逻辑
+                offset = index * (itemWidth + 15) + 20;
                 if (index === 0) {
                     gallery.style.transform = `translateX(-20px)`;
-                } else {
-                    gallery.style.transform = `translateX(-${offset}px)`;
+                    return;
                 }
-            } else {
-                gallery.style.transform = `translateX(-${offset}px)`;
             }
+
+            gallery.style.transform = `translateX(-${offset}px)`;
 
             prevBtn.disabled = index === 0;
             nextBtn.disabled = index >= maxIndex;
@@ -284,8 +284,8 @@
         };
 
         window.addEventListener('resize', () => {
-            const visibleCount = Math.floor(document.querySelector('.gallery-container').offsetWidth / (items[0].getBoundingClientRect().width + (window.innerWidth > 1024 ? 20 : 15)));
-            maxIndex = total - visibleCount;
+            const visible = Math.floor(galleryContainer.offsetWidth / (window.innerWidth > 1024 ? 347 : 275));
+            maxIndex = total - visible;
             if (maxIndex < 0) maxIndex = 0;
             if (index > maxIndex) index = maxIndex;
             updateSlide();
@@ -293,15 +293,15 @@
 
         updateSlide();
 
-        // 手机端触屏滑动
+        // 手机端触屏滑动（保持原有）
         let touchStartX = 0;
         let isSwiping = false;
-        document.querySelector('.gallery-container').addEventListener('touchstart', (e) => {
+        galleryContainer.addEventListener('touchstart', (e) => {
             touchStartX = e.touches[0].clientX;
             isSwiping = true;
         }, { passive: false });
 
-        document.querySelector('.gallery-container').addEventListener('touchmove', (e) => {
+        galleryContainer.addEventListener('touchmove', (e) => {
             if (!isSwiping) return;
             const deltaX = e.touches[0].clientX - touchStartX;
             const currentOffset = index * (items[0].getBoundingClientRect().width + 15);
@@ -310,7 +310,7 @@
             e.preventDefault();
         }, { passive: false });
 
-        document.querySelector('.gallery-container').addEventListener('touchend', () => {
+        galleryContainer.addEventListener('touchend', () => {
             if (!isSwiping) return;
             const deltaX = event.changedTouches[0].clientX - touchStartX;
             gallery.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
