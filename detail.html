@@ -57,7 +57,7 @@
             border-radius: 12px;
             pointer-events: none;
             z-index: 15;
-            opacity: 0;
+            opacity: 1; /* 默认显示 */
             transition: opacity 0.5s ease;
         }
         .comparison {
@@ -251,7 +251,7 @@
                 slider.style.display = 'flex';
                 document.getElementById('label-original').style.opacity = '1';
                 document.getElementById('label-edited').style.opacity = '1';
-                guideText.style.opacity = '0';
+                guideText.style.opacity = '1'; // 对比模式默认显示引导文字
             } else {
                 original.src = thumb.dataset.single || thumb.src;
                 edited.src = '';
@@ -274,50 +274,69 @@
             slider.style.left = percent + '%';
         }
 
+        // 鼠标进入对比区域：隐藏引导文字 + 控制标签
+        wrapper.addEventListener('mouseenter', () => {
+            guideText.style.opacity = '0';
+        });
+
+        // 鼠标离开对比区域：恢复引导文字（仅对比模式）
+        wrapper.addEventListener('mouseleave', () => {
+            if (thumbs[currentIndex].classList.contains('thumb-compare')) {
+                guideText.style.opacity = '1';
+            }
+        });
+
+        // 鼠标移动：分隔线跟随 + 标签切换
         wrapper.addEventListener('mousemove', (e) => {
             const rect = wrapper.getBoundingClientRect();
             const x = e.clientX - rect.left;
             let percent = (x / rect.width) * 100;
             percent = Math.max(0, Math.min(100, percent));
+
             updateSlider(percent);
 
             const labelOriginal = document.getElementById('label-original');
             const labelEdited = document.getElementById('label-edited');
 
             if (percent < 50) {
-                labelOriginal.style.opacity = '1';
-                labelEdited.style.opacity = '0';
-            } else {
-                labelOriginal.style.opacity = '0';
+                labelOriginal.style.opacity = '0'; // 左半边隐藏原图
                 labelEdited.style.opacity = '1';
+            } else {
+                labelOriginal.style.opacity = '1';
+                labelEdited.style.opacity = '0'; // 右半边隐藏效果图
             }
         });
 
+        // 触屏移动同上
         wrapper.addEventListener('touchmove', (e) => {
             e.preventDefault();
             const rect = wrapper.getBoundingClientRect();
             const x = e.touches[0].clientX - rect.left;
             let percent = (x / rect.width) * 100;
             percent = Math.max(0, Math.min(100, percent));
+
             updateSlider(percent);
 
             const labelOriginal = document.getElementById('label-original');
             const labelEdited = document.getElementById('label-edited');
 
             if (percent < 50) {
-                labelOriginal.style.opacity = '1';
-                labelEdited.style.opacity = '0';
-            } else {
                 labelOriginal.style.opacity = '0';
                 labelEdited.style.opacity = '1';
+            } else {
+                labelOriginal.style.opacity = '1';
+                labelEdited.style.opacity = '0';
             }
         });
 
+        // 缩略图点击
         thumbs.forEach((thumb, i) => thumb.addEventListener('click', () => loadImage(i)));
 
+        // 左右箭头
         prevBtn.addEventListener('click', () => loadImage((currentIndex - 1 + thumbs.length) % thumbs.length));
         nextBtn.addEventListener('click', () => loadImage((currentIndex + 1) % thumbs.length));
 
+        // 初始化
         if (thumbs.length > 0) loadImage(0);
     </script>
 </body>
