@@ -57,7 +57,7 @@
             border-radius: 12px;
             pointer-events: none;
             z-index: 15;
-            opacity: 0;
+            opacity: 0; /* 默认隐藏 */
             transition: opacity 0.5s ease;
         }
         .comparison {
@@ -106,7 +106,7 @@
             background: rgba(0,0,0,0.4);
             padding: 8px 20px;
             border-radius: 8px;
-            opacity: 1; /* 默认显示，单图模式时JS隐藏 */
+            opacity: 1;
             transition: opacity 0.4s ease;
         }
         .label-a { left: 20px; color: #ffffff; }
@@ -250,7 +250,7 @@
                 slider.style.display = 'flex';
                 document.getElementById('label-original').style.opacity = '1';
                 document.getElementById('label-edited').style.opacity = '1';
-                guideText.style.opacity = '1';
+                guideText.style.opacity = '0'; // 对比模式下不显示引导文字
             } else {
                 // 单图模式
                 original.src = thumb.dataset.single || thumb.src;
@@ -274,7 +274,7 @@
             slider.style.left = percent + '%';
         }
 
-        // 鼠标移动：分隔线跟随 + 标签实时渐变（只在对比模式下生效）
+        // 鼠标移动：分隔线跟随 + 标签控制
         wrapper.addEventListener('mousemove', (e) => {
             const rect = wrapper.getBoundingClientRect();
             const x = e.clientX - rect.left;
@@ -286,8 +286,13 @@
             const labelOriginal = document.getElementById('label-original');
             const labelEdited = document.getElementById('label-edited');
 
-            labelOriginal.style.opacity = 1 - (percent / 100);
-            labelEdited.style.opacity = percent / 100;
+            if (percent < 50) {
+                labelOriginal.style.opacity = '1';
+                labelEdited.style.opacity = '0'; // 左半边：效果图完全隐藏
+            } else {
+                labelOriginal.style.opacity = '0';
+                labelEdited.style.opacity = '1';
+            }
         });
 
         // 触屏移动
@@ -303,8 +308,13 @@
             const labelOriginal = document.getElementById('label-original');
             const labelEdited = document.getElementById('label-edited');
 
-            labelOriginal.style.opacity = 1 - (percent / 100);
-            labelEdited.style.opacity = percent / 100;
+            if (percent < 50) {
+                labelOriginal.style.opacity = '1';
+                labelEdited.style.opacity = '0';
+            } else {
+                labelOriginal.style.opacity = '0';
+                labelEdited.style.opacity = '1';
+            }
         });
 
         // 缩略图点击切换
