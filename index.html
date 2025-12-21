@@ -8,21 +8,24 @@
     <title>AI智能加人物</title>
     <style>
         body {
-            margin: 0;
-            padding: 0;
-            background: #000;
-            color: #fff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            touch-action: pan-x; /* 改成 pan-x，只允许左右滑动，禁止上下 */
-        }
-        .header {
-            padding: 80px 60px 60px;
-            width: 100%;
-            box-sizing: border-box;
-        }
+    margin: 0 auto; /* 新增：水平居中 */
+    padding: 0;
+    background: #000;
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    touch-action: pan-x;
+    max-width: 1440px; /* 新增：最大宽度，像苹果官网一样 */
+    width: 100%; /* 保证小屏占满 */
+    box-sizing: border-box;
+}
+       .header {
+    padding: 80px 60px 60px 60px; /* 左右对称 60px */
+    width: 100%;
+    box-sizing: border-box;
+}
         .header h1 {
             font-size: 32px;
             font-weight: 500;
@@ -30,9 +33,9 @@
             line-height: 1.4;
             text-align: left;
         }
-        .gallery-container {
+     .gallery-container {
     overflow: hidden;
-    padding: 0 60px 140px 80px;
+    padding: 0 60px 140px 60px; /* 左右对称 60px（你之前左80改成左右60） */
     width: 100%;
     box-sizing: border-box;
     flex: 1;
@@ -76,16 +79,16 @@
             margin: 8px 0 0 0;
             text-align: left;
         }
-       .nav-buttons {
+    .nav-buttons {
     position: fixed;
-    left: 90%;                          /* 整体向右移（50%居中，55%偏右一点） */
-    transform: translateX(-50%);        /* 按钮组自身居中 */
-    top: 130px;                          /* 垂直对齐标题底部 */
+    right: 60px; /* 改成右对齐 60px（和内容右边距一致） */
+    top: 130px;
     display: flex;
     gap: 20px;
     z-index: 1000;
     pointer-events: auto;
 }
+/* 删除原来的 left: 90% 和 transform */
     .nav-buttons button {
     width: 38px;
     height: 38px;
