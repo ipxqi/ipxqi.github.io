@@ -214,7 +214,8 @@
         backdrop-filter: blur(20px);
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         transition: all 0.3s ease;
-        user-select: none;
+        line-height: 1; /* 新增：关键，消除字体基线偏移 */
+        user-select: center;
     }
     .back-button a:hover {
         background: rgba(255, 255, 255, 0.25);
