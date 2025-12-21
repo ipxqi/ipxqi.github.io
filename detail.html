@@ -109,8 +109,8 @@
             opacity: 0;
             transition: opacity 0.4s ease;
         }
-        .label-a { left: 20px; }
-        .label-b { right: 20px; }
+        .label-a { left: 20px; color: #ffffff; }
+        .label-b { right: 20px; color: #ffffff; }
         .nav-arrow {
             position: absolute;
             top: 50%;
@@ -217,10 +217,14 @@
             <img class="thumb active thumb-compare" src="https://img.adons.top/0.jpg"
                  data-original="https://img.adons.top/1.jpg"
                  data-edited="https://img.adons.top/0.jpg">
-            <img class="thumb" src="https://img.adons.top/1.jpg" data-single="https://img.adons.top/1.jpg">
-            <img class="thumb" src="https://img.adons.top/3.jpg" data-single="https://img.adons.top/3.jpg">
-            <img class="thumb" src="https://img.adons.top/4.jpg" data-single="https://img.adons.top/4.jpg">
-            <img class="thumb" src="https://img.adons.top/5.jpg" data-single="https://img.adons.top/5.jpg">
+            <img class="thumb" src="https://img.adons.top/1.jpg"
+                 data-single="https://img.adons.top/1.jpg">
+            <img class="thumb" src="https://img.adons.top/3.jpg"
+                 data-single="https://img.adons.top/3.jpg">
+            <img class="thumb" src="https://img.adons.top/4.jpg"
+                 data-single="https://img.adons.top/4.jpg">
+            <img class="thumb" src="https://img.adons.top/5.jpg"
+                 data-single="https://img.adons.top/5.jpg">
         </div>
     </div>
 
@@ -232,8 +236,6 @@
         const thumbs = document.querySelectorAll('.thumb');
         const prevBtn = document.getElementById('prev');
         const nextBtn = document.getElementById('next');
-        const labelOriginal = document.getElementById('label-original');
-        const labelEdited = document.getElementById('label-edited');
         const guideText = document.querySelector('.guide-text');
         let currentIndex = 0;
 
@@ -247,8 +249,8 @@
                 original.style.display = 'block';
                 edited.style.display = 'block';
                 slider.style.display = 'flex';
-                labelOriginal.style.opacity = '1';
-                labelEdited.style.opacity = '1';
+                document.getElementById('label-original').style.opacity = '1';
+                document.getElementById('label-edited').style.opacity = '1';
                 guideText.style.opacity = '0';
             } else {
                 original.src = thumb.dataset.single || thumb.src;
@@ -256,8 +258,8 @@
                 original.style.display = 'block';
                 edited.style.display = 'none';
                 slider.style.display = 'none';
-                labelOriginal.style.opacity = '0';
-                labelEdited.style.opacity = '0';
+                document.getElementById('label-original').style.opacity = '0';
+                document.getElementById('label-edited').style.opacity = '0';
                 guideText.style.opacity = '0';
             }
 
@@ -277,8 +279,10 @@
             const x = e.clientX - rect.left;
             let percent = (x / rect.width) * 100;
             percent = Math.max(0, Math.min(100, percent));
-
             updateSlider(percent);
+
+            const labelOriginal = document.getElementById('label-original');
+            const labelEdited = document.getElementById('label-edited');
 
             if (percent < 50) {
                 labelOriginal.style.opacity = '1';
@@ -295,8 +299,10 @@
             const x = e.touches[0].clientX - rect.left;
             let percent = (x / rect.width) * 100;
             percent = Math.max(0, Math.min(100, percent));
-
             updateSlider(percent);
+
+            const labelOriginal = document.getElementById('label-original');
+            const labelEdited = document.getElementById('label-edited');
 
             if (percent < 50) {
                 labelOriginal.style.opacity = '1';
@@ -307,17 +313,10 @@
             }
         });
 
-        thumbs.forEach((thumb, i) => {
-            thumb.addEventListener('click', () => loadImage(i));
-        });
+        thumbs.forEach((thumb, i) => thumb.addEventListener('click', () => loadImage(i)));
 
-        prevBtn.addEventListener('click', () => {
-            loadImage((currentIndex - 1 + thumbs.length) % thumbs.length);
-        });
-
-        nextBtn.addEventListener('click', () => {
-            loadImage((currentIndex + 1) % thumbs.length);
-        });
+        prevBtn.addEventListener('click', () => loadImage((currentIndex - 1 + thumbs.length) % thumbs.length));
+        nextBtn.addEventListener('click', () => loadImage((currentIndex + 1) % thumbs.length));
 
         if (thumbs.length > 0) loadImage(0);
     </script>
