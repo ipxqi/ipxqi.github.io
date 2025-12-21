@@ -17,19 +17,19 @@
             display: flex;
             flex-direction: column;
             touch-action: pan-x;
-            max-width: 1440px; /* 内容最大宽度1440px，拉宽时居中留白 */
+            max-width: 1440px;
             width: 100%;
             box-sizing: border-box;
 
-            /* 新增：彻底隐藏滚动条 */
-    -ms-overflow-style: none;  /* IE/Edge */
-    scrollbar-width: none;     /* Firefox */
+            /* 新增：彻底隐藏所有滚动条，但保留滚动功能和卡片延伸效果 */
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;     /* Firefox */
+        }
+        /* Chrome/Safari/Edge 隐藏滚动条 */
+        *::-webkit-scrollbar {
+            display: none;
         }
 
-        /* Chrome/Safari/Edge 滚动条隐藏 */
-*::-webkit-scrollbar {
-    display: none;
-}
         .header {
             padding: 80px 60px 60px 60px;
             width: 100%;
@@ -43,17 +43,17 @@
             text-align: left;
         }
         .gallery-container {
-    overflow: hidden; /* 改回 hidden，彻底隐藏滚动条 */
-    padding: 0 60px 140px 60px;
-    width: 100%;
-    box-sizing: border-box;
-    flex: 1;
-}
+            overflow: visible; /* 保持 visible，让卡片能延伸超出容器 */
+            padding: 0 60px 140px 60px;
+            width: 100%;
+            box-sizing: border-box;
+            flex: 1;
+        }
         .gallery {
             display: flex;
             gap: 20px;
             transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            width: fit-content; /* 允许画廊宽度自适应延伸 */
+            width: fit-content;
             min-width: 100%;
         }
         .card-wrapper {
@@ -88,15 +88,15 @@
             text-align: left;
         }
         .nav-buttons {
-    position: fixed;
-    right: max(60px, calc((100vw - 1440px) / 2 + 60px)); /* 关键：加 max() 保证最小60px */
-    top: 130px;
-    display: flex;
-    gap: 20px;
-    z-index: 1000;
-    pointer-events: auto;
-    transition: right 0.3s ease; /* 平滑移动 */
-}
+            position: fixed;
+            right: max(60px, calc((100vw - 1440px) / 2 + 60px));
+            top: 130px;
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+            pointer-events: auto;
+            transition: right 0.3s ease;
+        }
         .nav-buttons button {
             width: 38px;
             height: 38px;
@@ -138,7 +138,7 @@
             }
             .gallery-container {
                 padding: 0 20px 140px 50px;
-                overflow: hidden; /* 手机端恢复 hidden */
+                overflow: hidden;
             }
             .gallery {
                 padding-left: 0 !important;
@@ -238,7 +238,6 @@
         <button id="prev-btn">❮</button>
         <button id="next-btn">❯</button>
     </div>
-
     <script>
         const galleryContainer = document.querySelector('.gallery-container');
         const gallery = document.getElementById('gallery');
@@ -246,52 +245,40 @@
         const total = items.length;
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
-
         let maxIndex = total - Math.floor(galleryContainer.offsetWidth / (327 + 20)); // 电脑端计算可见数量
         if (maxIndex < 0) maxIndex = 0;
         let index = 0;
-
         function updateSlide() {
             if (items.length === 0) return;
-
             const itemWidth = items[0].getBoundingClientRect().width;
             const gap = 20; // 电脑端 gap
             const totalWidth = itemWidth + gap;
-
             let offset = index * totalWidth;
-
             if (window.innerWidth > 1024) {
-                // 电脑端：第一张对齐左80px，滑动时自然延伸
                 if (index === 0) offset = 0;
             } else {
-                // 手机端原有逻辑
                 offset = index * (itemWidth + 15) + 20;
                 if (index === 0) {
                     gallery.style.transform = `translateX(-20px)`;
                     return;
                 }
             }
-
             gallery.style.transform = `translateX(-${offset}px)`;
-
             prevBtn.disabled = index === 0;
             nextBtn.disabled = index >= maxIndex;
         }
-
         nextBtn.onclick = () => {
             if (index < maxIndex) {
                 index++;
                 updateSlide();
             }
         };
-
         prevBtn.onclick = () => {
             if (index > 0) {
                 index--;
                 updateSlide();
             }
         };
-
         window.addEventListener('resize', () => {
             const visible = Math.floor(galleryContainer.offsetWidth / (window.innerWidth > 1024 ? 347 : 275));
             maxIndex = total - visible;
@@ -299,17 +286,14 @@
             if (index > maxIndex) index = maxIndex;
             updateSlide();
         });
-
         updateSlide();
-
-        // 手机端触屏滑动（保持原有）
+        // 手机端触屏滑动
         let touchStartX = 0;
         let isSwiping = false;
         galleryContainer.addEventListener('touchstart', (e) => {
             touchStartX = e.touches[0].clientX;
             isSwiping = true;
         }, { passive: false });
-
         galleryContainer.addEventListener('touchmove', (e) => {
             if (!isSwiping) return;
             const deltaX = e.touches[0].clientX - touchStartX;
@@ -318,7 +302,6 @@
             gallery.style.transform = `translateX(${ -currentOffset + deltaX }px)`;
             e.preventDefault();
         }, { passive: false });
-
         galleryContainer.addEventListener('touchend', () => {
             if (!isSwiping) return;
             const deltaX = event.changedTouches[0].clientX - touchStartX;
