@@ -20,7 +20,16 @@
             max-width: 1440px; /* 内容最大宽度1440px，拉宽时居中留白 */
             width: 100%;
             box-sizing: border-box;
+
+            /* 新增：彻底隐藏滚动条 */
+    -ms-overflow-style: none;  /* IE/Edge */
+    scrollbar-width: none;     /* Firefox */
         }
+
+        /* Chrome/Safari/Edge 滚动条隐藏 */
+*::-webkit-scrollbar {
+    display: none;
+}
         .header {
             padding: 80px 60px 60px 60px;
             width: 100%;
