@@ -79,14 +79,15 @@
             text-align: left;
         }
         .nav-buttons {
-            position: fixed;
-            right: 60px;
-            top: 130px;
-            display: flex;
-            gap: 20px;
-            z-index: 1000;
-            pointer-events: auto;
-        }
+    position: fixed;
+    right: calc((100vw - 1440px) / 2 + 60px); /* 关键：窗口拉宽时箭头自动向左移动，始终保持内容区右边60px */
+    top: 130px;
+    display: flex;
+    gap: 20px;
+    z-index: 1000;
+    pointer-events: auto;
+    transition: right 0.3s ease; /* 可选：平滑移动 */
+}
         .nav-buttons button {
             width: 38px;
             height: 38px;
