@@ -200,28 +200,33 @@
         z-index: 1000;
     }
     .back-button a {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display: block;
         width: 38px;
         height: 38px;
         background: rgba(255, 255, 255, 0.12);
         border-radius: 50%;
-        color: white;
-        font-size: 34px;           /* 关键：箭头更粗更大 */
-        font-weight: bold;         /* 加粗 */
-        text-decoration: none;
         backdrop-filter: blur(20px);
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         transition: all 0.3s ease;
-        line-height: 1; /* 新增：关键，消除字体基线偏移 */
-        user-select: center;
+        position: relative; /* 为伪元素定位 */
+    }
+    .back-button a::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* 绝对死居中 */
+        width: 18px;
+        height: 18px;
+        background: white;
+        clip-path: polygon(100% 0%, 100% 100%, 0% 50%); /* 纯CSS绘制粗壮左箭头 */
+        border-radius: 2px;
     }
     .back-button a:hover {
         background: rgba(255, 255, 255, 0.25);
         transform: scale(1.08);
     }
-    /* 手机端稍小一点 */
+    /* 手机端适配 */
     @media (max-width: 768px) {
         .back-button {
             top: 20px;
@@ -230,13 +235,17 @@
         .back-button a {
             width: 50px;
             height: 50px;
-            font-size: 30px;
+        }
+        .back-button a::before {
+            width: 16px;
+            height: 16px;
         }
     }
 </style>
     
-    <div class="back-button">
-    <a href="index.html">‹</a>
+   <!-- 左上角返回按钮（完美居中版） -->
+<div class="back-button">
+    <a href="index.html"></a>
 </div>
 
     <div class="tabs">
