@@ -38,12 +38,17 @@
             text-align: left;
         }
         .gallery-container {
-            padding: 0 60px 140px 80px; /* 保持左80px对齐红线，右60px */
+            padding: 0 60px 140px 80px; /* 左80px对齐红线，右60px */
             width: 100%;
             box-sizing: border-box;
             flex: 1;
+            overflow: hidden; /* 隐藏溢出部分 */
+        }
+        .gallery-inner {
+            width: 100%;
+            height: 100%;
+            overflow: visible; /* 允许卡片延伸 */
             position: relative;
-            overflow: visible; /* 允许卡片延伸超出容器 */
         }
         .gallery {
             display: flex;
@@ -51,6 +56,7 @@
             transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             width: fit-content;
             min-width: 100%;
+            position: relative;
         }
         .card-wrapper {
             flex: 0 0 327px;
@@ -133,6 +139,8 @@
             }
             .gallery-container {
                 padding: 0 20px 140px 50px;
+            }
+            .gallery-inner {
                 overflow: hidden;
             }
             .gallery {
@@ -165,56 +173,58 @@
         <h1>无人场景加多人<br>多角度展示</h1>
     </div>
     <div class="gallery-container">
-        <div class="gallery" id="gallery">
-            <a href="detail.html" style="text-decoration: none; color: inherit;">
+        <div class="gallery-inner">
+            <div class="gallery" id="gallery">
+                <a href="detail.html" style="text-decoration: none; color: inherit;">
+                    <div class="card-wrapper">
+                        <div class="card" style="background-image: url('https://img.adons.top/01/0.jpg');"></div>
+                        <div>
+                            <div class="card-title">快速添加一家五口自然就餐</div>
+                            <div class="card-desc">人物姿势真实、灯光协调<br>食物细节丰富、氛围温馨<br>完美呈现家庭生活场景</div>
+                        </div>
+                    </div>
+                </a>
                 <div class="card-wrapper">
-                    <div class="card" style="background-image: url('https://img.adons.top/01/0.jpg');"></div>
+                    <div class="card" style="background-image: url('https://img.adons.top/2-1.jpg');"></div>
                     <div>
-                        <div class="card-title">快速添加一家五口自然就餐</div>
-                        <div class="card-desc">人物姿势真实、灯光协调<br>食物细节丰富、氛围温馨<br>完美呈现家庭生活场景</div>
+                        <div class="card-title">AI智能填充情侣温馨就餐</div>
+                        <div class="card-desc">情侣相对而坐共享晚餐<br>姿态放松、表情生动真实<br><br></div>
                     </div>
                 </div>
-            </a>
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/2-1.jpg');"></div>
-                <div>
-                    <div class="card-title">AI智能填充情侣温馨就餐</div>
-                    <div class="card-desc">情侣相对而坐共享晚餐<br>姿态放松、表情生动真实<br><br></div>
+                <div class="card-wrapper">
+                    <div class="card" style="background-image: url('https://img.adons.top/03/1.jfif');"></div>
+                    <div>
+                        <div class="card-title">AI瞬间点亮三人欢乐茶歇</div>
+                        <div class="card-desc">完美呈现友情温暖的日常时光<br>每个人动作协调、表情自然<br>食物摆盘精致、茶壶蒸汽可见</div>
+                    </div>
                 </div>
-            </div>
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/03/1.jfif');"></div>
-                <div>
-                    <div class="card-title">AI瞬间点亮三人欢乐茶歇</div>
-                    <div class="card-desc">完美呈现友情温暖的日常时光<br>每个人动作协调、表情自然<br>食物摆盘精致、茶壶蒸汽可见</div>
+                <div class="card-wrapper">
+                    <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
+                    <div>
+                        <div class="card-title">空荡吧台瞬间生动</div>
+                        <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
+                    </div>
                 </div>
-            </div>
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
-                <div>
-                    <div class="card-title">空荡吧台瞬间生动</div>
-                    <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
+                <div class="card-wrapper">
+                    <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
+                    <div>
+                        <div class="card-title">这是一个案例，不能删除</div>
+                        <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
+                    </div>
                 </div>
-            </div>
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
-                <div>
-                    <div class="card-title">这是一个案例，不能删除</div>
-                    <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
+                <div class="card-wrapper">
+                    <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
+                    <div>
+                        <div class="card-title">不能删除，懂吗</div>
+                        <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
+                    </div>
                 </div>
-            </div>
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
-                <div>
-                    <div class="card-title">不能删除，懂吗</div>
-                    <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
-                </div>
-            </div>
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
-                <div>
-                    <div class="card-title">不可以删这里</div>
-                    <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
+                <div class="card-wrapper">
+                    <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
+                    <div>
+                        <div class="card-title">不可以删这里</div>
+                        <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
+                    </div>
                 </div>
             </div>
         </div>
