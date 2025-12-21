@@ -302,12 +302,12 @@
         const nextBtn = document.getElementById('next');
         let currentIndex = 0;
 
-       function loadImage(index) {
+      function loadImage(index) {
     const thumb = thumbs[index];
-    const isCompare = thumb.classList.contains('thumb-compare'); // 是否是对比图（第一张）
+    const isCompare = thumb.classList.contains('thumb-compare');
 
     if (isCompare) {
-        // 第一张：对比模式 - 显示所有对比元素
+        // 第一张：对比模式
         original.src = thumb.dataset.original || '';
         edited.src = thumb.dataset.edited || '';
         original.style.display = 'block';
@@ -315,9 +315,9 @@
         slider.style.display = 'flex';
         document.getElementById('label-original').style.opacity = '1';
         document.getElementById('label-edited').style.opacity = '1';
-        document.querySelector('.').style.opacity = '1'; // 显示引导文字
+        document.querySelector('.guide-text').style.opacity = '1'; // 修复：显示引导文字
     } else {
-        // 其他图片：单图模式 - 隐藏所有对比元素
+        // 其他图片：单图模式
         original.src = thumb.dataset.single || thumb.src;
         edited.src = '';
         original.style.display = 'block';
@@ -325,10 +325,9 @@
         slider.style.display = 'none';
         document.getElementById('label-original').style.opacity = '0';
         document.getElementById('label-edited').style.opacity = '0';
-        document.querySelector('.').style.opacity = '0'; // 隐藏引导文字
+        document.querySelector('.guide-text').style.opacity = '0'; // 修复：隐藏引导文字
     }
 
-    // 更新激活状态
     thumbs.forEach(t => t.classList.remove('active'));
     thumb.classList.add('active');
     currentIndex = index;
