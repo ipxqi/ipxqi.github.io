@@ -57,7 +57,7 @@
             border-radius: 12px;
             pointer-events: none;
             z-index: 15;
-            opacity: 1; /* 默认显示 */
+            opacity: 1;
             transition: opacity 0.5s ease;
         }
         .comparison {
@@ -237,6 +237,8 @@
         const prevBtn = document.getElementById('prev');
         const nextBtn = document.getElementById('next');
         const guideText = document.querySelector('.guide-text');
+        const labelOriginal = document.getElementById('label-original');
+        const labelEdited = document.getElementById('label-edited');
         let currentIndex = 0;
 
         function loadImage(index) {
@@ -249,17 +251,17 @@
                 original.style.display = 'block';
                 edited.style.display = 'block';
                 slider.style.display = 'flex';
-                document.getElementById('label-original').style.opacity = '1';
-                document.getElementById('label-edited').style.opacity = '1';
-                guideText.style.opacity = '1'; // 对比模式默认显示引导文字
+                labelOriginal.style.opacity = '1';
+                labelEdited.style.opacity = '1';
+                guideText.style.opacity = '1';
             } else {
                 original.src = thumb.dataset.single || thumb.src;
                 edited.src = '';
                 original.style.display = 'block';
                 edited.style.display = 'none';
                 slider.style.display = 'none';
-                document.getElementById('label-original').style.opacity = '0';
-                document.getElementById('label-edited').style.opacity = '0';
+                labelOriginal.style.opacity = '0';
+                labelEdited.style.opacity = '0';
                 guideText.style.opacity = '0';
             }
 
@@ -274,9 +276,11 @@
             slider.style.left = percent + '%';
         }
 
-        // 鼠标进入对比区域：隐藏引导文字 + 控制标签
+        // 鼠标进入对比区域：隐藏引导文字
         wrapper.addEventListener('mouseenter', () => {
-            guideText.style.opacity = '0';
+            if (thumbs[currentIndex].classList.contains('thumb-compare')) {
+                guideText.style.opacity = '0';
+            }
         });
 
         // 鼠标离开对比区域：恢复引导文字（仅对比模式）
@@ -286,17 +290,16 @@
             }
         });
 
-        // 鼠标移动：分隔线跟随 + 标签切换
+        // 鼠标移动：仅在对比模式下执行标签切换和分隔线移动
         wrapper.addEventListener('mousemove', (e) => {
+            if (!thumbs[currentIndex].classList.contains('thumb-compare')) return; // 单图模式直接返回，不执行
+
             const rect = wrapper.getBoundingClientRect();
             const x = e.clientX - rect.left;
             let percent = (x / rect.width) * 100;
             percent = Math.max(0, Math.min(100, percent));
 
             updateSlider(percent);
-
-            const labelOriginal = document.getElementById('label-original');
-            const labelEdited = document.getElementById('label-edited');
 
             if (percent < 50) {
                 labelOriginal.style.opacity = '0'; // 左半边隐藏原图
@@ -307,8 +310,10 @@
             }
         });
 
-        // 触屏移动同上
+        // 触屏移动：仅在对比模式下执行
         wrapper.addEventListener('touchmove', (e) => {
+            if (!thumbs[currentIndex].classList.contains('thumb-compare')) return;
+
             e.preventDefault();
             const rect = wrapper.getBoundingClientRect();
             const x = e.touches[0].clientX - rect.left;
@@ -316,9 +321,6 @@
             percent = Math.max(0, Math.min(100, percent));
 
             updateSlider(percent);
-
-            const labelOriginal = document.getElementById('label-original');
-            const labelEdited = document.getElementById('label-edited');
 
             if (percent < 50) {
                 labelOriginal.style.opacity = '0';
