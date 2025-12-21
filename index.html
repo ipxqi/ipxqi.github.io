@@ -17,7 +17,7 @@
     display: flex;
     flex-direction: column;
     touch-action: pan-x;
-    max-width: 1440px; /* 新增：最大宽度，像苹果官网一样 */
+    /* max-width: 1440px; /* 新增：最大宽度，像苹果官网一样 */
     width: 100%; /* 保证小屏占满 */
     box-sizing: border-box;
 }
@@ -37,8 +37,7 @@
     overflow: hidden;
     padding: 0 60px 140px 80px; /* 左右对称 60px（你之前左80改成左右60） */
     width: 100%;
-    
-         box-sizing: border-box;
+    box-sizing: border-box;
     flex: 1;
 }
 
@@ -46,8 +45,9 @@
     display: flex;
     gap: 20px;
     transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    
-    
+    width: fit-content; /* 新增：内容自适应宽度 */
+    padding-left: calc(100vw - 80px - 80px); /* 新增关键！ */
+    /* 解释：100vw 全屏宽 - 左padding 80px - 右padding 60px，让第一张卡片对齐左80px，同时最后一张能延伸到右边缘 */
 }
         .card-wrapper {
             flex: 0 0 327px; /* 固定宽度 327px */
