@@ -50,18 +50,15 @@
             left: 50%;
             transform: translate(-50%, -50%);
             font-size: 28px;
-            font-weight: normal; /* 不加粗 */
+            font-weight: normal;
             color: rgba(255, 255, 255, 0.95);
             background: rgba(0, 0, 0, 0.7);
             padding: 15px 30px;
             border-radius: 12px;
             pointer-events: none;
             z-index: 15;
-            transition: opacity 0.5s ease;
-            white-space: nowrap;
-        }
-        .comparison-wrapper:hover .guide-text {
             opacity: 0;
+            transition: opacity 0.5s ease;
         }
         .comparison {
             position: absolute;
@@ -101,19 +98,16 @@
             text-shadow: 0 0 8px rgba(0,0,0,0.8);
         }
         .label {
-    position: absolute;
-    top: 20px;
-    font-size: 20px;
-    font-weight: normal;
-    z-index: 10;
-    background: rgba(0,0,0,0.4);
-    padding: 8px 20px;
-    border-radius: 8px;
-    opacity: 0; /* 默认隐藏，鼠标移入区域再显示 */
-    transition: opacity 0.4s ease; /* 加过渡，丝滑淡入淡出 */
-}
-        .comparison-wrapper:hover .label {
-            opacity: 1;
+            position: absolute;
+            top: 20px;
+            font-size: 20px;
+            font-weight: normal;
+            z-index: 10;
+            background: rgba(0,0,0,0.4);
+            padding: 8px 20px;
+            border-radius: 8px;
+            opacity: 1; /* 默认显示，单图模式时JS隐藏 */
+            transition: opacity 0.4s ease;
         }
         .label-a { left: 20px; color: #ffffff; }
         .label-b { right: 20px; color: #ffffff; }
@@ -137,7 +131,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 10px;
-            align-content: start; /* 小图靠上对齐 */
+            align-content: start;
         }
         .thumb {
             width: 100%;
@@ -156,43 +150,7 @@
             border: 2px solid #ffffff;
             transform: scale(1.03);
         }
-        /* Lightbox 样式 */
-        .lightbox {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.9);
-            z-index: 100;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-        }
-        .lightbox img {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-            border-radius: 10px;
-        }
-        .lightbox-close {
-            position: absolute;
-            top: 30px;
-            right: 30px;
-            font-size: 40px;
-            color: white;
-            cursor: pointer;
-        }
-        .lightbox-prev, .lightbox-next {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 50px;
-            color: white;
-            cursor: pointer;
-            padding: 20px;
-        }
-        .lightbox-prev { left: 30px; }
-        .lightbox-next { right: 30px; }
-                .back-button {
+        .back-button {
             position: fixed;
             top: 30px;
             left: 30px;
@@ -229,14 +187,12 @@
             }
         }
     </style>
-   
-   
 </head>
 <body>
-        <div class="back-button">
+    <div class="back-button">
         <a href="index.html">←</a>
     </div>
-   
+
     <div class="tabs">
         <button class="active">类别一</button>
         <button>类别二</button>
@@ -256,37 +212,21 @@
             <button class="nav-arrow next" id="next">›</button>
         </div>
         <div class="thumbnails" id="thumbnails">
-            <!-- 点击缩略图弹出大图查看 -->
-            <img class="thumb active" src="https://img.adons.top/0.jpg"
+            <img class="thumb active thumb-compare" src="https://img.adons.top/0.jpg"
                  data-original="https://img.adons.top/1.jpg"
-                 data-edited="https://img.adons.top/0.jpg"
-                 data-lightbox="https://img.adons.top/0.jpg"> <!-- 用于 Lightbox -->
+                 data-edited="https://img.adons.top/0.jpg">
             <img class="thumb" src="https://img.adons.top/1.jpg"
-                 data-single="https://img.adons.top/1.jpg"
-                 data-lightbox="https://img.adons.top/1.jpg">
-           
+                 data-single="https://img.adons.top/1.jpg">
             <img class="thumb" src="https://img.adons.top/3.jpg"
-                 data-single="https://img.adons.top/3.jpg"
-                 data-lightbox="https://img.adons.top/3.jpg">
-           
+                 data-single="https://img.adons.top/3.jpg">
             <img class="thumb" src="https://img.adons.top/4.jpg"
-                 data-single="https://img.adons.top/4.jpg"
-                 data-lightbox="https://img.adons.top/4.jpg">
+                 data-single="https://img.adons.top/4.jpg">
             <img class="thumb" src="https://img.adons.top/5.jpg"
-                 data-single="https://img.adons.top/5.jpg"
-                 data-lightbox="https://img.adons.top/5.jpg">
-            <!-- 继续添加 -->
+                 data-single="https://img.adons.top/5.jpg">
         </div>
     </div>
-    <!-- Lightbox 浮层 -->
-    <div class="lightbox" id="lightbox">
-        <span class="lightbox-close">×</span>
-        <span class="lightbox-prev">‹</span>
-        <span class="lightbox-next">›</span>
-        <img id="lightbox-img" src="">
-    </div>
+
     <script>
-        // 原对比功能保持不变（你的代码）
         const original = document.getElementById('original');
         const edited = document.getElementById('edited');
         const slider = document.getElementById('slider');
@@ -294,150 +234,88 @@
         const thumbs = document.querySelectorAll('.thumb');
         const prevBtn = document.getElementById('prev');
         const nextBtn = document.getElementById('next');
+        const guideText = document.querySelector('.guide-text');
         let currentIndex = 0;
+
         function loadImage(index) {
             const thumb = thumbs[index];
-            original.src = thumb.dataset.original || '';
-            edited.src = thumb.dataset.edited || thumb.dataset.single || '';
-            original.style.display = thumb.dataset.original ? 'block' : 'none';
-            edited.style.display = 'block';
-            slider.style.display = thumb.dataset.original ? 'flex' : 'none';
+            const isCompare = thumb.classList.contains('thumb-compare');
+
+            if (isCompare) {
+                // 对比模式
+                original.src = thumb.dataset.original || '';
+                edited.src = thumb.dataset.edited || '';
+                original.style.display = 'block';
+                edited.style.display = 'block';
+                slider.style.display = 'flex';
+                document.getElementById('label-original').style.opacity = '1';
+                document.getElementById('label-edited').style.opacity = '1';
+                guideText.style.opacity = '1';
+            } else {
+                // 单图模式
+                original.src = thumb.dataset.single || thumb.src;
+                edited.src = '';
+                original.style.display = 'block';
+                edited.style.display = 'none';
+                slider.style.display = 'none';
+                document.getElementById('label-original').style.opacity = '0';
+                document.getElementById('label-edited').style.opacity = '0';
+                guideText.style.opacity = '0';
+            }
+
             thumbs.forEach(t => t.classList.remove('active'));
             thumb.classList.add('active');
             currentIndex = index;
             updateSlider(50);
         }
+
         function updateSlider(percent) {
             edited.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
             slider.style.left = percent + '%';
         }
+
+        // 鼠标移动：分隔线跟随 + 标签实时渐变（只在对比模式下生效）
         wrapper.addEventListener('mousemove', (e) => {
-    const rect = wrapper.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const width = rect.width;
-    const percent = (x / width) * 100;
-    percent = Math.max(0, Math.min(100, percent));
-    // 更新滑动条
-    updateSlider(percent);
-        // 控制标签透明度（实时渐变，根据鼠标位置）
-    const labelOriginal = document.getElementById('label-original');
-    const labelEdited = document.getElementById('label-edited');
-    // “原图”标签：鼠标越靠左越清晰（opacity 1），越靠右越透明（opacity 0）
-    labelOriginal.style.opacity = percent / 100; // percent 0% (左) = opacity 0? 等待！！！错！！！
-    // 正确：鼠标越靠左越清晰（左边 opacity 1，右边 opacity 0）
-    labelOriginal.style.opacity = 1 - (percent / 100);
-    // “效果图”标签：鼠标越靠右越清晰（右边 opacity 1，左边 opacity 0）
-    labelEdited.style.opacity = percent / 100;
-});
+            const rect = wrapper.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            let percent = (x / rect.width) * 100;
+            percent = Math.max(0, Math.min(100, percent));
+
+            updateSlider(percent);
+
+            const labelOriginal = document.getElementById('label-original');
+            const labelEdited = document.getElementById('label-edited');
+
+            labelOriginal.style.opacity = 1 - (percent / 100);
+            labelEdited.style.opacity = percent / 100;
+        });
+
+        // 触屏移动
         wrapper.addEventListener('touchmove', (e) => {
-    e.preventDefault();
-    const rect = wrapper.getBoundingClientRect();
-    let x = e.touches[0].clientX - rect.left;
-    let percent = (x / rect.width) * 100;
-    percent = Math.max(0, Math.min(100, percent));
-    updateSlider(percent);
-        // 手机端实时渐变标签透明度
-    const labelOriginal = document.getElementById('label-original');
-    const labelEdited = document.getElementById('label-edited');
-    labelOriginal.style.opacity = 1 - (percent / 100);
-    labelEdited.style.opacity = percent / 100;
-    if (percent < 50) {
-    // 鼠标在左半边：原图标签完全消失，效果图标签显示
-    labelOriginal.style.opacity = '0';
-    labelEdited.style.opacity = '1';
-} else {
-    // 鼠标在右半边：效果图标签完全消失，原图标签显示
-    labelOriginal.style.opacity = '1';
-    labelEdited.style.opacity = '0';
-}
-});
+            e.preventDefault();
+            const rect = wrapper.getBoundingClientRect();
+            const x = e.touches[0].clientX - rect.left;
+            let percent = (x / rect.width) * 100;
+            percent = Math.max(0, Math.min(100, percent));
+
+            updateSlider(percent);
+
+            const labelOriginal = document.getElementById('label-original');
+            const labelEdited = document.getElementById('label-edited');
+
+            labelOriginal.style.opacity = 1 - (percent / 100);
+            labelEdited.style.opacity = percent / 100;
+        });
+
+        // 缩略图点击切换
         thumbs.forEach((thumb, i) => thumb.addEventListener('click', () => loadImage(i)));
+
+        // 左右箭头切换
         prevBtn.addEventListener('click', () => loadImage((currentIndex - 1 + thumbs.length) % thumbs.length));
         nextBtn.addEventListener('click', () => loadImage((currentIndex + 1) % thumbs.length));
+
+        // 初始化
         if (thumbs.length > 0) loadImage(0);
-        // 新增 Lightbox 功能
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        const closeBtn = document.querySelector('.lightbox-close');
-        const lightboxPrev = document.querySelector('.lightbox-prev');
-        const lightboxNext = document.querySelector('.lightbox-next');
-        // 点击缩略图弹出大图
-        thumbs.forEach((thumb, i) => {
-            thumb.addEventListener('click', (e) => {
-                e.stopPropagation(); // 防止触发对比切换
-                const bigImg = thumb.dataset.lightbox || thumb.dataset.edited || thumb.dataset.single || thumb.src;
-                lightboxImg.src = bigImg;
-                lightbox.style.display = 'flex';
-                currentIndex = i;
-            });
-        });
-        // 关闭
-        lightbox.addEventListener('click', () => {
-            lightbox.style.display = 'none';
-        });
-        // 左右切换
-        lightboxPrev.addEventListener('click', (e) => {
-            e.stopPropagation();
-            currentIndex = (currentIndex - 1 + thumbs.length) % thumbs.length;
-            const bigImg = thumbs[currentIndex].dataset.lightbox || thumbs[currentIndex].dataset.edited || thumbs[currentIndex].dataset.single || thumbs[currentIndex].src;
-            lightboxImg.src = bigImg;
-        });
-        lightboxNext.addEventListener('click', (e) => {
-            e.stopPropagation();
-            currentIndex = (currentIndex + 1) % thumbs.length;
-            const bigImg = thumbs[currentIndex].dataset.lightbox || thumbs[currentIndex].dataset.edited || thumbs[currentIndex].dataset.single || thumbs[currentIndex].src;
-            lightboxImg.src = bigImg;
-        });
-        // 键盘 ESC 关闭
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') lightbox.style.display = 'none';
-        });
-        // 键盘左右箭头切换大图
-document.addEventListener('keydown', (e) => {
-    if (lightbox.style.display !== 'flex') return; // 只有 Lightbox 打开时才响应
-    if (e.key === 'ArrowLeft') {
-        // 左箭头：上一张
-        e.preventDefault();
-        currentIndex = (currentIndex - 1 + thumbs.length) % thumbs.length;
-        const bigImg = thumbs[currentIndex].dataset.lightbox || thumbs[currentIndex].dataset.edited || thumbs[currentIndex].dataset.single || thumbs[currentIndex].src;
-        lightboxImg.src = bigImg;
-    } else if (e.key === 'ArrowRight') {
-        // 右箭头：下一张
-        e.preventDefault();
-        currentIndex = (currentIndex + 1) % thumbs.length;
-        const bigImg = thumbs[currentIndex].dataset.lightbox || thumbs[currentIndex].dataset.edited || thumbs[currentIndex].dataset.single || thumbs[currentIndex].src;
-        lightboxImg.src = bigImg;
-    }
-});
-        // 鼠标在对比区域移动时，动态控制标签透明度
-wrapper.addEventListener('mousemove', (e) => {
-    const rect = wrapper.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const width = rect.width;
-    const percent = (x / width) * 100;
-    // 更新滑动条（原代码）
-    updateSlider(percent);
-    // 控制标签透明度
-    const labelOriginal = document.getElementById('label-original');
-    const labelEdited = document.getElementById('label-edited');
-    if (percent < 50) {
-        // 鼠标在左半边：原图标签透明，效果图标签显示
-        labelOriginal.style.opacity = '0';
-        labelEdited.style.opacity = '1';
-    } else {
-        // 鼠标在右半边：效果图标签透明，原图标签显示
-        labelOriginal.style.opacity = '1';
-        labelEdited.style.opacity = '0';
-    }
-});
-// 鼠标移出对比区域时，恢复默认（都显示）
-wrapper.addEventListener('mouseleave', () => {
-    document.getElementById('label-original').style.opacity = '1';
-    document.getElementById('label-edited').style.opacity = '1';
-});
-// 初始状态（鼠标没进时都显示）
-document.getElementById('label-original').style.opacity = '1';
-document.getElementById('label-edited').style.opacity = '1';
     </script>
 </body>
-</html> 我现在希望点击右边的图片不要跳出来，我希望直接在对比区域展示，图片没有其它功能，仅仅是在对比区展示而已，右边图片是可以点击，但是点击后在对比区展示（不要对比功能）只有点击第一张图时才恢复初始对比功能
+</html>
