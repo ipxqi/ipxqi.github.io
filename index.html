@@ -20,16 +20,14 @@
             max-width: 1440px;
             width: 100%;
             box-sizing: border-box;
-
             /* 新增：彻底隐藏所有滚动条，但保留滚动功能和卡片延伸效果 */
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;     /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
         }
         /* Chrome/Safari/Edge 隐藏滚动条 */
         *::-webkit-scrollbar {
             display: none;
         }
-
         .header {
             padding: 80px 60px 60px 60px;
             width: 100%;
@@ -72,6 +70,13 @@
             background-color: rgba(40, 40, 40, 0.6);
             backdrop-filter: blur(12px);
             box-shadow: 0 12px 32px rgba(0,0,0,0.6);
+            /* 新增：鼠标悬停放大效果 */
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        /* 鼠标悬停时卡片轻微放大 + 阴影加深 */
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
         }
         .card-title {
             font-size: 15px;
