@@ -5,180 +5,121 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI智能加人物</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html { width: 100%; height: 100%; overflow: hidden; background: #000; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
-        #canvas-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        .content { position: relative; z-index: 1; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; padding: 20px; }
-        h1 { font-size: 48px; font-weight: 600; margin-bottom: 20px; text-shadow: 0 4px 20px rgba(0,0,0,0.6); }
-        p { font-size: 24px; max-width: 800px; line-height: 1.6; opacity: 0.9; }
-        a.button { display: inline-block; margin-top: 40px; padding: 16px 32px; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); border-radius: 50px; color: white; text-decoration: none; font-size: 20px; font-weight: bold; box-shadow: 0 8px 32px rgba(0,0,0,0.4); transition: all 0.3s ease; }
-        a.button:hover { background: rgba(255, 255, 255, 0.3); transform: translateY(-4px); }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        }
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ff5c7a, #8a5cff, #00ffd1);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            filter: blur(0px);
+            z-index: -1;
+        }
+        .wave {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 10%, transparent 10%);
+            background-size: 50px 50px;
+            animation: wave 20s linear infinite;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .wave:nth-child(2) {
+            animation-direction: reverse;
+            animation-duration: 25s;
+            opacity: 0.3;
+        }
+        .wave:nth-child(3) {
+            animation-duration: 30s;
+            background: radial-gradient(circle, rgba(255,92,122,0.2) 20%, transparent 20%);
+            background-size: 80px 80px;
+        }
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes wave {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        body:hover .background {
+            animation-duration: 8s;
+        }
+        body:hover .wave {
+            animation-duration: 10s;
+        }
+        .content {
+            position: relative;
+            z-index: 1;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 48px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.6);
+        }
+        p {
+            font-size: 24px;
+            max-width: 800px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        a.button {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 16px 32px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+        }
+        a.button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-4px);
+        }
     </style>
 </head>
 <body>
-    <div id="canvas-container"></div>
+    <div class="background">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
 
     <div class="content">
         <h1>AI智能加人物<br>多角度展示</h1>
         <p>专业室内设计效果图 · 无人场景快速添加真实人物<br>支持任意人数、自然姿势、多角度呈现</p>
         <a href="/ai.html" class="button">查看作品集 →</a>
     </div>
-
-    <!-- 最可靠的 Three.js r128 CDN（jsDelivr，国内访问极稳） -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
-
-    <script>
-        const frag = `
-#define MAX_COLORS 8
-uniform vec2 uCanvas;
-uniform float uTime;
-uniform float uSpeed;
-uniform vec2 uRot;
-uniform int uColorCount;
-uniform vec3 uColors[MAX_COLORS];
-uniform int uTransparent;
-uniform float uScale;
-uniform float uFrequency;
-uniform float uWarpStrength;
-uniform vec2 uPointer;
-uniform float uMouseInfluence;
-uniform float uParallax;
-uniform float uNoise;
-varying vec2 vUv;
-
-void main() {
-  float t = uTime * uSpeed;
-  vec2 p = vUv * 2.0 - 1.0;
-  p += uPointer * uParallax * 0.1;
-  vec2 rp = vec2(p.x * uRot.x - p.y * uRot.y, p.x * uRot.y + p.y * uRot.x);
-  vec2 q = vec2(rp.x * (uCanvas.x / uCanvas.y), rp.y);
-  q /= max(uScale, 0.0001);
-  q /= 0.5 + 0.2 * dot(q, q);
-  q += 0.2 * cos(t) - 7.56;
-  vec2 toward = (uPointer - rp);
-  q += toward * uMouseInfluence * 0.2;
-
-  vec3 col = vec3(0.0);
-  float a = 1.0;
-
-  if (uColorCount > 0) {
-    vec2 s = q;
-    vec3 sumCol = vec3(0.0);
-    float cover = 0.0;
-    for (int i = 0; i < MAX_COLORS; ++i) {
-      if (i >= uColorCount) break;
-      s -= 0.01;
-      vec2 r = sin(1.5 * (s.yx * uFrequency) + 2.0 * cos(s * uFrequency));
-      float m0 = length(r + sin(5.0 * r.y * uFrequency - 3.0 * t + float(i)) / 4.0);
-      float kBelow = clamp(uWarpStrength, 0.0, 1.0);
-      float kMix = pow(kBelow, 0.3);
-      float gain = 1.0 + max(uWarpStrength - 1.0, 0.0);
-      vec2 disp = (r - s) * kBelow;
-      vec2 warped = s + disp * gain;
-      float m1 = length(warped + sin(5.0 * warped.y * uFrequency - 3.0 * t + float(i)) / 4.0);
-      float m = mix(m0, m1, kMix);
-      float w = 1.0 - exp(-6.0 / exp(6.0 * m));
-      sumCol += uColors[i] * w;
-      cover = max(cover, w);
-    }
-    col = clamp(sumCol, 0.0, 1.0);
-    a = uTransparent > 0 ? cover : 1.0;
-  } else {
-    col = vec3(0.5, 0.3, 0.8);
-    a = 0.8;
-  }
-
-  if (uNoise > 0.0001) {
-    float n = fract(sin(dot(gl_FragCoord.xy + vec2(uTime), vec2(12.9898, 78.233))) * 43758.5453123);
-    col += (n - 0.5) * uNoise;
-    col = clamp(col, 0.0, 1.0);
-  }
-
-  vec3 rgb = (uTransparent > 0) ? col * a : col;
-  gl_FragColor = vec4(rgb, a);
-}
-`;
-
-        const vert = `
-varying vec2 vUv;
-void main() {
-  vUv = uv;
-  gl_Position = vec4(position, 1.0);
-}
-`;
-
-        const container = document.getElementById('canvas-container');
-        const scene = new THREE.Scene();
-        const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-        const geometry = new THREE.PlaneGeometry(2, 2);
-
-        const colors = ["#ff5c7a", "#8a5cff", "#00ffd1"];
-
-        const uColorsArray = colors.map(hex => {
-            const h = hex.replace('#', '');
-            const r = parseInt(h.slice(0,2),16)/255;
-            const g = parseInt(h.slice(2,4),16)/255;
-            const b = parseInt(h.slice(4,6),16)/255;
-            return new THREE.Vector3(r, g, b);
-        });
-
-        while (uColorsArray.length < 8) {
-            uColorsArray.push(new THREE.Vector3(0, 0, 0));
-        }
-
-        const material = new THREE.ShaderMaterial({
-            vertexShader: vert,
-            fragmentShader: frag,
-            uniforms: {
-                uCanvas: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
-                uTime: { value: 0 },
-                uSpeed: { value: 0.3 },
-                uRot: { value: new THREE.Vector2(1, 0) },
-                uColorCount: { value: colors.length },
-                uColors: { value: uColorsArray },
-                uTransparent: { value: 1 },
-                uScale: { value: 1.2 },
-                uFrequency: { value: 1.4 },
-                uWarpStrength: { value: 1.2 },
-                uPointer: { value: new THREE.Vector2(0, 0) },
-                uMouseInfluence: { value: 0.8 },
-                uParallax: { value: 0.6 },
-                uNoise: { value: 0.08 }
-            },
-            transparent: true,
-            depthWrite: false
-        });
-
-        const mesh = new THREE.Mesh(geometry, material);
-        scene.add(mesh);
-
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        container.appendChild(renderer.domElement);
-
-        const clock = new THREE.Clock();
-        let mouseX = 0, mouseY = 0;
-
-        container.addEventListener('mousemove', (e) => {
-            const rect = container.getBoundingClientRect();
-            mouseX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-            mouseY = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-        });
-
-        function animate() {
-            requestAnimationFrame(animate);
-            const elapsed = clock.getElapsedTime();
-            material.uniforms.uTime.value = elapsed;
-            material.uniforms.uPointer.value.set(mouseX * 0.8, mouseY * 0.8);
-            renderer.render(scene, camera);
-        }
-        animate();
-
-        window.addEventListener('resize', () => {
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            material.uniforms.uCanvas.value.set(window.innerWidth, window.innerHeight);
-        });
-    </script>
 </body>
 </html>
