@@ -24,41 +24,10 @@
         <a href="/ai.html" class="button">查看作品集 →</a>
     </div>
 
-    <script>
-        // Three.js r128 核心内联（精简版，包含所有需要的类）
-        (function () {
-            function t() { this.x = 0, this.y = 0, this.z = 0 }
-            t.prototype.set = function (t, e, n) { this.x = t, this.y = e, this.z = n; return this };
-            t.prototype.copy = function (t) { this.x = t.x, this.y = t.y, this.z = t.z; return this };
-            t.prototype.length = function () { return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z) };
-            function e() { this.elements = [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1] }
-            e.prototype.makeOrthographic = function (t, e, n, r, i, o) {
-                var a = this.elements, s = 2 / (e - t), l = 2 / (n - r), u = 2 / (o - i), c = (e + t) / (e - t), h = (n + r) / (n - r), f = (o + i) / (i - o);
-                a[0] = s, a[5] = l, a[10] = u, a[12] = c, a[13] = h, a[14] = f; return this
-            };
-            function n() { this._x = 0, this._y = 0, this._z = 0, this._w = 1 }
-            n.prototype.set = function (t, e, n, r) { this._x = t, this._y = e, this._z = n, this._w = r; return this };
-            function r() {}
-            r.prototype.add = function (t) { this.children.push(t), t.parent = this; return this };
-            function i() { this.children = [] }
-            function o() { this.geometry = new (function () { this.type = "PlaneGeometry", this.parameters = { width: 2, height: 2 } })() }
-            function a(t, e) { this.vertexShader = t, this.fragmentShader = e, this.uniforms = {}, this.transparent = !0, this.depthWrite = !1 }
-            function s(t) { this.domElement = t.canvas || document.createElement("canvas"), this.setSize = function (t, e) { this.domElement.width = t, this.domElement.height = e }, this.setPixelRatio = function (t) {}, this.render = function (t, e) { t.render && t.render(this, e) } }
-            THREE = {
-                Vector2: function () { this.x = 0, this.y = 0, this.set = function (t, e) { this.x = t, this.y = e; return this } },
-                Vector3: t,
-                Matrix4: e,
-                Quaternion: n,
-                Scene: i,
-                OrthographicCamera: function (t, e, n, r, i, o) { this.projectionMatrix = new e, this.projectionMatrix.makeOrthographic(t, e, n, r, i, o) },
-                PlaneGeometry: o,
-                ShaderMaterial: a,
-                Mesh: function (t, e) { this.geometry = t, this.material = e },
-                WebGLRenderer: function (t) { return new s(t || {}) },
-                Clock: function () { var t = 0, e = performance.now(); this.getElapsedTime = function () { var n = performance.now(); return t += (n - e) / 1e3, e = n, t } }
-            };
-        })();
+    <!-- 本地加载完整 Three.js r128 -->
+    <script src="three.min.js"></script>
 
+    <script>
         const frag = `
 #define MAX_COLORS 8
 uniform vec2 uCanvas;
@@ -141,7 +110,8 @@ void main() {
         const container = document.getElementById('canvas-container');
         const scene = new THREE.Scene();
         const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-        const geometry = new THREE.PlaneGeometry();
+        const geometry = new THREE.PlaneGeometry(2, 2);
+
         const colors = ["#ff5c7a", "#8a5cff", "#00ffd1"];
 
         const uColorsArray = colors.map(hex => {
@@ -152,7 +122,9 @@ void main() {
             return new THREE.Vector3(r, g, b);
         });
 
-        while (uColorsArray.length < 8) uColorsArray.push(new THREE.Vector3(0, 0, 0));
+        while (uColorsArray.length < 8) {
+            uColorsArray.push(new THREE.Vector3(0, 0, 0));
+        }
 
         const material = new THREE.ShaderMaterial({
             vertexShader: vert,
