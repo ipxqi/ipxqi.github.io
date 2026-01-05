@@ -24,8 +24,8 @@
         <a href="/ai.html" class="button">查看作品集 →</a>
     </div>
 
-    <!-- 国内最稳 Three.js CDN -->
-    <script src="https://cdn.bootcdn.net/ajax/libs/three.js/0.179.1/three.core.min.js"></script>
+    <!-- 使用 BootCDN 国内最稳定的 Three.js -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/three.js/0.180.0/three.min.js"></script>
     <script>
         const frag = `
 #define MAX_COLORS 8
@@ -83,7 +83,6 @@ void main() {
     col = clamp(sumCol, 0.0, 1.0);
     a = uTransparent > 0 ? cover : 1.0;
   } else {
-    // fallback: 如果没颜色，至少显示点东西调试
     col = vec3(0.5, 0.3, 0.8);
     a = 0.8;
   }
@@ -108,10 +107,6 @@ void main() {
 `;
 
         const container = document.getElementById('canvas-container');
-        if (!container) {
-            console.error('Container not found!');
-        }
-
         const scene = new THREE.Scene();
         const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
         const geometry = new THREE.PlaneGeometry(2, 2);
@@ -126,8 +121,10 @@ void main() {
             return new THREE.Vector3(r, g, b);
         });
 
-        // 确保数组长度为8
-        while (uColorsArray.length < 8) uColorsArray.push(new THREE.Vector3(0,0,0));
+        // 补足到8个
+        while (uColorsArray.length < 8) {
+            uColorsArray.push(new THREE.Vector3(0, 0, 0));
+        }
 
         const material = new THREE.ShaderMaterial({
             vertexShader: vert,
@@ -149,7 +146,7 @@ void main() {
                 uNoise: { value: 0.08 }
             },
             transparent: true,
-            depthWrite: false // 重要：防止遮挡内容
+            depthWrite: false
         });
 
         const mesh = new THREE.Mesh(geometry, material);
@@ -165,18 +162,15 @@ void main() {
 
         container.addEventListener('mousemove', (e) => {
             const rect = container.getBoundingClientRect();
-            mouseX = (e.clientX - rect.left) / rect.width * 2 - 1;
-            mouseY = -((e.clientY - rect.top) / rect.height * 2 - 1);
+            mouseX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+            mouseY = -((e.clientY - rect.top) / rect.height) * 2 + 1;
         });
 
         function animate() {
             requestAnimationFrame(animate);
             const elapsed = clock.getElapsedTime();
             material.uniforms.uTime.value = elapsed;
-
-            // 鼠标影响更明显一点
             material.uniforms.uPointer.value.set(mouseX * 0.8, mouseY * 0.8);
-
             renderer.render(scene, camera);
         }
         animate();
