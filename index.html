@@ -5,14 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI智能加人物</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html { width: 100%; height: 100%; overflow: hidden; background: #000; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
-        #canvas-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        .content { position: relative; z-index: 1; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; padding: 20px; }
-        h1 { font-size: 48px; font-weight: 600; margin-bottom: 20px; text-shadow: 0 4px 20px rgba(0,0,0,0.6); }
-        p { font-size: 24px; max-width: 800px; line-height: 1.6; opacity: 0.9; }
-        a.button { display: inline-block; margin-top: 40px; padding: 16px 32px; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); border-radius: 50px; color: white; text-decoration: none; font-size: 20px; font-weight: bold; box-shadow: 0 8px 32px rgba(0,0,0,0.4); transition: all 0.3s ease; }
-        a.button:hover { background: rgba(255, 255, 255, 0.3); transform: translateY(-4px); }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        }
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .content {
+            position: relative;
+            z-index: 1;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 48px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.6);
+        }
+        p {
+            font-size: 24px;
+            max-width: 800px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        a.button {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 16px 32px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+        }
+        a.button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-4px);
+        }
     </style>
 </head>
 <body>
@@ -24,8 +78,9 @@
         <a href="/ai.html" class="button">查看作品集 →</a>
     </div>
 
-    <!-- 使用国内最稳定的 Three.js CDN（已确认可用） -->
-    <script src="https://cdn.bootcdn.net/ajax/libs/three.js/0.180.0/three.min.js"></script>
+    <!-- 离线本地加载 Three.js -->
+    <script src="/three.core.min.js"></script>
+
     <script>
         const frag = `
 #define MAX_COLORS 8
