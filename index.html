@@ -1,317 +1,224 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <link rel="icon" href="/favicon.png" type="image/png">
-    <link rel="shortcut icon" href="/favicon.png" type="image/png">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI智能加人物</title>
     <style>
-        body {
-            margin: 0 auto;
+        * {
+            margin: 0;
             padding: 0;
-            background: #000;
-            color: #fff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            touch-action: pan-x;
-            max-width: 1440px;
-            width: 100%;
-            box-sizing: border-box;
-
-            /* 新增：彻底隐藏所有滚动条，但保留滚动功能和卡片延伸效果 */
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;     /* Firefox */
-        }
-        /* Chrome/Safari/Edge 隐藏滚动条 */
-        *::-webkit-scrollbar {
-            display: none;
-        }
-
-        .header {
-            padding: 80px 60px 60px 60px;
-            width: 100%;
             box-sizing: border-box;
         }
-        .header h1 {
-            font-size: 32px;
-            font-weight: 500;
-            margin: 0;
-            line-height: 1.4;
-            text-align: left;
-        }
-        .gallery-container {
-            overflow: visible; /* 保持 visible，让卡片能延伸超出容器 */
-            padding: 0 60px 140px 60px;
+        body, html {
             width: 100%;
-            box-sizing: border-box;
-            flex: 1;
-        }
-        .gallery {
-            display: flex;
-            gap: 20px;
-            transition: transform 0.8s cubic-bezier(0.34, 0.68, 0.15, 1);
-            width: fit-content;
-            min-width: 100%;
-        }
-        .card-wrapper {
-            flex: 0 0 327px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        .card {
-            width: 327px;
-            height: 450px;
-            background-size: cover;
-            background-position: center;
-            border-radius: 28px;
+            height: 100%;
             overflow: hidden;
-            background-color: rgba(40, 40, 40, 0.6);
-            backdrop-filter: blur(12px);
-            box-shadow: 0 12px 32px rgba(0,0,0,0.6);
+            background: #000;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
         }
-        .card-title {
-            font-size: 15px;
-            font-weight: 600;
-            margin: 0;
-            color: #ffffff;
-            text-align: left;
-        }
-        .card-desc {
-            font-size: 15px;
-            line-height: 1.6;
-            color: #ddd;
-            margin: 8px 0 0 0;
-            text-align: left;
-        }
-        .nav-buttons {
+        #canvas-container {
             position: fixed;
-            right: max(60px, calc((100vw - 1440px) / 2 + 60px));
-            top: 130px;
-            display: flex;
-            gap: 20px;
-            z-index: 1000;
-            pointer-events: auto;
-            transition: right 0.3s ease;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
         }
-        .nav-buttons button {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            transition: all 0.3s ease;
+        .content {
+            position: relative;
+            z-index: 1;
+            height: 100vh;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
         }
-        .nav-buttons button:hover {
+        h1 {
+            font-size: 48px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.6);
+        }
+        p {
+            font-size: 24px;
+            max-width: 800px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        a.button {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 16px 32px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+        }
+        a.button:hover {
             background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.1);
-        }
-        .nav-buttons button:disabled {
-            background: rgba(255, 255, 255, 0.08);
-            opacity: 0.4;
-            cursor: default;
-            transform: none;
-        }
-        .nav-buttons button:disabled:hover {
-            background: rgba(255, 255, 255, 0.08);
-            transform: none;
-        }
-        @media (max-width: 1024px) {
-            .header {
-                padding: 60px 30px 40px;
-            }
-            .header h1 {
-                font-size: 28px;
-                text-align: left;
-            }
-            .gallery-container {
-                padding: 0 20px 140px 50px;
-                overflow: hidden;
-            }
-            .gallery {
-                padding-left: 0 !important;
-                margin-left: 0 !important;
-                gap: 15px;
-                width: auto;
-                min-width: auto;
-            }
-            .card-wrapper {
-                flex: 0 0 260px;
-            }
-            .card {
-                width: 260px;
-                height: 314px;
-            }
-            .card-title {
-                font-size: 15px;
-            }
-            .card-desc {
-                font-size: 14px;
-            }
-            .nav-buttons {
-                top: 100px;
-                left: 80%;
-                transform: translateX(-50%);
-                right: auto;
-            }
-            .nav-buttons button {
-                width: 38px;
-                height: 38px;
-                font-size: 18px;
-                line-height: 50px;
-            }
+            transform: translateY(-4px);
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>无人场景加多人<br>多角度展示</h1>
+    <div id="canvas-container"></div>
+
+    <div class="content">
+        <h1>AI智能加人物<br>多角度展示</h1>
+        <p>专业室内设计效果图 · 无人场景快速添加真实人物<br>支持任意人数、自然姿势、多角度呈现</p>
+        <a href="/ai.html" class="button">查看作品集 →</a>
     </div>
-    <div class="gallery-container">
-        <div class="gallery" id="gallery">
-            <a href="detail.html" style="text-decoration: none; color: inherit;">
-                <div class="card-wrapper">
-                    <div class="card" style="background-image: url('https://img.adons.top/01/0.jpg');"></div>
-                    <div>
-                        <div class="card-title">快速添加一家五口自然就餐</div>
-                        <div class="card-desc">人物姿势真实、灯光协调<br>食物细节丰富、氛围温馨<br>完美呈现家庭生活场景</div>
-                    </div>
-                </div>
-            </a>
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/2-1.jpg');"></div>
-                <div>
-                    <div class="card-title">AI智能填充情侣温馨就餐</div>
-                    <div class="card-desc">情侣相对而坐共享晚餐<br>姿态放松、表情生动真实<br><br></div>
-                </div>
-            </div>
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/03/1.jfif');"></div>
-                <div>
-                    <div class="card-title">AI瞬间点亮三人欢乐茶歇</div>
-                    <div class="card-desc">完美呈现友情温暖的日常时光<br>每个人动作协调、表情自然<br>食物摆盘精致、茶壶蒸汽可见</div>
-                </div>
-            </div>
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
-                <div>
-                    <div class="card-title">空荡吧台瞬间生动</div>
-                    <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
-                </div>
-            </div>
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
-                <div>
-                    <div class="card-title">这是一个案例，不能删除</div>
-                    <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
-                </div>
-            </div>
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
-                <div>
-                    <div class="card-title">不能删除，懂吗</div>
-                    <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
-                </div>
-            </div>
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
-                <div>
-                    <div class="card-title">不可以删这里</div>
-                    <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="nav-buttons">
-        <button id="prev-btn">❮</button>
-        <button id="next-btn">❯</button>
-    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/three@0.167.1/build/three.min.js"></script>
     <script>
-        const galleryContainer = document.querySelector('.gallery-container');
-        const gallery = document.getElementById('gallery');
-        const items = document.querySelectorAll('.card-wrapper');
-        const total = items.length;
-        const prevBtn = document.getElementById('prev-btn');
-        const nextBtn = document.getElementById('next-btn');
-        let maxIndex = total - Math.floor(galleryContainer.offsetWidth / (327 + 20)); // 电脑端计算可见数量
-        if (maxIndex < 0) maxIndex = 0;
-        let index = 0;
-        function updateSlide() {
-            if (items.length === 0) return;
-            const itemWidth = items[0].getBoundingClientRect().width;
-            const gap = 20; // 电脑端 gap
-            const totalWidth = itemWidth + gap;
-            let offset = index * totalWidth;
-            if (window.innerWidth > 1024) {
-                if (index === 0) offset = 0;
-            } else {
-                offset = index * (itemWidth + 15) + 20;
-                if (index === 0) {
-                    gallery.style.transform = `translateX(-20px)`;
-                    return;
-                }
-            }
-            gallery.style.transform = `translateX(-${offset}px)`;
-            prevBtn.disabled = index === 0;
-            nextBtn.disabled = index >= maxIndex;
-        }
-        nextBtn.onclick = () => {
-            if (index < maxIndex) {
-                index++;
-                updateSlide();
-            }
-        };
-        prevBtn.onclick = () => {
-            if (index > 0) {
-                index--;
-                updateSlide();
-            }
-        };
-        window.addEventListener('resize', () => {
-            const visible = Math.floor(galleryContainer.offsetWidth / (window.innerWidth > 1024 ? 347 : 275));
-            maxIndex = total - visible;
-            if (maxIndex < 0) maxIndex = 0;
-            if (index > maxIndex) index = maxIndex;
-            updateSlide();
+        const frag = `
+#define MAX_COLORS 8
+uniform vec2 uCanvas;
+uniform float uTime;
+uniform float uSpeed;
+uniform vec2 uRot;
+uniform int uColorCount;
+uniform vec3 uColors[MAX_COLORS];
+uniform int uTransparent;
+uniform float uScale;
+uniform float uFrequency;
+uniform float uWarpStrength;
+uniform vec2 uPointer;
+uniform float uMouseInfluence;
+uniform float uParallax;
+uniform float uNoise;
+varying vec2 vUv;
+
+void main() {
+  float t = uTime * uSpeed;
+  vec2 p = vUv * 2.0 - 1.0;
+  p += uPointer * uParallax * 0.1;
+  vec2 rp = vec2(p.x * uRot.x - p.y * uRot.y, p.x * uRot.y + p.y * uRot.x);
+  vec2 q = vec2(rp.x * (uCanvas.x / uCanvas.y), rp.y);
+  q /= max(uScale, 0.0001);
+  q /= 0.5 + 0.2 * dot(q, q);
+  q += 0.2 * cos(t) - 7.56;
+  vec2 toward = (uPointer - rp);
+  q += toward * uMouseInfluence * 0.2;
+
+  vec3 col = vec3(0.0);
+  float a = 1.0;
+  if (uColorCount > 0) {
+    vec2 s = q;
+    vec3 sumCol = vec3(0.0);
+    float cover = 0.0;
+    for (int i = 0; i < MAX_COLORS; ++i) {
+      if (i >= uColorCount) break;
+      s -= 0.01;
+      vec2 r = sin(1.5 * (s.yx * uFrequency) + 2.0 * cos(s * uFrequency));
+      float m0 = length(r + sin(5.0 * r.y * uFrequency - 3.0 * t + float(i)) / 4.0);
+      float kBelow = clamp(uWarpStrength, 0.0, 1.0);
+      float kMix = pow(kBelow, 0.3);
+      float gain = 1.0 + max(uWarpStrength - 1.0, 0.0);
+      vec2 disp = (r - s) * kBelow;
+      vec2 warped = s + disp * gain;
+      float m1 = length(warped + sin(5.0 * warped.y * uFrequency - 3.0 * t + float(i)) / 4.0);
+      float m = mix(m0, m1, kMix);
+      float w = 1.0 - exp(-6.0 / exp(6.0 * m));
+      sumCol += uColors[i] * w;
+      cover = max(cover, w);
+    }
+    col = clamp(sumCol, 0.0, 1.0);
+    a = uTransparent > 0 ? cover : 1.0;
+  }
+
+  if (uNoise > 0.0001) {
+    float n = fract(sin(dot(gl_FragCoord.xy + vec2(uTime), vec2(12.9898, 78.233))) * 43758.5453123);
+    col += (n - 0.5) * uNoise;
+    col = clamp(col, 0.0, 1.0);
+  }
+
+  vec3 rgb = (uTransparent > 0) ? col * a : col;
+  gl_FragColor = vec4(rgb, a);
+}
+`;
+
+        const vert = `
+varying vec2 vUv;
+void main() {
+  vUv = uv;
+  gl_Position = vec4(position, 1.0);
+}
+`;
+
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+        const geometry = new THREE.PlaneGeometry(2, 2);
+
+        const colors = ["#ff5c7a", "#8a5cff", "#00ffd1"]; // 你原来的颜色
+        const uColorsArray = colors.map(hex => {
+            const h = hex.replace('#', '');
+            const r = parseInt(h.slice(0,2),16)/255;
+            const g = parseInt(h.slice(2,4),16)/255;
+            const b = parseInt(h.slice(4,6),16)/255;
+            return new THREE.Vector3(r, g, b);
         });
-        updateSlide();
-        // 手机端触屏滑动
-        let touchStartX = 0;
-        let isSwiping = false;
-        galleryContainer.addEventListener('touchstart', (e) => {
-            touchStartX = e.touches[0].clientX;
-            isSwiping = true;
-        }, { passive: false });
-        galleryContainer.addEventListener('touchmove', (e) => {
-            if (!isSwiping) return;
-            const deltaX = e.touches[0].clientX - touchStartX;
-            const currentOffset = index * (items[0].getBoundingClientRect().width + 15);
-            gallery.style.transition = 'none';
-            gallery.style.transform = `translateX(${ -currentOffset + deltaX }px)`;
-            e.preventDefault();
-        }, { passive: false });
-        galleryContainer.addEventListener('touchend', () => {
-            if (!isSwiping) return;
-            const deltaX = event.changedTouches[0].clientX - touchStartX;
-            gallery.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-            if (Math.abs(deltaX) > 50) {
-                if (deltaX > 0 && index > 0) index--;
-                else if (deltaX < 0 && index < maxIndex) index++;
-            }
-            updateSlide();
-            isSwiping = false;
+
+        const material = new THREE.ShaderMaterial({
+            vertexShader: vert,
+            fragmentShader: frag,
+            uniforms: {
+                uCanvas: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+                uTime: { value: 0 },
+                uSpeed: { value: 0.3 },
+                uRot: { value: new THREE.Vector2(1, 0) },
+                uColorCount: { value: colors.length },
+                uColors: { value: uColorsArray.concat(Array(8 - colors.length).fill(new THREE.Vector3(0,0,0))) },
+                uTransparent: { value: 1 },
+                uScale: { value: 1.2 },
+                uFrequency: { value: 1.4 },
+                uWarpStrength: { value: 1.2 },
+                uPointer: { value: new THREE.Vector2(0, 0) },
+                uMouseInfluence: { value: 0.8 },
+                uParallax: { value: 0.6 },
+                uNoise: { value: 0.08 }
+            },
+            transparent: true
+        });
+
+        const mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        const clock = new THREE.Clock();
+        let mouseX = 0, mouseY = 0;
+
+        container.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const elapsed = clock.getElapsedTime();
+            material.uniforms.uTime.value = elapsed;
+            material.uniforms.uPointer.value.set(mouseX * 0.5, mouseY * 0.5);
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            material.uniforms.uCanvas.value.set(window.innerWidth, window.innerHeight);
         });
     </script>
 </body>
