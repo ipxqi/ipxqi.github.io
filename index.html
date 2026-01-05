@@ -78,6 +78,7 @@
         <a href="/ai.html" class="button">查看作品集 →</a>
     </div>
 
+    <!-- 使用国内可靠 CDN 加载 Three.js -->
     <script src="https://lib.baomitu.com/three.js/r167/three.min.js"></script>
     <script>
         const frag = `
@@ -160,7 +161,7 @@ void main() {
         const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
         const geometry = new THREE.PlaneGeometry(2, 2);
 
-        const colors = ["#ff5c7a", "#8a5cff", "#00ffd1"]; // 你原来的颜色
+        const colors = ["#ff5c7a", "#8a5cff", "#00ffd1"];
         const uColorsArray = colors.map(hex => {
             const h = hex.replace('#', '');
             const r = parseInt(h.slice(0,2),16)/255;
@@ -168,6 +169,11 @@ void main() {
             const b = parseInt(h.slice(4,6),16)/255;
             return new THREE.Vector3(r, g, b);
         });
+
+        // 补足到8个颜色（剩余用黑色填充）
+        while (uColorsArray.length < 8) {
+            uColorsArray.push(new THREE.Vector3(0, 0, 0));
+        }
 
         const material = new THREE.ShaderMaterial({
             vertexShader: vert,
@@ -178,7 +184,7 @@ void main() {
                 uSpeed: { value: 0.3 },
                 uRot: { value: new THREE.Vector2(1, 0) },
                 uColorCount: { value: colors.length },
-                uColors: { value: uColorsArray.concat(Array(8 - colors.length).fill(new THREE.Vector3(0,0,0))) },
+                uColors: { value: uColorsArray },
                 uTransparent: { value: 1 },
                 uScale: { value: 1.2 },
                 uFrequency: { value: 1.4 },
