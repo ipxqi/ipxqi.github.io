@@ -16,37 +16,51 @@
         .orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(120px); /* 大模糊产生流动弯曲感 */
+            filter: blur(120px);
             opacity: 0.7;
-            mix-blend-mode: screen; /* 关键：颜色像光一样混合流动 */
-            animation: float linear infinite;
+            mix-blend-mode: screen;
         }
-        /* 5个不同颜色+大小+速度的流动球体 */
-        .orb1 { width: 800px; height: 800px; background: radial-gradient(circle, #ff5c7a 0%, transparent 70%); animation-duration: 30s; top: -200px; left: -200px; }
-        .orb2 { width: 600px; height: 600px; background: radial-gradient(circle, #8a5cff 0%, transparent 70%); animation-duration: 40s; top: 20%; right: -100px; animation-direction: reverse; }
-        .orb3 { width: 700px; height: 700px; background: radial-gradient(circle, #00ffd1 0%, transparent 70%); animation-duration: 35s; bottom: -150px; left: 10%; }
-        .orb4 { width: 900px; height: 900px; background: radial-gradient(circle, #ffff00 0%, transparent 70%); animation-duration: 45s; top: 10%; left: -300px; animation-direction: reverse; }
-        .orb5 { width: 500px; height: 500px; background: radial-gradient(circle, #ff8c00 0%, transparent 70%); animation-duration: 25s; bottom: 0; right: -200px; }
-
-        @keyframes float {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            100% { transform: translate(100vw, 100vh) rotate(360deg); }
+        .orb1 { 
+            width: 800px; height: 800px; 
+            background: radial-gradient(circle, #ff5c7a, transparent 70%); 
+            top: -200px; left: -200px; 
+            animation: float1 30s linear infinite; 
         }
-
-        /* 鼠标跟随的光球（交互变形感） */
+        .orb2 { 
+            width: 700px; height: 700px; 
+            background: radial-gradient(circle, #8a5cff, transparent 70%); 
+            bottom: -150px; right: -100px; 
+            animation: float2 35s linear infinite; 
+        }
+        .orb3 { 
+            width: 600px; height: 600px; 
+            background: radial-gradient(circle, #00ffd1, transparent 70%); 
+            top: 20%; left: 50%; 
+            animation: float3 40s linear infinite; 
+        }
         .orb-mouse {
             position: absolute;
-            width: 400px; height: 400px;
+            width: 500px; height: 500px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
-            filter: blur(80px);
-            opacity: 0.6;
+            background: radial-gradient(circle, rgba(255,255,255,0.6), transparent 70%);
+            filter: blur(100px);
+            opacity: 0.5;
             pointer-events: none;
             mix-blend-mode: screen;
-            transition: transform 0.2s ease-out;
             transform: translate(-50%, -50%);
         }
-
+        @keyframes float1 {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100vw, 100vh); }
+        }
+        @keyframes float2 {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100vw, -100vh); }
+        }
+        @keyframes float3 {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(50vw, 50vh) rotate(360deg); }
+        }
         .content { 
             position: relative; z-index: 1; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; padding: 20px; 
         }
@@ -61,8 +75,6 @@
         <div class="orb orb1"></div>
         <div class="orb orb2"></div>
         <div class="orb orb3"></div>
-        <div class="orb orb4"></div>
-        <div class="orb orb5"></div>
         <div class="orb orb-mouse" id="mouse-orb"></div>
     </div>
     <div class="content">
@@ -72,7 +84,6 @@
     </div>
 
     <script>
-        // 鼠标跟随光球
         const mouseOrb = document.getElementById('mouse-orb');
         document.addEventListener('mousemove', (e) => {
             mouseOrb.style.left = e.clientX + 'px';
