@@ -7,7 +7,7 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html { width: 100%; height: 100%; overflow: hidden; background: #000; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
-        #vanta-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        #canvas-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
         .content { position: relative; z-index: 1; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; padding: 20px; }
         h1 { font-size: 48px; font-weight: 600; margin-bottom: 20px; text-shadow: 0 4px 20px rgba(0,0,0,0.6); }
         p { font-size: 24px; max-width: 800px; line-height: 1.6; opacity: 0.9; }
@@ -16,33 +16,98 @@
     </style>
 </head>
 <body>
-    <div id="vanta-bg"></div>
+    <div id="canvas-container"></div>
     <div class="content">
         <h1>AI智能加人物<br>多角度展示</h1>
         <p>专业室内设计效果图 · 无人场景快速添加真实人物<br>支持任意人数、自然姿势、多角度呈现</p>
         <a href="/ai.html" class="button">查看作品集 →</a>
     </div>
 
-    <!-- 国内bootcdn超稳定加载 Three.js 和 Vanta.js NET效果 -->
+    <!-- 国内稳定 CDN 加载 Three.js -->
     <script src="https://cdn.bootcdn.net/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.bootcdn.net/ajax/libs/vanta/0.5.24/vanta.net.min.js"></script>
     <script>
-        VANTA.NET({
-            el: "#vanta-bg",
-            mouseControls: true,
-            touchControls: true,
-            gyroControls: false,
-            minHeight: 200.00,
-            minWidth: 200.00,
-            scale: 1.00,
-            scaleMobile: 1.00,
-            color: 0x8a5cff,         // 主色（紫色，可改成0xff5c7a粉红或0x00ffd1青色）
-            backgroundColor: 0x000000,
-            points: 10.00,
-            maxDistance: 22.00,
-            spacing: 16.00,
-            showDots: true
-        })
+        const container = document.getElementById('canvas-container');
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+        const geometry = new THREE.PlaneGeometry(2, 2);
+
+        const vertexShader = `
+            varying vec2 vUv;
+            void main() {
+                vUv = uv;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+        `;
+
+        const fragmentShader = `
+            uniform float uTime;
+            uniform vec2 uMouse;
+            varying vec2 vUv;
+
+            vec3 colorA = vec3(1.0, 0.3, 0.5); // 粉红
+            vec3 colorB = vec3(0.3, 0.2, 1.0); // 紫蓝
+            vec3 colorC = vec3(0.0, 1.0, 0.8); // 青色
+
+            void main() {
+                vec2 p = vUv - 0.5;
+                p.x *= 1.777; // 调整宽高比
+
+                // 鼠标影响弯曲
+                vec2 mouse = uMouse - 0.5;
+                float dist = length(p - mouse);
+                float influence = smoothstep(0.5, 0.0, dist);
+
+                // 流动弯曲波纹
+                float wave1 = sin(p.x * 10.0 + uTime * 2.0 + p.y * 5.0) * 0.05;
+                float wave2 = cos(p.y * 8.0 + uTime * 1.5 - p.x * 4.0) * 0.05;
+                p += vec2(wave1, wave2) * influence;
+
+                // 颜色混合
+                float mix1 = sin(p.x * 3.0 + uTime) * 0.5 + 0.5;
+                float mix2 = cos(p.y * 4.0 - uTime * 1.2) * 0.5 + 0.5;
+                vec3 color = mix(colorA, colorB, mix1);
+                color = mix(color, colorC, mix2);
+
+                gl_FragColor = vec4(color, 1.0);
+            }
+        `;
+
+        const material = new THREE.ShaderMaterial({
+            vertexShader,
+            fragmentShader,
+            uniforms: {
+                uTime: { value: 0 },
+                uMouse: { value: new THREE.Vector2(0.5, 0.5) }
+            }
+        });
+
+        const mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        const clock = new THREE.Clock();
+
+        document.addEventListener('mousemove', (e) => {
+            const rect = container.getBoundingClientRect();
+            material.uniforms.uMouse.value.x = (e.clientX - rect.left) / rect.width;
+            material.uniforms.uMouse.value.y = 1 - (e.clientY - rect.top) / rect.height;
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            material.uniforms.uTime.value = clock.getElapsedTime();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
     </script>
 </body>
 </html>
