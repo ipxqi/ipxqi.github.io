@@ -23,7 +23,7 @@
         <a href="/ai.html" class="button">查看作品集 →</a>
     </div>
 
-    <!-- 使用 CDN 加载 Three.js -->
+    <!-- 使用可靠 CDN 加载 Three.js -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.min.js"></script>
     <script>
         // Fragment Shader
@@ -112,9 +112,9 @@
         const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
         const geometry = new THREE.PlaneGeometry(2, 2);
 
-        // 颜色配置（你可以改成你喜欢的颜色）
+        // 颜色（可以改成你喜欢的）
         const colors = ["#ff5c7a", "#8a5cff", "#00ffd1"];
-        const uColorsArray = colors.map(hex => {
+        let uColorsArray = colors.map(hex => {
             const h = hex.replace('#', '');
             return new THREE.Vector3(
                 parseInt(h.slice(0,2),16)/255,
@@ -122,7 +122,7 @@
                 parseInt(h.slice(4,6),16)/255
             );
         });
-        // 填充到8个
+        // 填充剩余到8个
         while (uColorsArray.length < 8) {
             uColorsArray.push(new THREE.Vector3(0, 0, 0));
         }
