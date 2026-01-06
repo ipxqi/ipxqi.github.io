@@ -26,6 +26,7 @@
     <!-- 使用 CDN 加载 Three.js -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.min.js"></script>
     <script>
+        // Fragment Shader
         const frag = `
         #define MAX_COLORS 8
         uniform vec2 uCanvas;
@@ -97,6 +98,7 @@
         }
         `;
 
+        // Vertex Shader
         const vert = `
         varying vec2 vUv;
         void main() {
@@ -110,15 +112,20 @@
         const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
         const geometry = new THREE.PlaneGeometry(2, 2);
 
+        // 颜色配置（你可以改成你喜欢的颜色）
         const colors = ["#ff5c7a", "#8a5cff", "#00ffd1"];
         const uColorsArray = colors.map(hex => {
             const h = hex.replace('#', '');
-            const r = parseInt(h.slice(0,2),16)/255;
-            const g = parseInt(h.slice(2,4),16)/255;
-            const b = parseInt(h.slice(4,6),16)/255;
-            return new THREE.Vector3(r, g, b);
+            return new THREE.Vector3(
+                parseInt(h.slice(0,2),16)/255,
+                parseInt(h.slice(2,4),16)/255,
+                parseInt(h.slice(4,6),16)/255
+            );
         });
-        while (uColorsArray.length < 8) uColorsArray.push(new THREE.Vector3(0, 0, 0));
+        // 填充到8个
+        while (uColorsArray.length < 8) {
+            uColorsArray.push(new THREE.Vector3(0, 0, 0));
+        }
 
         const material = new THREE.ShaderMaterial({
             vertexShader: vert,
@@ -152,7 +159,8 @@
         container.appendChild(renderer.domElement);
 
         const clock = new THREE.Clock();
-        let mouseX = 0, mouseY = 0;
+        let mouseX = 0;
+        let mouseY = 0;
 
         container.addEventListener('mousemove', (e) => {
             const rect = container.getBoundingClientRect();
