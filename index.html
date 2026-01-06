@@ -23,24 +23,25 @@
         <a href="/ai.html" class="button">查看作品集 →</a>
     </div>
 
-    <!-- Vanta.js WAVES 效果（流动波纹 + 鼠标交互） -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js"></script>
+    <!-- 国内加速 CDN 加载 Three.js 和 Vanta.js NET 效果 -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vanta/0.5.24/vanta.net.min.js"></script>
     <script>
-        VANTA.WAVES({
+        VANTA.NET({
             el: "#vanta-bg",
             mouseControls: true,
             touchControls: true,
             gyroControls: false,
-            minHeight: 100.00,
-            minWidth: 100.00,
+            minHeight: 200.00,
+            minWidth: 200.00,
             scale: 1.00,
             scaleMobile: 1.00,
-            color: 0x8a5cff,          // 主波纹颜色（紫色，可改）
-            shininess: 50.00,
-            waveHeight: 20.00,
-            waveSpeed: 0.75,
-            zoom: 0.8
+            color: 0x8a5cff,         // 主色调（紫色）
+            backgroundColor: 0x000000,
+            points: 10.00,
+            maxDistance: 25.00,
+            spacing: 18.00,
+            showDots: true
         })
     </script>
 </body>
