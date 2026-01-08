@@ -239,6 +239,11 @@
             z-index: 15;
             opacity: 1;
             transition: opacity 0.5s ease;
+            display: flex;              /* ← 新增：flex布局 */
+    align-items: center;        /* ← 新增：垂直居中 */
+    justify-content: center;    /* ← 新增：水平居中 */
+    text-align: center;         /* ← 新增：文字本身也居中 */
+    white-space: nowrap;        /* ← 新增：防止文字换行乱掉 */
         }
         .desktop-guide { display: block; }
         .mobile-guide { display: none; }
@@ -315,6 +320,7 @@
             backdrop-filter: blur(10px);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
             transition: all 0.3s ease;
+            line-height: 50px; /* ← 新增这行！！！强制箭头符号完美垂直居中 */
         }
         .nav-arrow:hover {
             background: rgba(255, 255, 255, 0.3);
