@@ -190,6 +190,23 @@
                 font-size: 22px;
             }
         }
+        .tabs {
+    text-align: center;
+    padding: 20px 0;
+    overflow-x: auto; /* 允许横向滚动 */
+    white-space: nowrap; /* 不换行 */
+    -webkit-overflow-scrolling: touch; /* iOS 平滑滚动 */
+    scrollbar-width: none; /* Firefox 隐藏滚动条 */
+}
+
+.tabs::-webkit-scrollbar {
+    display: none; /* Chrome/Safari 隐藏滚动条 */
+}
+
+.tabs button {
+    display: inline-block; /* 确保按钮横向排列 */
+    min-width: 80px; /* 防止太挤 */
+}
     </style>
 </head>
 <body>
