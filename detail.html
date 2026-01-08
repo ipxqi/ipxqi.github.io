@@ -275,17 +275,29 @@
         }
         .label-a { left: 20px; color: #ffffff; }
         .label-b { right: 20px; color: #ffffff; }
+        /* 修改这里：左右箭头向下移动到底部 + 加圆底 */
         .nav-arrow {
             position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
+            bottom: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
             color: white;
             border: none;
-            font-size: 40px;
+            font-size: 30px;
             cursor: pointer;
             z-index: 20;
-            text-shadow: 0 0 10px rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+        .nav-arrow:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
         }
         .prev { left: 20px; }
         .next { right: 20px; }
