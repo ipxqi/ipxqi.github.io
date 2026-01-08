@@ -550,6 +550,13 @@
             percent = Math.max(0, Math.min(100, percent));
             updateSlider(percent);
 
+            // 手机端手指触碰对比图区域时隐藏提示文字
+wrapper.addEventListener('touchstart', (e) => {
+    if (scenes[currentScene][currentIndex].compare) {
+        guideText.style.opacity = '0';
+    }
+});
+
             // ← 新增：手机端滑动时标签动画（和电脑端一模一样）
     if (percent < 50) {
         document.getElementById('label-original').style.opacity = '0';
@@ -575,6 +582,27 @@
         const sceneParam = urlParams.get('scene');
         const initialScene = sceneParam ? parseInt(sceneParam) : 1;
         loadScene(initialScene);
+
+                    // 手机端箭头控制：场景一隐藏左箭头，场景七隐藏右箭头
+            const prevArrow = document.querySelector('.mobile-tab-arrow.prev');
+            const nextArrow = document.querySelector('.mobile-tab-arrow.next');
+            if (prevArrow && nextArrow) {
+                if (sceneId === 1) {
+                    prevArrow.style.opacity = '0';
+                    prevArrow.style.pointerEvents = 'none';
+                } else {
+                    prevArrow.style.opacity = '0.6';
+                    prevArrow.style.pointerEvents = 'auto';
+                }
+                if (sceneId === 7) {
+                    nextArrow.style.opacity = '0';
+                    nextArrow.style.pointerEvents = 'none';
+                } else {
+                    nextArrow.style.opacity = '0.6';
+                    nextArrow.style.pointerEvents = 'auto';
+                }
+            }
+    
     </script>
 </body>
 </html>
