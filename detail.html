@@ -4,7 +4,7 @@
     <link rel="icon" href="/favicon.png" type="image/png">
     <link rel="shortcut icon" href="/favicon.png" type="image/png">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>场景对比展示</title>
     <style>
         body {
@@ -311,20 +311,26 @@
     border-radius: 50%;
     color: white;
     border: none;
-    font-size: 32px;         /* ← 稍微加大字体，更饱满 */
+    font-size: 32px;
     cursor: pointer;
     z-index: 20;
-    display: flex;
-    align-items: center;     /* 垂直完美居中 */
-    justify-content: center; /* 水平完美居中 */
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
     transition: all 0.3s ease;
-    /* 彻底移除可能导致下沉的属性 */
-    line-height: normal !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 新增：箭头符号容器，强制像素级完美居中 */
+.nav-arrow::before {
+    content: attr(data-icon); /* 使用data-icon动态设置箭头 */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* 绝对像素级居中 */
+    font-size: 32px;
+    line-height: 1;
 }
         .nav-arrow:hover {
             background: rgba(255, 255, 255, 0.3);
@@ -406,8 +412,8 @@
             </div>
             <!-- 手机端圆点指示器 -->
             <div class="dots-indicator" id="dotsIndicator"></div>
-            <button class="nav-arrow prev" id="prev">‹</button>
-            <button class="nav-arrow next" id="next">›</button>
+            <button class="nav-arrow prev" id="prev" data-icon="‹"></button>
+            <button class="nav-arrow next" id="next" data-icon="›"></button>
         </div>
         <div class="thumbnails" id="thumbnails"></div>
     </div>
@@ -652,6 +658,22 @@
         const sceneParam = urlParams.get('scene');
         const initialScene = sceneParam ? parseInt(sceneParam) : 1;
         loadScene(initialScene);
+
+        // 禁止双击缩放
+document.addEventListener('touchstart', function(e) {
+    if (e.touches.length > 1) {
+        e.preventDefault();
+    }
+}, { passive: false });
+
+let lastTouchEnd = 0;
+document.addEventListener('touchend', function(e) {
+    const now = (new Date()).getTime();
+    if (now - lastTouchEnd <= 300) {
+        e.preventDefault();
+    }
+    lastTouchEnd = now;
+}, { passive: false });
     </script>
 </body>
 </html>
