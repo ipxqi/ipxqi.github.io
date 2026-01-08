@@ -13,7 +13,7 @@
             background: #000;
             color: #fff;
             font-family: Arial, sans-serif;
-            overflow: hidden;        /* ← 新增：禁止滚动 */
+            overflow: hidden;
         }
         .back-button {
             position: fixed;
@@ -183,11 +183,11 @@
             }
             .dots-indicator {
                 position: absolute;
-                bottom: 45px; /* 手机端专属：原图/效果图文字小一点 */
+                bottom: 45px;
                 left: 50%;
                 transform: translateX(-50%);
                 display: flex;
-                gap: 10px; /* ← 稍微加大间距，更舒服 */
+                gap: 10px;
                 z-index: 20;
             }
             .dot {
@@ -201,11 +201,10 @@
                 background: white;
                 transform: scale(1.2);
             }
-            /* 手机端专属：原图/效果图文字小一点 */
             .label {
-    font-size: 16px !important;
-    padding: 6px 14px !important;
-}
+                font-size: 16px !important;
+                padding: 6px 14px !important;
+            }
         }
         .container {
             display: flex;
@@ -239,11 +238,11 @@
             z-index: 15;
             opacity: 1;
             transition: opacity 0.5s ease;
-            display: flex;              /* ← 新增：flex布局 */
-    align-items: center;        /* ← 新增：垂直居中 */
-    justify-content: center;    /* ← 新增：水平居中 */
-    text-align: center;         /* ← 新增：文字本身也居中 */
-    white-space: nowrap;        /* ← 新增：防止文字换行乱掉 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            white-space: nowrap;
         }
         .desktop-guide { display: block; }
         .mobile-guide { display: none; }
@@ -302,36 +301,27 @@
         }
         .label-a { left: 20px; color: #ffffff; }
         .label-b { right: 20px; color: #ffffff; }
+        /* 保留圆圈毛玻璃底，换成苹果官网风格粗 chevron 箭头 */
         .nav-arrow {
-    position: absolute;
-    bottom: 20px;
-    background: rgba(255, 255, 255, 0.15);
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    color: white;
-    border: none;
-    font-size: 32px;
-    cursor: pointer;
-    z-index: 20;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* 新增：箭头符号容器，强制像素级完美居中 */
-.nav-arrow::before {
-    content: attr(data-icon); /* 使用data-icon动态设置箭头 */
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* 绝对像素级居中 */
-    font-size: 32px;
-    line-height: 1;
-}
+            position: absolute;
+            bottom: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            color: white;
+            border: none;
+            font-size: 38px; /* 粗大箭头 */
+            font-weight: bold; /* 加粗，像苹果风格 */
+            cursor: pointer;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
         .nav-arrow:hover {
             background: rgba(255, 255, 255, 0.3);
             transform: scale(1.1);
@@ -410,10 +400,10 @@
                 <div class="guide-text desktop-guide">左右移动鼠标 查看对比</div>
                 <div class="guide-text mobile-guide">滑动屏幕查看对比</div>
             </div>
-            <!-- 手机端圆点指示器 -->
             <div class="dots-indicator" id="dotsIndicator"></div>
-            <button class="nav-arrow prev" id="prev" data-icon="‹"></button>
-            <button class="nav-arrow next" id="next" data-icon="›"></button>
+            <!-- 苹果官网风格粗 chevron 箭头（保留圆圈底） -->
+            <button class="nav-arrow prev" id="prev">‹</button>
+            <button class="nav-arrow next" id="next">›</button>
         </div>
         <div class="thumbnails" id="thumbnails"></div>
     </div>
@@ -654,26 +644,26 @@
             loadImage(currentIndex);
         });
 
+        // 禁止双击缩放
+        document.addEventListener('touchstart', function(e) {
+            if (e.touches.length > 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(e) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, { passive: false });
+
         const urlParams = new URLSearchParams(window.location.search);
         const sceneParam = urlParams.get('scene');
         const initialScene = sceneParam ? parseInt(sceneParam) : 1;
         loadScene(initialScene);
-
-        // 禁止双击缩放
-document.addEventListener('touchstart', function(e) {
-    if (e.touches.length > 1) {
-        e.preventDefault();
-    }
-}, { passive: false });
-
-let lastTouchEnd = 0;
-document.addEventListener('touchend', function(e) {
-    const now = (new Date()).getTime();
-    if (now - lastTouchEnd <= 300) {
-        e.preventDefault();
-    }
-    lastTouchEnd = now;
-}, { passive: false });
     </script>
 </body>
 </html>
