@@ -51,27 +51,63 @@
                 font-size: 22px;
             }
         }
-        /* 苹果相机胶囊式场景切换 */
-        .apple-camera-tabs {
+        /* 电脑端胶囊标签（长度自适应，高度更小42px） */
+        .desktop-tabs {
+            text-align: center;
+            padding: 20px 0;
+        }
+        .desktop-tabs-container {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 30px;
+            padding: 6px 18px; /* 高度更小 */
+            backdrop-filter: blur(20px);
+            gap: 16px;
+            height: 42px; /* 总高度更小 */
+        }
+        .desktop-tab {
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            white-space: nowrap;
+            height: 30px;
+            display: flex;
+            align-items: center;
+        }
+        .desktop-tab.active {
+            background: white;
+            color: #000;
+            font-weight: bold;
+        }
+
+        /* 手机端胶囊标签（固定360px宽度，高度更小42px） */
+        .mobile-tabs {
+            display: none;
             padding: 20px 20px;
         }
-        .apple-camera-container {
+        .mobile-tabs-container {
             position: relative;
             display: flex;
             align-items: center;
             background: rgba(255, 255, 255, 0.08);
             border-radius: 30px;
-            padding: 8px;
+            padding: 6px;
             backdrop-filter: blur(20px);
             overflow: hidden;
-            width: 360px; /* 总长固定360px */
+            width: 360px;
             max-width: 100%;
             margin: 0 auto;
+            height: 42px; /* 总高度更小 */
         }
-        .apple-tab-arrow {
+        .mobile-tab-arrow {
             position: absolute;
             width: 40px;
-            height: 40px;
+            height: 42px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -80,43 +116,57 @@
             cursor: pointer;
             z-index: 10;
         }
-        .apple-tab-arrow.prev {
+        .mobile-tab-arrow.prev {
             left: 8px;
         }
-        .apple-tab-arrow.next {
+        .mobile-tab-arrow.next {
             right: 8px;
         }
-        .apple-tabs-list {
+        .mobile-tabs-list {
             display: flex;
-            gap: 20px;
+            gap: 16px;
             overflow-x: auto;
             scroll-behavior: smooth;
             scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
-            padding: 0 50px; /* 留出箭头 + 渐变空间 */
+            padding: 0 50px;
             width: 100%;
-            mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%); /* 文字靠近左右时渐变隐藏 */
+            height: 42px;
+            align-items: center;
+            mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
             -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
         }
-        .apple-tabs-list::-webkit-scrollbar {
+        .mobile-tabs-list::-webkit-scrollbar {
             display: none;
         }
-        .apple-tab {
+        .mobile-tab {
             flex-shrink: 0;
-            padding: 10px 20px;
+            padding: 8px 18px;
             border-radius: 25px;
-            font-size: 15px;
-            font-weight: 500;
+            font-size: 14px;
             transition: all 0.3s ease;
             background: transparent;
             color: rgba(255, 255, 255, 0.6);
             cursor: pointer;
             white-space: nowrap;
+            height: 30px;
+            display: flex;
+            align-items: center;
         }
-        .apple-tab.active {
+        .mobile-tab.active {
             background: white;
             color: #000;
             font-weight: bold;
+        }
+
+        /* 响应式切换 */
+        @media (max-width: 768px) {
+            .desktop-tabs {
+                display: none;
+            }
+            .mobile-tabs {
+                display: block;
+            }
         }
 
         .container {
@@ -253,20 +303,33 @@
         <a href="ai.html">‹</a>
     </div>
 
-    <!-- 苹果相机胶囊式场景切换 -->
-    <div class="apple-camera-tabs">
-        <div class="apple-camera-container">
-            <div class="apple-tab-arrow prev" onclick="scrollToPrev()">‹</div>
-            <div class="apple-tabs-list" id="appleTabsList">
-                <div class="apple-tab active" onclick="loadScene(1)">场景一</div>
-                <div class="apple-tab" onclick="loadScene(2)">场景二</div>
-                <div class="apple-tab" onclick="loadScene(3)">场景三</div>
-                <div class="apple-tab" onclick="loadScene(4)">场景四</div>
-                <div class="apple-tab" onclick="loadScene(5)">场景五</div>
-                <div class="apple-tab" onclick="loadScene(6)">场景六</div>
-                <div class="apple-tab" onclick="loadScene(7)">场景七</div>
+    <!-- 电脑端胶囊标签（长度自适应） -->
+    <div class="desktop-tabs">
+        <div class="desktop-tabs-container">
+            <div class="desktop-tab active" onclick="loadScene(1)">场景一</div>
+            <div class="desktop-tab" onclick="loadScene(2)">场景二</div>
+            <div class="desktop-tab" onclick="loadScene(3)">场景三</div>
+            <div class="desktop-tab" onclick="loadScene(4)">场景四</div>
+            <div class="desktop-tab" onclick="loadScene(5)">场景五</div>
+            <div class="desktop-tab" onclick="loadScene(6)">场景六</div>
+            <div class="desktop-tab" onclick="loadScene(7)">场景七</div>
+        </div>
+    </div>
+
+    <!-- 手机端胶囊标签（固定360px宽度） -->
+    <div class="mobile-tabs">
+        <div class="mobile-tabs-container">
+            <div class="mobile-tab-arrow prev" onclick="scrollToPrev()">‹</div>
+            <div class="mobile-tabs-list" id="mobileTabsList">
+                <div class="mobile-tab active" onclick="loadScene(1)">场景一</div>
+                <div class="mobile-tab" onclick="loadScene(2)">场景二</div>
+                <div class="mobile-tab" onclick="loadScene(3)">场景三</div>
+                <div class="mobile-tab" onclick="loadScene(4)">场景四</div>
+                <div class="mobile-tab" onclick="loadScene(5)">场景五</div>
+                <div class="mobile-tab" onclick="loadScene(6)">场景六</div>
+                <div class="mobile-tab" onclick="loadScene(7)">场景七</div>
             </div>
-            <div class="apple-tab-arrow next" onclick="scrollToNext()">›</div>
+            <div class="mobile-tab-arrow next" onclick="scrollToNext()">›</div>
         </div>
     </div>
 
@@ -376,8 +439,13 @@
             currentScene = sceneId;
             currentIndex = 0;
 
-            // 更新标签激活状态
-            document.querySelectorAll('.apple-tab').forEach((tab, i) => {
+            // 更新电脑端标签
+            document.querySelectorAll('.desktop-tab').forEach((tab, i) => {
+                tab.classList.toggle('active', i + 1 === sceneId);
+            });
+
+            // 更新手机端标签
+            document.querySelectorAll('.mobile-tab').forEach((tab, i) => {
                 tab.classList.toggle('active', i + 1 === sceneId);
             });
 
@@ -463,7 +531,7 @@
 
         wrapper.addEventListener('touchmove', (e) => {
             if (!scenes[currentScene][currentIndex].compare) return;
-            e.preventDefault();
+            e.preventDefault;
             const rect = wrapper.getBoundingClientRect();
             const x = e.touches[0].clientX - rect.left;
             let percent = (x / rect.width) * 100;
