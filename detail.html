@@ -549,6 +549,15 @@
             let percent = (x / rect.width) * 100;
             percent = Math.max(0, Math.min(100, percent));
             updateSlider(percent);
+
+            // ← 新增：手机端滑动时标签动画（和电脑端一模一样）
+    if (percent < 50) {
+        document.getElementById('label-original').style.opacity = '0';
+        document.getElementById('label-edited').style.opacity = '1';
+    } else {
+        document.getElementById('label-original').style.opacity = '1';
+        document.getElementById('label-edited').style.opacity = '0';
+    }
         });
 
         document.getElementById('prev').addEventListener('click', () => {
