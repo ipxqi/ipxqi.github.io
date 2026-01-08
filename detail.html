@@ -120,8 +120,8 @@
         .mobile-tabs-list {
             display: flex;
             gap: 12px;
-            overflow-x: hidden; /* 隐藏滚动条，靠 JS 平滑滚动 */
-            scroll-behavior: smooth; /* 平滑滚动动画 */
+            overflow-x: hidden;
+            scroll-behavior: smooth;
             padding: 0 40px;
             width: 100%;
         }
@@ -335,7 +335,63 @@
     </div>
 
     <script>
-        const scenes = { /* 你的7个场景数据保持不变 */ };
+        // 场景数据（你的完整图片链接全部恢复！！！）
+        const scenes = {
+            1: [ // 场景一
+                { compare: true, original: "https://img.adons.top/01/1.jpg", edited: "https://img.adons.top/01/0.jpg", thumb: "https://img.adons.top/01/0.jpg" },
+                { single: "https://img.adons.top/01/1.jpg", thumb: "https://img.adons.top/01/1.jpg" },
+                { single: "https://img.adons.top/01/3.jpg", thumb: "https://img.adons.top/01/3.jpg" },
+                { single: "https://img.adons.top/01/4.jpg", thumb: "https://img.adons.top/01/4.jpg" },
+                { single: "https://img.adons.top/01/5.jpg", thumb: "https://img.adons.top/01/5.jpg" }
+            ],
+            2: [ // 场景二
+                { compare: true, original: "https://img.adons.top/02/2-2.jpg", edited: "https://img.adons.top/02/2-1.jpg", thumb: "https://img.adons.top/02/2-1.jpg" },
+                { single: "https://img.adons.top/02/2-2.jpg", thumb: "https://img.adons.top/02/2-2.jpg" },
+                { single: "https://img.adons.top/02/2-3.jpg", thumb: "https://img.adons.top/02/2-3.jpg" },
+                { single: "https://img.adons.top/02/2-4.jpg", thumb: "https://img.adons.top/02/2-4.jpg" },
+                { single: "https://img.adons.top/02/2-5.jpg", thumb: "https://img.adons.top/02/2-5.jpg" }
+            ],
+            3: [ // 场景三
+                { compare: true, original: "https://img.adons.top/03/2.png", edited: "https://img.adons.top/03/1.jfif", thumb: "https://img.adons.top/03/1.jfif" },
+                { single: "https://img.adons.top/03/2.png", thumb: "https://img.adons.top/03/2.png" },
+                { single: "https://img.adons.top/03/3.png", thumb: "https://img.adons.top/03/3.png" },
+                { single: "https://img.adons.top/03/4.png", thumb: "https://img.adons.top/03/4.png" },
+                { single: "https://img.adons.top/03/5.png", thumb: "https://img.adons.top/03/5.png" },
+                { single: "https://img.adons.top/03/6.png", thumb: "https://img.adons.top/03/6.png" }
+            ],
+            4: [ // 场景四
+                { compare: true, original: "https://img.adons.top/04/2.png", edited: "https://img.adons.top/04/1.jfif", thumb: "https://img.adons.top/04/1.jfif" },
+                { single: "https://img.adons.top/04/2.png", thumb: "https://img.adons.top/04/2.png" },
+                { single: "https://img.adons.top/04/3.png", thumb: "https://img.adons.top/04/3.png" },
+                { single: "https://img.adons.top/04/4.png", thumb: "https://img.adons.top/04/4.png" },
+                { single: "https://img.adons.top/04/5.png", thumb: "https://img.adons.top/04/5.png" },
+                { single: "https://img.adons.top/04/6.png", thumb: "https://img.adons.top/04/6.png" }
+            ],
+            5: [ // 场景五
+                { compare: true, original: "https://img.adons.top/05/2.png", edited: "https://img.adons.top/05/1.jfif", thumb: "https://img.adons.top/05/1.jfif" },
+                { single: "https://img.adons.top/05/2.png", thumb: "https://img.adons.top/05/2.png" },
+                { single: "https://img.adons.top/05/3.png", thumb: "https://img.adons.top/05/3.png" },
+                { single: "https://img.adons.top/05/4.png", thumb: "https://img.adons.top/05/4.png" },
+                { single: "https://img.adons.top/05/5.png", thumb: "https://img.adons.top/05/5.png" },
+                { single: "https://img.adons.top/05/6.png", thumb: "https://img.adons.top/05/6.png" }
+            ],
+            6: [ // 场景六
+                { compare: true, original: "https://img.adons.top/06/2.png", edited: "https://img.adons.top/06/1.jfif", thumb: "https://img.adons.top/06/1.jfif" },
+                { single: "https://img.adons.top/06/2.png", thumb: "https://img.adons.top/06/2.png" },
+                { single: "https://img.adons.top/06/3.png", thumb: "https://img.adons.top/06/3.png" },
+                { single: "https://img.adons.top/06/4.png", thumb: "https://img.adons.top/06/4.png" },
+                { single: "https://img.adons.top/06/5.png", thumb: "https://img.adons.top/06/5.png" },
+                { single: "https://img.adons.top/06/6.png", thumb: "https://img.adons.top/06/6.png" }
+            ],
+            7: [ // 场景七
+                { compare: true, original: "https://img.adons.top/07/2.png", edited: "https://img.adons.top/07/1.jfif", thumb: "https://img.adons.top/07/1.jfif" },
+                { single: "https://img.adons.top/07/2.png", thumb: "https://img.adons.top/07/2.png" },
+                { single: "https://img.adons.top/07/3.png", thumb: "https://img.adons.top/07/3.png" },
+                { single: "https://img.adons.top/07/4.png", thumb: "https://img.adons.top/07/4.png" },
+                { single: "https://img.adons.top/07/5.png", thumb: "https://img.adons.top/07/5.png" },
+                { single: "https://img.adons.top/07/6.png", thumb: "https://img.adons.top/07/6.png" }
+            ]
+        };
 
         let currentScene = 1;
         let currentIndex = 0;
@@ -347,6 +403,20 @@
         const thumbnails = document.getElementById('thumbnails');
         const guideText = document.querySelector('.guide-text');
         const mobileTabsList = document.getElementById('mobileTabsList');
+
+        function scrollToPrev() {
+            const tabs = mobileTabsList.querySelectorAll('.mobile-tab');
+            let newScene = currentScene - 1;
+            if (newScene < 1) newScene = tabs.length;
+            loadScene(newScene);
+        }
+
+        function scrollToNext() {
+            const tabs = mobileTabsList.querySelectorAll('.mobile-tab');
+            let newScene = currentScene + 1;
+            if (newScene > tabs.length) newScene = 1;
+            loadScene(newScene);
+        }
 
         function loadScene(sceneId) {
             currentScene = sceneId;
@@ -368,7 +438,7 @@
                 activeTab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
             }
 
-            // 加载缩略图和图片（保持原有逻辑）
+            // 加载缩略图
             thumbnails.innerHTML = '';
             scenes[sceneId].forEach((item, i) => {
                 const img = document.createElement('img');
@@ -382,22 +452,85 @@
             loadImage(0);
         }
 
-        // 你的 loadImage, updateSlider 等函数保持不变...
-
-        // 左右箭头点击滚动到上/下一个标签并选中
-        function scrollToPrev() {
-            const tabs = mobileTabsList.querySelectorAll('.mobile-tab');
-            let newScene = currentScene - 1;
-            if (newScene < 1) newScene = tabs.length;
-            loadScene(newScene);
+        function loadImage(index) {
+            const item = scenes[currentScene][index];
+            const isCompare = item.compare;
+            if (isCompare) {
+                original.src = item.original;
+                edited.src = item.edited;
+                original.style.display = 'block';
+                edited.style.display = 'block';
+                slider.style.display = 'flex';
+                document.getElementById('label-original').style.opacity = '1';
+                document.getElementById('label-edited').style.opacity = '1';
+                guideText.style.opacity = '1';
+            } else {
+                original.src = item.single;
+                edited.src = '';
+                original.style.display = 'block';
+                edited.style.display = 'none';
+                slider.style.display = 'none';
+                document.getElementById('label-original').style.opacity = '0';
+                document.getElementById('label-edited').style.opacity = '0';
+                guideText.style.opacity = '0';
+            }
+            document.querySelectorAll('.thumb').forEach((t, i) => t.classList.toggle('active', i === index));
+            currentIndex = index;
+            updateSlider(50);
         }
 
-        function scrollToNext() {
-            const tabs = mobileTabsList.querySelectorAll('.mobile-tab');
-            let newScene = currentScene + 1;
-            if (newScene > tabs.length) newScene = 1;
-            loadScene(newScene);
+        function updateSlider(percent) {
+            edited.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+            slider.style.left = percent + '%';
         }
+
+        wrapper.addEventListener('mouseenter', () => {
+            if (scenes[currentScene][currentIndex].compare) {
+                guideText.style.opacity = '0';
+            }
+        });
+
+        wrapper.addEventListener('mouseleave', () => {
+            if (scenes[currentScene][currentIndex].compare) {
+                guideText.style.opacity = '1';
+            }
+        });
+
+        wrapper.addEventListener('mousemove', (e) => {
+            if (!scenes[currentScene][currentIndex].compare) return;
+            const rect = wrapper.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            let percent = (x / rect.width) * 100;
+            percent = Math.max(0, Math.min(100, percent));
+            updateSlider(percent);
+            if (percent < 50) {
+                document.getElementById('label-original').style.opacity = '0';
+                document.getElementById('label-edited').style.opacity = '1';
+            } else {
+                document.getElementById('label-original').style.opacity = '1';
+                document.getElementById('label-edited').style.opacity = '0';
+            }
+        });
+
+        wrapper.addEventListener('touchmove', (e) => {
+            if (!scenes[currentScene][currentIndex].compare) return;
+            e.preventDefault();
+            const rect = wrapper.getBoundingClientRect();
+            const x = e.touches[0].clientX - rect.left;
+            let percent = (x / rect.width) * 100;
+            percent = Math.max(0, Math.min(100, percent));
+            updateSlider(percent);
+        });
+
+        document.getElementById('prev').addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + scenes[currentScene].length) % scenes[currentScene].length;
+            loadImage(currentIndex);
+        });
+
+        document.getElementById('next').addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % scenes[currentScene].length;
+            loadImage(currentIndex);
+        });
 
         // 读取 URL 参数 scene
         const urlParams = new URLSearchParams(window.location.search);
