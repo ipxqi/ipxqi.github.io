@@ -89,9 +89,15 @@
 
         /* 手机端胶囊标签（固定360px宽度，高度34px） */
         .mobile-tabs {
-            display: none;
-            padding: 20px 20px;
-        }
+    display: none;
+    position: fixed;     /* ← 新增：固定定位 */
+    top: 0;              /* ← 新增：贴顶 */
+    left: 0;             /* ← 新增：左边对齐 */
+    right: 0;            /* ← 新增：右边对齐 */
+    padding: 20px 20px 10px; /* ← 微调底部padding，避免遮挡内容 */
+    z-index: 999;        /* ← 新增：高层级，确保在内容上方 */
+    pointer-events: none; /* ← 新增：允许点击穿透（标签本身会重新开启） */
+}
         .mobile-tabs-container {
             position: relative;
             display: flex;
@@ -106,6 +112,7 @@
             margin-left: 50px;   /* ← 这里改了！！！ */
             margin-right: auto;  /* ← 新增这行，保持右边自适应 */
             height: 28px; /* 高度再小一点 */
+            pointer-events: auto; /* ← 新增这行！！！ */
         }
         .mobile-tab-arrow {
             position: absolute;
