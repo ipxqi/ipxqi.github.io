@@ -363,8 +363,13 @@
             loadImage(currentIndex);
         });
 
-        // 初始化场景一
-        loadScene(1);
+        // 读取 URL 参数 scene
+const urlParams = new URLSearchParams(window.location.search);
+const sceneParam = urlParams.get('scene');
+const initialScene = sceneParam ? parseInt(sceneParam) : 1;
+
+// 初始化对应场景
+loadScene(initialScene);
     </script>
 </body>
 </html>
