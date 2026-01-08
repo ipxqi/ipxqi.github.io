@@ -51,7 +51,7 @@
                 font-size: 22px;
             }
         }
-        /* 电脑端胶囊标签（长度自适应，高度34px） */
+        /* 电脑端胶囊标签 */
         .desktop-tabs {
             text-align: center;
             padding: 20px 0;
@@ -86,7 +86,7 @@
             color: #000;
             font-weight: bold;
         }
-        /* 手机端胶囊标签（固定360px宽度，高度34px） */
+        /* 手机端胶囊标签 */
         .mobile-tabs {
             display: none;
             position: fixed;
@@ -169,7 +169,7 @@
             color: #000;
             font-weight: bold;
         }
-        /* 响应式切换 */
+        /* 响应式切换 + 手机端专属样式 */
         @media (max-width: 768px) {
             .desktop-tabs {
                 display: none;
@@ -177,14 +177,12 @@
             .mobile-tabs {
                 display: block;
             }
-            /* 手机端隐藏缩略图 */
             .thumbnails {
                 display: none !important;
             }
-            /* 手机端添加圆点指示器 */
             .dots-indicator {
                 position: absolute;
-                bottom: 80px; /* 距离底部80px，避开左右箭头 */
+                bottom: 80px;
                 left: 50%;
                 transform: translateX(-50%);
                 display: flex;
@@ -210,7 +208,7 @@
             gap: 20px;
             max-width: 1600px;
             margin: 0 auto;
-            position: relative; /* 为圆点定位 */
+            position: relative;
         }
         .comparison-wrapper {
             flex: 2;
@@ -236,19 +234,11 @@
             opacity: 1;
             transition: opacity 0.5s ease;
         }
-        .desktop-guide {
-            display: block;
-        }
-        .mobile-guide {
-            display: none;
-        }
+        .desktop-guide { display: block; }
+        .mobile-guide { display: none; }
         @media (max-width: 768px) {
-            .desktop-guide {
-                display: none;
-            }
-            .mobile-guide {
-                display: block;
-            }
+            .desktop-guide { display: none; }
+            .mobile-guide { display: block; }
         }
         .comparison {
             position: absolute;
@@ -301,7 +291,6 @@
         }
         .label-a { left: 20px; color: #ffffff; }
         .label-b { right: 20px; color: #ffffff; }
-        /* 左右箭头样式（底部圆底） */
         .nav-arrow {
             position: absolute;
             bottom: 20px;
@@ -352,17 +341,12 @@
             border: 2px solid #ffffff;
             transform: scale(1.03);
         }
-        /* 隐藏原有 .tabs */
-        .tabs {
-            display: none;
-        }
+        .tabs { display: none; }
     </style>
 </head>
 <body>
-    <!-- 返回按钮 -->
-    <div class="back-button">
-        <a href="ai.html">‹</a>
-    </div>
+    <div class="back-button"><a href="ai.html">‹</a></div>
+
     <!-- 电脑端胶囊标签 -->
     <div class="desktop-tabs">
         <div class="desktop-tabs-container">
@@ -375,6 +359,7 @@
             <div class="desktop-tab" onclick="loadScene(7)">场景七</div>
         </div>
     </div>
+
     <!-- 手机端胶囊标签 -->
     <div class="mobile-tabs">
         <div class="mobile-tabs-container">
@@ -391,6 +376,7 @@
             <div class="mobile-tab-arrow next" onclick="scrollToNext()">›</div>
         </div>
     </div>
+
     <div class="container">
         <div class="comparison-wrapper">
             <div class="comparison">
@@ -399,9 +385,7 @@
                 <div class="slider" id="slider"></div>
                 <div class="label label-a" id="label-original">原图</div>
                 <div class="label label-b" id="label-edited">效果图</div>
-                <!-- 电脑端提示文字 -->
                 <div class="guide-text desktop-guide">左右移动鼠标 查看对比</div>
-                <!-- 手机端提示文字 -->
                 <div class="guide-text mobile-guide">滑动屏幕查看对比</div>
             </div>
             <!-- 手机端圆点指示器 -->
@@ -409,12 +393,10 @@
             <button class="nav-arrow prev" id="prev">‹</button>
             <button class="nav-arrow next" id="next">›</button>
         </div>
-        <div class="thumbnails" id="thumbnails">
-            <!-- 缩略图会通过 JS 动态加载（手机端隐藏） -->
-        </div>
+        <div class="thumbnails" id="thumbnails"></div>
     </div>
+
     <script>
-        // 场景数据（你的完整图片链接全部保留！！！）
         const scenes = {
             1: [
                 { compare: true, original: "https://img.adons.top/01/2.jpg", edited: "https://img.adons.top/01/1.jpg", thumb: "https://img.adons.top/01/1.jpg" },
@@ -423,7 +405,45 @@
                 { single: "https://img.adons.top/01/4.jpg", thumb: "https://img.adons.top/01/4.jpg" },
                 { single: "https://img.adons.top/01/5.jpg", thumb: "https://img.adons.top/01/5.jpg" }
             ],
-            // ... 其他场景2-7 数据保持不变 ...
+            2: [
+                { compare: true, original: "https://img.adons.top/02/2-2.jpg", edited: "https://img.adons.top/02/2-1.jpg", thumb: "https://img.adons.top/02/2-1.jpg" },
+                { single: "https://img.adons.top/02/2-2.jpg", thumb: "https://img.adons.top/02/2-2.jpg" },
+                { single: "https://img.adons.top/02/2-3.jpg", thumb: "https://img.adons.top/02/2-3.jpg" },
+                { single: "https://img.adons.top/02/2-4.jpg", thumb: "https://img.adons.top/02/2-4.jpg" },
+                { single: "https://img.adons.top/02/2-5.jpg", thumb: "https://img.adons.top/02/2-5.jpg" }
+            ],
+            3: [
+                { compare: true, original: "https://img.adons.top/03/2.png", edited: "https://img.adons.top/03/1.jfif", thumb: "https://img.adons.top/03/1.jfif" },
+                { single: "https://img.adons.top/03/2.png", thumb: "https://img.adons.top/03/2.png" },
+                { single: "https://img.adons.top/03/3.png", thumb: "https://img.adons.top/03/3.png" },
+                { single: "https://img.adons.top/03/4.png", thumb: "https://img.adons.top/03/4.png" },
+                { single: "https://img.adons.top/03/5.png", thumb: "https://img.adons.top/03/5.png" },
+                { single: "https://img.adons.top/03/6.png", thumb: "https://img.adons.top/03/6.png" }
+            ],
+            4: [
+                { compare: true, original: "https://img.adons.top/04/2.png", edited: "https://img.adons.top/04/1.jfif", thumb: "https://img.adons.top/04/1.jfif" },
+                { single: "https://img.adons.top/04/2.png", thumb: "https://img.adons.top/04/2.png" },
+                { single: "https://img.adons.top/04/3.png", thumb: "https://img.adons.top/04/3.png" },
+                { single: "https://img.adons.top/04/4.png", thumb: "https://img.adons.top/04/4.png" },
+                { single: "https://img.adons.top/04/5.png", thumb: "https://img.adons.top/04/5.png" },
+                { single: "https://img.adons.top/04/6.png", thumb: "https://img.adons.top/04/6.png" }
+            ],
+            5: [
+                { compare: true, original: "https://img.adons.top/05/2.png", edited: "https://img.adons.top/05/1.jfif", thumb: "https://img.adons.top/05/1.jfif" },
+                { single: "https://img.adons.top/05/2.png", thumb: "https://img.adons.top/05/2.png" },
+                { single: "https://img.adons.top/05/3.png", thumb: "https://img.adons.top/05/3.png" },
+                { single: "https://img.adons.top/05/4.png", thumb: "https://img.adons.top/05/4.png" },
+                { single: "https://img.adons.top/05/5.png", thumb: "https://img.adons.top/05/5.png" },
+                { single: "https://img.adons.top/05/6.png", thumb: "https://img.adons.top/05/6.png" }
+            ],
+            6: [
+                { compare: true, original: "https://img.adons.top/06/2.png", edited: "https://img.adons.top/06/1.jfif", thumb: "https://img.adons.top/06/1.jfif" },
+                { single: "https://img.adons.top/06/2.png", thumb: "https://img.adons.top/06/2.png" },
+                { single: "https://img.adons.top/06/3.png", thumb: "https://img.adons.top/06/3.png" },
+                { single: "https://img.adons.top/06/4.png", thumb: "https://img.adons.top/06/4.png" },
+                { single: "https://img.adons.top/06/5.png", thumb: "https://img.adons.top/06/5.png" },
+                { single: "https://img.adons.top/06/6.png", thumb: "https://img.adons.top/06/6.png" }
+            ],
             7: [
                 { compare: true, original: "https://img.adons.top/07/2.png", edited: "https://img.adons.top/07/1.jfif", thumb: "https://img.adons.top/07/1.jfif" },
                 { single: "https://img.adons.top/07/2.png", thumb: "https://img.adons.top/07/2.png" },
@@ -433,8 +453,10 @@
                 { single: "https://img.adons.top/07/6.png", thumb: "https://img.adons.top/07/6.png" }
             ]
         };
+
         let currentScene = 1;
         let currentIndex = 0;
+
         const original = document.getElementById('original');
         const edited = document.getElementById('edited');
         const slider = document.getElementById('slider');
@@ -449,7 +471,7 @@
             for (let i = 0; i < total; i++) {
                 const dot = document.createElement('div');
                 dot.className = 'dot';
-                if (i === 0) dot.classList.add('active');
+                if (i === currentIndex) dot.classList.add('active');
                 dotsIndicator.appendChild(dot);
             }
         }
@@ -461,29 +483,155 @@
             });
         }
 
+        function scrollToPrev() {
+            const tabs = mobileTabsList.querySelectorAll('.mobile-tab');
+            let newScene = currentScene - 1;
+            if (newScene < 1) newScene = tabs.length;
+            loadScene(newScene);
+        }
+
+        function scrollToNext() {
+            const tabs = mobileTabsList.querySelectorAll('.mobile-tab');
+            let newScene = currentScene + 1;
+            if (newScene > tabs.length) newScene = 1;
+            loadScene(newScene);
+        }
+
         function loadScene(sceneId) {
             currentScene = sceneId;
             currentIndex = 0;
-            // ... 原有标签更新代码保持不变 ...
 
-            // 创建圆点（手机端）
+            document.querySelectorAll('.desktop-tab').forEach((tab, i) => {
+                tab.classList.toggle('active', i + 1 === sceneId);
+            });
+            document.querySelectorAll('.mobile-tab').forEach((tab, i) => {
+                tab.classList.toggle('active', i + 1 === sceneId);
+            });
+
+            const prevArrow = document.querySelector('.mobile-tab-arrow.prev');
+            const nextArrow = document.querySelector('.mobile-tab-arrow.next');
+            const activeTab = mobileTabsList.querySelector('.mobile-tab.active');
+
+            if (prevArrow && nextArrow) {
+                prevArrow.style.opacity = sceneId === 1 ? '0' : '0.6';
+                prevArrow.style.pointerEvents = sceneId === 1 ? 'none' : 'auto';
+                nextArrow.style.opacity = sceneId === 7 ? '0' : '0.6';
+                nextArrow.style.pointerEvents = sceneId === 7 ? 'none' : 'auto';
+            }
+
+            if (activeTab) {
+                if (sceneId === 1) {
+                    const nextTab = activeTab.nextElementSibling;
+                    if (nextTab) nextTab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                } else {
+                    activeTab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                }
+            }
+
+            thumbnails.innerHTML = '';
+            scenes[sceneId].forEach((item, i) => {
+                const img = document.createElement('img');
+                img.className = 'thumb';
+                img.src = item.thumb;
+                if (i === 0) img.classList.add('active');
+                if (item.compare) img.classList.add('thumb-compare');
+                img.addEventListener('click', () => loadImage(i));
+                thumbnails.appendChild(img);
+            });
+
             createDots();
-
-            // ... 原有缩略图加载代码保持不变（手机端会隐藏） ...
-
             loadImage(0);
         }
 
         function loadImage(index) {
-            // ... 原有 loadImage 代码保持不变 ...
+            const item = scenes[currentScene][index];
+            const isCompare = item.compare || false;
 
-            updateDots(); // 更新圆点高亮
+            if (isCompare) {
+                original.src = item.original;
+                edited.src = item.edited;
+                original.style.display = 'block';
+                edited.style.display = 'block';
+                slider.style.display = 'flex';
+                document.getElementById('label-original').style.opacity = '1';
+                document.getElementById('label-edited').style.opacity = '1';
+                const mobileGuide = document.querySelector('.mobile-guide');
+                if (mobileGuide) mobileGuide.style.opacity = '1';
+            } else {
+                original.src = item.single || item.original;
+                edited.src = '';
+                original.style.display = 'block';
+                edited.style.display = 'none';
+                slider.style.display = 'none';
+                document.getElementById('label-original').style.opacity = '0';
+                document.getElementById('label-edited').style.opacity = '0';
+                const mobileGuide = document.querySelector('.mobile-guide');
+                if (mobileGuide) mobileGuide.style.opacity = '0';
+            }
+
+            document.querySelectorAll('.thumb').forEach((t, i) => t.classList.toggle('active', i === index));
+            currentIndex = index;
+            updateSlider(50);
+            updateDots();
         }
 
-        // 在 loadScene 和 loadImage 中调用 updateDots
-        // 原有事件监听保持不变
+        function updateSlider(percent) {
+            edited.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+            slider.style.left = percent + '%';
+        }
 
-        // 初始化
+        wrapper.addEventListener('mouseenter', () => {
+            if (scenes[currentScene][currentIndex].compare) {
+                document.querySelector('.desktop-guide').style.opacity = '0';
+            }
+        });
+
+        wrapper.addEventListener('mouseleave', () => {
+            if (scenes[currentScene][currentIndex].compare) {
+                document.querySelector('.desktop-guide').style.opacity = '1';
+            }
+        });
+
+        wrapper.addEventListener('mousemove', (e) => {
+            if (!scenes[currentScene][currentIndex].compare) return;
+            const rect = wrapper.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            let percent = (x / rect.width) * 100;
+            percent = Math.max(0, Math.min(100, percent));
+            updateSlider(percent);
+            document.getElementById('label-original').style.opacity = percent < 50 ? '0' : '1';
+            document.getElementById('label-edited').style.opacity = percent < 50 ? '1' : '0';
+        });
+
+        wrapper.addEventListener('touchmove', (e) => {
+            if (!scenes[currentScene][currentIndex].compare) return;
+            e.preventDefault();
+            const rect = wrapper.getBoundingClientRect();
+            const x = e.touches[0].clientX - rect.left;
+            let percent = (x / rect.width) * 100;
+            percent = Math.max(0, Math.min(100, percent));
+            updateSlider(percent);
+            document.getElementById('label-original').style.opacity = percent < 50 ? '0' : '1';
+            document.getElementById('label-edited').style.opacity = percent < 50 ? '1' : '0';
+        });
+
+        wrapper.addEventListener('touchstart', (e) => {
+            if (scenes[currentScene][currentIndex].compare) {
+                const mobileGuide = document.querySelector('.mobile-guide');
+                if (mobileGuide) mobileGuide.style.opacity = '0';
+            }
+        });
+
+        document.getElementById('prev').addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + scenes[currentScene].length) % scenes[currentScene].length;
+            loadImage(currentIndex);
+        });
+
+        document.getElementById('next').addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % scenes[currentScene].length;
+            loadImage(currentIndex);
+        });
+
         const urlParams = new URLSearchParams(window.location.search);
         const sceneParam = urlParams.get('scene');
         const initialScene = sceneParam ? parseInt(sceneParam) : 1;
