@@ -302,9 +302,11 @@
         }
         .label-a { left: 20px; color: #ffffff; }
         .label-b { right: 20px; color: #ffffff; }
-        .nav-arrow {
+        /* 电脑端：左右箭头垂直居中 */
+.nav-arrow {
     position: absolute;
-    bottom: 20px;
+    top: 50%;
+    transform: translateY(-50%);
     background: rgba(255, 255, 255, 0.15);
     width: 50px;
     height: 50px;
@@ -321,23 +323,33 @@
     align-items: center;
     justify-content: center;
 }
-
-/* 新增：箭头符号容器，强制像素级完美居中 */
 .nav-arrow::before {
-    content: attr(data-icon); /* 使用data-icon动态设置箭头 */
+    content: attr(data-icon);
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* 绝对像素级居中 */
+    transform: translate(-50%, -50%);
     font-size: 32px;
     line-height: 1;
 }
-        .nav-arrow:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.1);
-        }
-        .prev { left: 20px; }
-        .next { right: 20px; }
+.nav-arrow:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-50%) scale(1.1);
+}
+.prev { left: 20px; }
+.next { right: 20px; }
+
+/* 手机端：保持原底部位置（覆盖电脑端样式） */
+@media (max-width: 768px) {
+    .nav-arrow {
+        top: auto;
+        bottom: 20px;
+        transform: none;
+    }
+    .nav-arrow:hover {
+        transform: scale(1.1);
+    }
+}
         .thumbnails {
             flex: 1;
             min-width: 300px;
