@@ -51,7 +51,7 @@
                 font-size: 22px;
             }
         }
-        /* 电脑端胶囊标签（长度自适应，高度更小42px） */
+        /* 电脑端胶囊标签（长度自适应，高度42px） */
         .desktop-tabs {
             text-align: center;
             padding: 20px 0;
@@ -61,10 +61,10 @@
             align-items: center;
             background: rgba(255, 255, 255, 0.08);
             border-radius: 30px;
-            padding: 6px 18px; /* 高度更小 */
+            padding: 6px 18px;
             backdrop-filter: blur(20px);
             gap: 16px;
-            height: 42px; /* 总高度更小 */
+            height: 42px;
         }
         .desktop-tab {
             padding: 8px 18px;
@@ -78,6 +78,7 @@
             height: 30px;
             display: flex;
             align-items: center;
+            justify-content: center;
         }
         .desktop-tab.active {
             background: white;
@@ -85,7 +86,7 @@
             font-weight: bold;
         }
 
-        /* 手机端胶囊标签（固定360px宽度，高度更小42px） */
+        /* 手机端胶囊标签（固定360px宽度，高度42px） */
         .mobile-tabs {
             display: none;
             padding: 20px 20px;
@@ -102,7 +103,7 @@
             width: 360px;
             max-width: 100%;
             margin: 0 auto;
-            height: 42px; /* 总高度更小 */
+            height: 42px;
         }
         .mobile-tab-arrow {
             position: absolute;
@@ -152,6 +153,7 @@
             height: 30px;
             display: flex;
             align-items: center;
+            justify-content: center;
         }
         .mobile-tab.active {
             background: white;
@@ -303,7 +305,7 @@
         <a href="ai.html">‹</a>
     </div>
 
-    <!-- 电脑端胶囊标签（长度自适应） -->
+    <!-- 电脑端胶囊标签 -->
     <div class="desktop-tabs">
         <div class="desktop-tabs-container">
             <div class="desktop-tab active" onclick="loadScene(1)">场景一</div>
@@ -316,7 +318,7 @@
         </div>
     </div>
 
-    <!-- 手机端胶囊标签（固定360px宽度） -->
+    <!-- 手机端胶囊标签 -->
     <div class="mobile-tabs">
         <div class="mobile-tabs-container">
             <div class="mobile-tab-arrow prev" onclick="scrollToPrev()">‹</div>
@@ -419,17 +421,17 @@
         const wrapper = document.querySelector('.comparison-wrapper');
         const thumbnails = document.getElementById('thumbnails');
         const guideText = document.querySelector('.guide-text');
-        const appleTabsList = document.getElementById('appleTabsList');
+        const mobileTabsList = document.getElementById('mobileTabsList');
 
         function scrollToPrev() {
-            const tabs = appleTabsList.querySelectorAll('.apple-tab');
+            const tabs = mobileTabsList.querySelectorAll('.mobile-tab');
             let newScene = currentScene - 1;
             if (newScene < 1) newScene = tabs.length;
             loadScene(newScene);
         }
 
         function scrollToNext() {
-            const tabs = appleTabsList.querySelectorAll('.apple-tab');
+            const tabs = mobileTabsList.querySelectorAll('.mobile-tab');
             let newScene = currentScene + 1;
             if (newScene > tabs.length) newScene = 1;
             loadScene(newScene);
@@ -449,8 +451,8 @@
                 tab.classList.toggle('active', i + 1 === sceneId);
             });
 
-            // 超级丝滑滚动到选中标签居中
-            const activeTab = appleTabsList.querySelector('.apple-tab.active');
+            // 手机端平滑滚动到选中标签居中
+            const activeTab = mobileTabsList.querySelector('.mobile-tab.active');
             if (activeTab) {
                 activeTab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
             }
@@ -531,7 +533,7 @@
 
         wrapper.addEventListener('touchmove', (e) => {
             if (!scenes[currentScene][currentIndex].compare) return;
-            e.preventDefault;
+            e.preventDefault();
             const rect = wrapper.getBoundingClientRect();
             const x = e.touches[0].clientX - rect.left;
             let percent = (x / rect.width) * 100;
