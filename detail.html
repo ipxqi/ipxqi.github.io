@@ -479,6 +479,25 @@
                 thumbnails.appendChild(img);
             });
             loadImage(0);
+            // 手机端箭头控制：场景一隐藏左箭头，场景七隐藏右箭头
+            const prevArrow = document.querySelector('.mobile-tab-arrow.prev');
+            const nextArrow = document.querySelector('.mobile-tab-arrow.next');
+            if (prevArrow && nextArrow) {
+                if (sceneId === 1) {
+                    prevArrow.style.opacity = '0';
+                    prevArrow.style.pointerEvents = 'none';
+                } else {
+                    prevArrow.style.opacity = '0.6';
+                    prevArrow.style.pointerEvents = 'auto';
+                }
+                if (sceneId === 7) {
+                    nextArrow.style.opacity = '0';
+                    nextArrow.style.pointerEvents = 'none';
+                } else {
+                    nextArrow.style.opacity = '0.6';
+                    nextArrow.style.pointerEvents = 'auto';
+                }
+            }
         }
 
         function loadImage(index) {
@@ -583,25 +602,7 @@ wrapper.addEventListener('touchstart', (e) => {
         const initialScene = sceneParam ? parseInt(sceneParam) : 1;
         loadScene(initialScene);
 
-                    // 手机端箭头控制：场景一隐藏左箭头，场景七隐藏右箭头
-            const prevArrow = document.querySelector('.mobile-tab-arrow.prev');
-            const nextArrow = document.querySelector('.mobile-tab-arrow.next');
-            if (prevArrow && nextArrow) {
-                if (sceneId === 1) {
-                    prevArrow.style.opacity = '0';
-                    prevArrow.style.pointerEvents = 'none';
-                } else {
-                    prevArrow.style.opacity = '0.6';
-                    prevArrow.style.pointerEvents = 'auto';
-                }
-                if (sceneId === 7) {
-                    nextArrow.style.opacity = '0';
-                    nextArrow.style.pointerEvents = 'none';
-                } else {
-                    nextArrow.style.opacity = '0.6';
-                    nextArrow.style.pointerEvents = 'auto';
-                }
-            }
+                    
     
     </script>
 </body>
