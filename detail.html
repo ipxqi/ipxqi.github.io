@@ -438,7 +438,7 @@
         const slider = document.getElementById('slider');
         const wrapper = document.querySelector('.comparison-wrapper');
         const thumbnails = document.getElementById('thumbnails');
-        const guideText = document.querySelector('.guide-text');
+        const guideText = document.querySelector('.guide-text'); // 注意：这里会选第一个，但手机端只显示 mobile-guide
         const mobileTabsList = document.getElementById('mobileTabsList');
         function scrollToPrev() {
             const tabs = mobileTabsList.querySelectorAll('.mobile-tab');
@@ -463,14 +463,10 @@
             document.querySelectorAll('.mobile-tab').forEach((tab, i) => {
                 tab.classList.toggle('active', i + 1 === sceneId);
             });
-            // 手机端箭头控制 + 选中标签完全居中（包括场景一和场景七）
+            // 手机端箭头控制 + 特殊滚动逻辑（场景一让“场景二”居中）
             const prevArrow = document.querySelector('.mobile-tab-arrow.prev');
             const nextArrow = document.querySelector('.mobile-tab-arrow.next');
             const activeTab = mobileTabsList.querySelector('.mobile-tab.active');
-
-            if (activeTab) {
-                activeTab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-            }
 
             if (prevArrow && nextArrow) {
                 if (sceneId === 1) {
@@ -488,6 +484,20 @@
                     nextArrow.style.pointerEvents = 'auto';
                 }
             }
+
+            if (activeTab) {
+                if (sceneId === 1) {
+                    // 场景一：让下一个标签（场景二）居中，这样场景一靠左清晰可见
+                    const nextTab = activeTab.nextElementSibling;
+                    if (nextTab) {
+                        nextTab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                    }
+                } else {
+                    // 其他场景正常居中
+                    activeTab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                }
+            }
+
             // 加载缩略图
             thumbnails.innerHTML = '';
             scenes[sceneId].forEach((item, i) => {
@@ -512,7 +522,9 @@
                 slider.style.display = 'flex';
                 document.getElementById('label-original').style.opacity = '1';
                 document.getElementById('label-edited').style.opacity = '1';
-                guideText.style.opacity = '1';
+                // 对比模式下显示提示文字（初始）
+                const mobileGuide = document.querySelector('.mobile-guide');
+                if (mobileGuide) mobileGuide.style.opacity = '1';
             } else {
                 original.src = item.single;
                 edited.src = '';
@@ -521,7 +533,8 @@
                 slider.style.display = 'none';
                 document.getElementById('label-original').style.opacity = '0';
                 document.getElementById('label-edited').style.opacity = '0';
-                guideText.style.opacity = '0';
+                const mobileGuide = document.querySelector('.mobile-guide');
+                if (mobileGuide) mobileGuide.style.opacity = '0';
             }
             document.querySelectorAll('.thumb').forEach((t, i) => t.classList.toggle('active', i === index));
             currentIndex = index;
@@ -533,12 +546,14 @@
         }
         wrapper.addEventListener('mouseenter', () => {
             if (scenes[currentScene][currentIndex].compare) {
-                guideText.style.opacity = '0';
+                const desktopGuide = document.querySelector('.desktop-guide');
+                if (desktopGuide) desktopGuide.style.opacity = '0';
             }
         });
         wrapper.addEventListener('mouseleave', () => {
             if (scenes[currentScene][currentIndex].compare) {
-                guideText.style.opacity = '1';
+                const desktopGuide = document.querySelector('.desktop-guide');
+                if (desktopGuide) desktopGuide.style.opacity = '1';
             }
         });
         wrapper.addEventListener('mousemove', (e) => {
@@ -572,10 +587,11 @@
                 document.getElementById('label-edited').style.opacity = '0';
             }
         });
-        // 手机端：手指一碰到对比区域就隐藏提示文字
+        // 手机端：手指一碰到对比区域就立即隐藏提示文字
         wrapper.addEventListener('touchstart', (e) => {
             if (scenes[currentScene][currentIndex].compare) {
-                guideText.style.opacity = '0';
+                const mobileGuide = document.querySelector('.mobile-guide');
+                if (mobileGuide) mobileGuide.style.opacity = '0';
             }
         });
         document.getElementById('prev').addEventListener('click', () => {
