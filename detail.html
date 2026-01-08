@@ -311,18 +311,20 @@
     border-radius: 50%;
     color: white;
     border: none;
-    font-size: 30px;
+    font-size: 32px;         /* ← 稍微加大字体，更饱满 */
     cursor: pointer;
     z-index: 20;
     display: flex;
-    align-items: center;     /* ← 垂直居中 */
-    justify-content: center; /* ← 水平居中 */
+    align-items: center;     /* 垂直完美居中 */
+    justify-content: center; /* 水平完美居中 */
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
     transition: all 0.3s ease;
-    text-align: center;      /* ← 新增：文字水平居中 */
-    line-height: 1;          /* ← 新增：关键！！！重置行高，避免下沉 */
-    padding-top: 2px;        /* ← 新增：微调向上提一点（不同系统字体补偿） */
+    /* 彻底移除可能导致下沉的属性 */
+    line-height: normal !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    text-align: center;
 }
         .nav-arrow:hover {
             background: rgba(255, 255, 255, 0.3);
