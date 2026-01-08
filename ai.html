@@ -20,16 +20,12 @@
             max-width: 1440px;
             width: 100%;
             box-sizing: border-box;
-
-            /* 新增：彻底隐藏所有滚动条，但保留滚动功能和卡片延伸效果 */
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;     /* Firefox */
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
-        /* Chrome/Safari/Edge 隐藏滚动条 */
         *::-webkit-scrollbar {
             display: none;
         }
-
         .header {
             padding: 80px 60px 60px 60px;
             width: 100%;
@@ -43,7 +39,7 @@
             text-align: left;
         }
         .gallery-container {
-            overflow: visible; /* 保持 visible，让卡片能延伸超出容器 */
+            overflow: visible;
             padding: 0 60px 140px 60px;
             width: 100%;
             box-sizing: border-box;
@@ -181,63 +177,78 @@
     </div>
     <div class="gallery-container">
         <div class="gallery" id="gallery">
-            <a href="detail.html" style="text-decoration: none; color: inherit;">
+            <!-- 每个卡片包裹在 a 标签里，href 带 ?scene=数字 -->
+            <a href="detail.html?scene=1" style="text-decoration: none; color: inherit;">
                 <div class="card-wrapper">
                     <div class="card" style="background-image: url('https://img.adons.top/01/0.jpg');"></div>
                     <div>
-                        <div class="card-title">快速添加一家五口自然就餐</div>
+                        <div class="card-title">场景一</div>
                         <div class="card-desc">人物姿势真实、灯光协调<br>食物细节丰富、氛围温馨<br>完美呈现家庭生活场景</div>
                     </div>
                 </div>
             </a>
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/2-1.jpg');"></div>
-                <div>
-                    <div class="card-title">AI智能填充情侣温馨就餐</div>
-                    <div class="card-desc">情侣相对而坐共享晚餐<br>姿态放松、表情生动真实<br><br></div>
+            <a href="detail.html?scene=2" style="text-decoration: none; color: inherit;">
+                <div class="card-wrapper">
+                    <div class="card" style="background-image: url('https://img.adons.top/2-1.jpg');"></div>
+                    <div>
+                        <div class="card-title">场景二</div>
+                        <div class="card-desc">情侣相对而坐共享晚餐<br>姿态放松、表情生动真实<br><br></div>
+                    </div>
                 </div>
-            </div>
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/03/1.jfif');"></div>
-                <div>
-                    <div class="card-title">AI瞬间点亮三人欢乐茶歇</div>
-                    <div class="card-desc">完美呈现友情温暖的日常时光<br>每个人动作协调、表情自然<br>食物摆盘精致、茶壶蒸汽可见</div>
+            </a>
+            <a href="detail.html?scene=3" style="text-decoration: none; color: inherit;">
+                <div class="card-wrapper">
+                    <div class="card" style="background-image: url('https://img.adons.top/03/1.jfif');"></div>
+                    <div>
+                        <div class="card-title">场景三</div>
+                        <div class="card-desc">完美呈现友情温暖的日常时光<br>每个人动作协调、表情自然<br>食物摆盘精致、茶壶蒸汽可见</div>
+                    </div>
                 </div>
-            </div>
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
-                <div>
-                    <div class="card-title">空荡吧台瞬间生动</div>
-                    <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
+            </a>
+            <a href="detail.html?scene=4" style="text-decoration: none; color: inherit;">
+                <div class="card-wrapper">
+                    <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
+                    <div>
+                        <div class="card-title">场景四</div>
+                        <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
+                    </div>
                 </div>
-            </div>
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
-                <div>
-                    <div class="card-title">这是一个案例，不能删除</div>
-                    <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
+            </a>
+            <!-- 其他卡片同理 -->
+            <a href="detail.html?scene=5" style="text-decoration: none; color: inherit;">
+                <div class="card-wrapper">
+                    <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
+                    <div>
+                        <div class="card-title">场景五</div>
+                        <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
+                    </div>
                 </div>
-            </div>
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
-                <div>
-                    <div class="card-title">不能删除，懂吗</div>
-                    <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
+            </a>
+            <a href="detail.html?scene=6" style="text-decoration: none; color: inherit;">
+                <div class="card-wrapper">
+                    <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
+                    <div>
+                        <div class="card-title">场景六</div>
+                        <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
+                    </div>
                 </div>
-            </div>
-            <div class="card-wrapper">
-                <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
-                <div>
-                    <div class="card-title">不可以删这里</div>
-                    <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
+            </a>
+            <a href="detail.html?scene=7" style="text-decoration: none; color: inherit;">
+                <div class="card-wrapper">
+                    <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
+                    <div>
+                        <div class="card-title">场景七</div>
+                        <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br>直观展示AI添加人物前后对比效果</div>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
     <div class="nav-buttons">
         <button id="prev-btn">❮</button>
         <button id="next-btn">❯</button>
     </div>
+    <!-- 滑动脚本保持不变 -->
     <script>
         const galleryContainer = document.querySelector('.gallery-container');
         const gallery = document.getElementById('gallery');
@@ -245,13 +256,13 @@
         const total = items.length;
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
-        let maxIndex = total - Math.floor(galleryContainer.offsetWidth / (327 + 20)); // 电脑端计算可见数量
+        let maxIndex = total - Math.floor(galleryContainer.offsetWidth / (327 + 20));
         if (maxIndex < 0) maxIndex = 0;
         let index = 0;
         function updateSlide() {
             if (items.length === 0) return;
             const itemWidth = items[0].getBoundingClientRect().width;
-            const gap = 20; // 电脑端 gap
+            const gap = 20;
             const totalWidth = itemWidth + gap;
             let offset = index * totalWidth;
             if (window.innerWidth > 1024) {
@@ -287,7 +298,6 @@
             updateSlide();
         });
         updateSlide();
-        // 手机端触屏滑动
         let touchStartX = 0;
         let isSwiping = false;
         galleryContainer.addEventListener('touchstart', (e) => {
