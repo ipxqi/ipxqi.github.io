@@ -51,14 +51,13 @@
                 font-size: 22px;
             }
         }
-        /* 手机端胶囊式场景切换条 */
-        .mobile-tabs {
-            display: none; /* 默认隐藏，只在手机端显示 */
+        /* 统一胶囊式场景切换条（电脑端 + 手机端都用这个） */
+        .capsule-tabs {
             position: relative;
             padding: 20px 20px;
             overflow: hidden;
         }
-        .mobile-tabs-container {
+        .capsule-tabs-container {
             display: flex;
             align-items: center;
             background: rgba(255, 255, 255, 0.08);
@@ -68,11 +67,13 @@
             overflow-x: auto;
             scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
+            max-width: 100%;
+            margin: 0 auto;
         }
-        .mobile-tabs-container::-webkit-scrollbar {
+        .capsule-tabs-container::-webkit-scrollbar {
             display: none;
         }
-        .mobile-tab-arrow {
+        .capsule-tab-arrow {
             flex-shrink: 0;
             width: 40px;
             height: 40px;
@@ -84,54 +85,27 @@
             cursor: pointer;
             z-index: 10;
         }
-        .mobile-tabs-list {
+        .capsule-tabs-list {
             display: flex;
             gap: 12px;
             min-width: max-content;
             padding: 0 10px;
         }
-        .mobile-tab {
+        .capsule-tab {
             min-width: 80px;
             padding: 10px 20px;
             text-align: center;
             border-radius: 25px;
-            font-size: 15px;
+            font-size: 13px; /* 字体更小 */
             transition: all 0.3s ease;
             background: transparent;
             color: rgba(255, 255, 255, 0.6);
             cursor: pointer;
         }
-        .mobile-tab.active {
+        .capsule-tab.active {
             background: white;
             color: #000;
             font-weight: bold;
-        }
-        /* 电脑端原有标签 */
-        .tabs {
-            text-align: center;
-            padding: 20px 0;
-        }
-        .tabs button {
-            background: #333;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            margin: 0 5px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-        .tabs button.active {
-            background: #555;
-        }
-        /* 手机端显示胶囊，隐藏原有标签 */
-        @media (max-width: 768px) {
-            .mobile-tabs {
-                display: block;
-            }
-            .tabs {
-                display: none;
-            }
         }
         .container {
             display: flex;
@@ -255,6 +229,10 @@
             border: 2px solid #ffffff;
             transform: scale(1.03);
         }
+        /* 隐藏原有 .tabs（电脑端也用胶囊式） */
+        .tabs {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -263,31 +241,20 @@
         <a href="ai.html">‹</a>
     </div>
 
-    <!-- 电脑端原有标签 -->
-    <div class="tabs">
-        <button class="active" onclick="loadScene(1)">场景一</button>
-        <button onclick="loadScene(2)">场景二</button>
-        <button onclick="loadScene(3)">场景三</button>
-        <button onclick="loadScene(4)">场景四</button>
-        <button onclick="loadScene(5)">场景五</button>
-        <button onclick="loadScene(6)">场景六</button>
-        <button onclick="loadScene(7)">场景七</button>
-    </div>
-
-    <!-- 手机端胶囊式场景切换条 -->
-    <div class="mobile-tabs">
-        <div class="mobile-tabs-container">
-            <div class="mobile-tab-arrow prev" onclick="scrollTabs('left')">‹</div>
-            <div class="mobile-tabs-list" id="mobileTabsList">
-                <div class="mobile-tab active" onclick="loadScene(1)">场景一</div>
-                <div class="mobile-tab" onclick="loadScene(2)">场景二</div>
-                <div class="mobile-tab" onclick="loadScene(3)">场景三</div>
-                <div class="mobile-tab" onclick="loadScene(4)">场景四</div>
-                <div class="mobile-tab" onclick="loadScene(5)">场景五</div>
-                <div class="mobile-tab" onclick="loadScene(6)">场景六</div>
-                <div class="mobile-tab" onclick="loadScene(7)">场景七</div>
+    <!-- 胶囊式场景切换条（电脑端 + 手机端统一用这个） -->
+    <div class="capsule-tabs">
+        <div class="capsule-tabs-container">
+            <div class="capsule-tab-arrow prev" onclick="scrollCapsule('left')">‹</div>
+            <div class="capsule-tabs-list" id="capsuleTabsList">
+                <div class="capsule-tab active" onclick="loadScene(1)">场景一</div>
+                <div class="capsule-tab" onclick="loadScene(2)">场景二</div>
+                <div class="capsule-tab" onclick="loadScene(3)">场景三</div>
+                <div class="capsule-tab" onclick="loadScene(4)">场景四</div>
+                <div class="capsule-tab" onclick="loadScene(5)">场景五</div>
+                <div class="capsule-tab" onclick="loadScene(6)">场景六</div>
+                <div class="capsule-tab" onclick="loadScene(7)">场景七</div>
             </div>
-            <div class="mobile-tab-arrow next" onclick="scrollTabs('right')">›</div>
+            <div class="capsule-tab-arrow next" onclick="scrollCapsule('right')">›</div>
         </div>
     </div>
 
@@ -312,13 +279,60 @@
     <script>
         // 场景数据（保持你的数据不变）
         const scenes = {
-            1: [ /* 你的场景一数据 */ ],
-            2: [ /* 你的场景二数据 */ ],
-            3: [ /* 你的场景三数据 */ ],
-            4: [ /* 你的场景四数据 */ ],
-            5: [ /* 你的场景五数据 */ ],
-            6: [ /* 你的场景六数据 */ ],
-            7: [ /* 你的场景七数据 */ ]
+            1: [ // 场景一
+                { compare: true, original: "https://img.adons.top/01/1.jpg", edited: "https://img.adons.top/01/0.jpg", thumb: "https://img.adons.top/01/0.jpg" },
+                { single: "https://img.adons.top/01/1.jpg", thumb: "https://img.adons.top/01/1.jpg" },
+                { single: "https://img.adons.top/01/3.jpg", thumb: "https://img.adons.top/01/3.jpg" },
+                { single: "https://img.adons.top/01/4.jpg", thumb: "https://img.adons.top/01/4.jpg" },
+                { single: "https://img.adons.top/01/5.jpg", thumb: "https://img.adons.top/01/5.jpg" }
+            ],
+            2: [ // 场景二
+                { compare: true, original: "https://img.adons.top/02/2-2.jpg", edited: "https://img.adons.top/02/2-1.jpg", thumb: "https://img.adons.top/02/2-1.jpg" },
+                { single: "https://img.adons.top/02/2-2.jpg", thumb: "https://img.adons.top/02/2-2.jpg" },
+                { single: "https://img.adons.top/02/2-3.jpg", thumb: "https://img.adons.top/02/2-3.jpg" },
+                { single: "https://img.adons.top/02/2-4.jpg", thumb: "https://img.adons.top/02/2-4.jpg" },
+                { single: "https://img.adons.top/02/2-5.jpg", thumb: "https://img.adons.top/02/2-5.jpg" }
+            ],
+            3: [ // 场景三
+                { compare: true, original: "https://img.adons.top/03/2.png", edited: "https://img.adons.top/03/1.jfif", thumb: "https://img.adons.top/03/1.jfif" },
+                { single: "https://img.adons.top/03/2.png", thumb: "https://img.adons.top/03/2.png" },
+                { single: "https://img.adons.top/03/3.png", thumb: "https://img.adons.top/03/3.png" },
+                { single: "https://img.adons.top/03/4.png", thumb: "https://img.adons.top/03/4.png" },
+                { single: "https://img.adons.top/03/5.png", thumb: "https://img.adons.top/03/5.png" },
+                { single: "https://img.adons.top/03/6.png", thumb: "https://img.adons.top/03/6.png" }
+            ],
+            4: [ // 场景四
+                { compare: true, original: "https://img.adons.top/04/2.png", edited: "https://img.adons.top/04/1.jfif", thumb: "https://img.adons.top/04/1.jfif" },
+                { single: "https://img.adons.top/04/2.png", thumb: "https://img.adons.top/04/2.png" },
+                { single: "https://img.adons.top/04/3.png", thumb: "https://img.adons.top/04/3.png" },
+                { single: "https://img.adons.top/04/4.png", thumb: "https://img.adons.top/04/4.png" },
+                { single: "https://img.adons.top/04/5.png", thumb: "https://img.adons.top/04/5.png" },
+                { single: "https://img.adons.top/04/6.png", thumb: "https://img.adons.top/04/6.png" }
+            ],
+            5: [ // 场景五
+                { compare: true, original: "https://img.adons.top/05/2.png", edited: "https://img.adons.top/05/1.jfif", thumb: "https://img.adons.top/05/1.jfif" },
+                { single: "https://img.adons.top/05/2.png", thumb: "https://img.adons.top/05/2.png" },
+                { single: "https://img.adons.top/05/3.png", thumb: "https://img.adons.top/05/3.png" },
+                { single: "https://img.adons.top/05/4.png", thumb: "https://img.adons.top/05/4.png" },
+                { single: "https://img.adons.top/05/5.png", thumb: "https://img.adons.top/05/5.png" },
+                { single: "https://img.adons.top/05/6.png", thumb: "https://img.adons.top/05/6.png" }
+            ],
+            6: [ // 场景六
+                { compare: true, original: "https://img.adons.top/06/2.png", edited: "https://img.adons.top/06/1.jfif", thumb: "https://img.adons.top/06/1.jfif" },
+                { single: "https://img.adons.top/06/2.png", thumb: "https://img.adons.top/06/2.png" },
+                { single: "https://img.adons.top/06/3.png", thumb: "https://img.adons.top/06/3.png" },
+                { single: "https://img.adons.top/06/4.png", thumb: "https://img.adons.top/06/4.png" },
+                { single: "https://img.adons.top/06/5.png", thumb: "https://img.adons.top/06/5.png" },
+                { single: "https://img.adons.top/06/6.png", thumb: "https://img.adons.top/06/6.png" }
+            ],
+            7: [ // 场景七
+                { compare: true, original: "https://img.adons.top/07/2.png", edited: "https://img.adons.top/07/1.jfif", thumb: "https://img.adons.top/07/1.jfif" },
+                { single: "https://img.adons.top/07/2.png", thumb: "https://img.adons.top/07/2.png" },
+                { single: "https://img.adons.top/07/3.png", thumb: "https://img.adons.top/07/3.png" },
+                { single: "https://img.adons.top/07/4.png", thumb: "https://img.adons.top/07/4.png" },
+                { single: "https://img.adons.top/07/5.png", thumb: "https://img.adons.top/07/5.png" },
+                { single: "https://img.adons.top/07/6.png", thumb: "https://img.adons.top/07/6.png" }
+            ]
         };
 
         let currentScene = 1;
@@ -331,10 +345,10 @@
         const thumbnails = document.getElementById('thumbnails');
         const guideText = document.querySelector('.guide-text');
 
-        // 手机端胶囊滚动
-        function scrollTabs(direction) {
-            const list = document.getElementById('mobileTabsList');
-            const scrollAmount = 100;
+        // 胶囊左右箭头滚动
+        function scrollCapsule(direction) {
+            const list = document.getElementById('capsuleTabsList');
+            const scrollAmount = 120;
             if (direction === 'left') {
                 list.scrollLeft -= scrollAmount;
             } else {
@@ -346,17 +360,12 @@
             currentScene = sceneId;
             currentIndex = 0;
 
-            // 更新电脑端标签
-            document.querySelectorAll('.tabs button').forEach((btn, i) => {
-                btn.classList.toggle('active', i + 1 === sceneId);
-            });
-
-            // 更新手机端标签
-            document.querySelectorAll('.mobile-tab').forEach((tab, i) => {
+            // 更新胶囊标签激活状态
+            document.querySelectorAll('.capsule-tab').forEach((tab, i) => {
                 tab.classList.toggle('active', i + 1 === sceneId);
             });
 
-            // 加载缩略图和图片（保持你的原有逻辑）
+            // 加载缩略图
             thumbnails.innerHTML = '';
             scenes[sceneId].forEach((item, i) => {
                 const img = document.createElement('img');
@@ -370,12 +379,91 @@
             loadImage(0);
         }
 
-        // 你的原有 loadImage, updateSlider 等函数保持不变...
+        function loadImage(index) {
+            const item = scenes[currentScene][index];
+            const isCompare = item.compare;
+            if (isCompare) {
+                original.src = item.original;
+                edited.src = item.edited;
+                original.style.display = 'block';
+                edited.style.display = 'block';
+                slider.style.display = 'flex';
+                document.getElementById('label-original').style.opacity = '1';
+                document.getElementById('label-edited').style.opacity = '1';
+                guideText.style.opacity = '1';
+            } else {
+                original.src = item.single;
+                edited.src = '';
+                original.style.display = 'block';
+                edited.style.display = 'none';
+                slider.style.display = 'none';
+                document.getElementById('label-original').style.opacity = '0';
+                document.getElementById('label-edited').style.opacity = '0';
+                guideText.style.opacity = '0';
+            }
+            document.querySelectorAll('.thumb').forEach((t, i) => t.classList.toggle('active', i === index));
+            currentIndex = index;
+            updateSlider(50);
+        }
 
-        // 初始化
+        function updateSlider(percent) {
+            edited.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+            slider.style.left = percent + '%';
+        }
+
+        wrapper.addEventListener('mouseenter', () => {
+            if (scenes[currentScene][currentIndex].compare) {
+                guideText.style.opacity = '0';
+            }
+        });
+
+        wrapper.addEventListener('mouseleave', () => {
+            if (scenes[currentScene][currentIndex].compare) {
+                guideText.style.opacity = '1';
+            }
+        });
+
+        wrapper.addEventListener('mousemove', (e) => {
+            if (!scenes[currentScene][currentIndex].compare) return;
+            const rect = wrapper.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            let percent = (x / rect.width) * 100;
+            percent = Math.max(0, Math.min(100, percent));
+            updateSlider(percent);
+            if (percent < 50) {
+                document.getElementById('label-original').style.opacity = '0';
+                document.getElementById('label-edited').style.opacity = '1';
+            } else {
+                document.getElementById('label-original').style.opacity = '1';
+                document.getElementById('label-edited').style.opacity = '0';
+            }
+        });
+
+        wrapper.addEventListener('touchmove', (e) => {
+            if (!scenes[currentScene][currentIndex].compare) return;
+            e.preventDefault();
+            const rect = wrapper.getBoundingClientRect();
+            const x = e.touches[0].clientX - rect.left;
+            let percent = (x / rect.width) * 100;
+            percent = Math.max(0, Math.min(100, percent));
+            updateSlider(percent);
+        });
+
+        document.getElementById('prev').addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + scenes[currentScene].length) % scenes[currentScene].length;
+            loadImage(currentIndex);
+        });
+
+        document.getElementById('next').addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % scenes[currentScene].length;
+            loadImage(currentIndex);
+        });
+
+        // 读取 URL 参数 scene
         const urlParams = new URLSearchParams(window.location.search);
         const sceneParam = urlParams.get('scene');
         const initialScene = sceneParam ? parseInt(sceneParam) : 1;
+        // 初始化对应场景
         loadScene(initialScene);
     </script>
 </body>
