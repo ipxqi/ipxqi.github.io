@@ -169,16 +169,13 @@
                 gap: 15px;             /* 稍微缩小间距 */
                 z-index: 1000;
             }
-/* 让手机端按钮更好看、更易点（可选优化） */
-            .nav-buttons button {
-                width: 40px;
-                height: 40px;
-                font-size: 20px;
-                background: rgba(255, 255, 255, 0.25);
-               /* border: 1px solid rgba(255,255,255,0.2);*/
-                box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            }
-           
+/* 只改尺寸，不要覆盖背景/透明度等禁用样式 */
+    .nav-buttons button {
+        width: 50px;           /* 更大，更好点 */
+        height: 50px;
+        font-size: 22px;       /* 图标稍大 */
+        /* 不要写 background、opacity 等，会覆盖禁用状态 */
+    }
         }
     </style>
 </head>
