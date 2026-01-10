@@ -120,6 +120,16 @@
             cursor: default;
             transform: none;
         }
+
+         /* 加强手机端禁用箭头视觉效果（关键：让左箭头在第一个卡片时明显“黑掉”） */
+            .nav-buttons button:disabled,
+            .nav-buttons button:disabled:hover {
+                background: rgba(255, 255, 255, 0.08) !important;
+                opacity: 0.4 !important;
+                cursor: default !important;
+                transform: none !important;
+                border: 1px solid rgba(255,255,255,0.1);
+            }
         .nav-buttons button:disabled:hover {
             background: rgba(255, 255, 255, 0.08);
             transform: none;
@@ -177,15 +187,7 @@
                 font-size: 22px;
             }
 
-            /* 加强手机端禁用箭头视觉效果（关键：让左箭头在第一个卡片时明显“黑掉”） */
-            .nav-buttons button:disabled,
-            .nav-buttons button:disabled:hover {
-                background: rgba(255, 255, 255, 0.08) !important;
-                opacity: 0.4 !important;
-                cursor: default !important;
-                transform: none !important;
-                border: 1px solid rgba(255,255,255,0.1);
-            }
+           
         }
     </style>
 </head>
