@@ -157,32 +157,27 @@
                 font-size: 14px;
             }
 
-            
             /* 修改这里：手机端箭头移到右下角 */
-    .nav-buttons {
-        position: fixed;
-        bottom: 30px;          /* 距离底部30px */
-        right: 30px;           /* 距离右边30px */
-        top: auto;             /* 取消顶部定位 */
-        left: auto;            /* 取消左侧定位 */
-        transform: none;       /* 取消居中变换 */
-        flex-direction: row;   /* 保持左右排列 */
-        gap: 15px;             /* 稍微缩小间距 */
-        z-index: 1000;
-    }
-
-         
             .nav-buttons {
-                top: 100px;
-                left: 80%;
-                transform: translateX(-50%);
-                right: auto;
+                position: fixed;
+                bottom: 30px;          /* 距离底部 30px */
+                right: 30px;           /* 距离右边 30px */
+                top: auto;             /* 取消顶部定位 */
+                left: auto;            /* 取消左侧定位 */
+                transform: none;       /* 取消任何居中变换 */
+                flex-direction: row;   /* 保持左右排列 */
+                gap: 15px;             /* 稍微缩小间距 */
+                z-index: 1000;
             }
+
+            /* 让手机端按钮更好看、更易点（可选优化） */
             .nav-buttons button {
-                width: 38px;
-                height: 38px;
-                font-size: 18px;
-                line-height: 50px;
+                width: 50px;
+                height: 50px;
+                font-size: 22px;
+                background: rgba(255, 255, 255, 0.25);
+                border: 1px solid rgba(255,255,255,0.2);
+                box-shadow: 0 4px 15px rgba(0,0,0,0.5);
             }
         }
     </style>
