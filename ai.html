@@ -126,7 +126,7 @@
         }
         @media (max-width: 1024px) {
             .header {
-                padding: 60px 30px 30px;
+                padding: 40px 30px 10px;
             }
             .header h1 {
                 font-size: 28px;
@@ -169,7 +169,15 @@
                 gap: 15px;             /* 稍微缩小间距 */
                 z-index: 1000;
             }
-
+/* 让手机端按钮更好看、更易点（可选优化） */
+            .nav-buttons button {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+                background: rgba(255, 255, 255, 0.25);
+                border: 1px solid rgba(255,255,255,0.2);
+                box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            }
            
         }
     </style>
