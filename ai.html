@@ -157,25 +157,35 @@
                 font-size: 14px;
             }
 
-            /* 修改这里：手机端箭头移到右下角 */
+            /* 手机端箭头移到右下角 */
             .nav-buttons {
                 position: fixed;
                 bottom: 30px;          /* 距离底部 30px */
                 right: 30px;           /* 距离右边 30px */
-                top: auto;             /* 取消顶部定位 */
-                left: auto;            /* 取消左侧定位 */
-                transform: none;       /* 取消任何居中变换 */
-                flex-direction: row;   /* 保持左右排列 */
-                gap: 15px;             /* 稍微缩小间距 */
+                top: auto;
+                left: auto;
+                transform: none;
+                flex-direction: row;
+                gap: 15px;
                 z-index: 1000;
             }
-/* 只改尺寸，不要覆盖背景/透明度等禁用样式 */
-    .nav-buttons button {
-        width: 40px;           /* 更大，更好点 */
-        height: 40px;
-        font-size: 20px;       /* 图标稍大 */
-        /* 不要写 background、opacity 等，会覆盖禁用状态 */
-    }
+
+            /* 只改尺寸，不覆盖禁用样式 */
+            .nav-buttons button {
+                width: 50px;
+                height: 50px;
+                font-size: 22px;
+            }
+
+            /* 加强手机端禁用箭头视觉效果（关键：让左箭头在第一个卡片时明显“黑掉”） */
+            .nav-buttons button:disabled,
+            .nav-buttons button:disabled:hover {
+                background: rgba(255, 255, 255, 0.08) !important;
+                opacity: 0.4 !important;
+                cursor: default !important;
+                transform: none !important;
+                border: 1px solid rgba(255,255,255,0.1);
+            }
         }
     </style>
 </head>
