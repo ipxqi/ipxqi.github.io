@@ -120,17 +120,6 @@
             cursor: default;
             transform: none;
         }
-
-         /* 加强手机端禁用箭头视觉效果（关键：让左箭头在第一个卡片时明显“黑掉”） */
-            .nav-buttons button:disabled,
-            .nav-buttons button:disabled:hover {
-                background: rgba(255, 255, 255, 0.08) !important;
-                opacity: 0.35 !important;
-                cursor: default !important;
-                transform: none !important;
-                border: 1px solid rgba(255,255,255,0.1);
-                box-shadow: none !important;                       /* 去掉阴影，更明显 */
-            }
         .nav-buttons button:disabled:hover {
             background: rgba(255, 255, 255, 0.08);
             transform: none;
@@ -167,7 +156,6 @@
             .card-desc {
                 font-size: 14px;
             }
-
             /* 手机端箭头移到右下角 */
             .nav-buttons {
                 position: fixed;
@@ -180,15 +168,22 @@
                 gap: 15px;
                 z-index: 1000;
             }
-
             /* 只改尺寸，不覆盖禁用样式 */
             .nav-buttons button {
                 width: 50px;
                 height: 50px;
                 font-size: 22px;
             }
-
-           
+            /* 加强手机端禁用箭头视觉效果（关键：让左箭头在第一张时明显“黑掉”） */
+            .nav-buttons button:disabled,
+            .nav-buttons button:disabled:hover {
+                background: rgba(255, 255, 255, 0.05) !important;  /* 极浅背景，更黑 */
+                opacity: 0.35 !important;                           /* 更透明 */
+                cursor: default !important;
+                transform: none !important;
+                border: 1px solid rgba(255,255,255,0.1) !important;
+                box-shadow: none !important;                        /* 去阴影，更明显 */
+            }
         }
     </style>
 </head>
