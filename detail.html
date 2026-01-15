@@ -605,6 +605,21 @@
 
             document.querySelectorAll('.thumb').forEach((t, i) => t.classList.toggle('active', i === index));
             currentIndex = index;
+
+            // 关键修改：非对比图时，强制隐藏电脑端引导文字
+    const desktopGuide = document.querySelector('.desktop-guide');
+    if (isCompare) {
+        // 对比图：根据鼠标位置更新（原有逻辑）
+        const rect = wrapper.getBoundingClientRect();
+        const mouseIn = event && 
+                        event.clientX >= rect.left && event.clientX <= rect.right &&
+                        event.clientY >= rect.top && event.clientY <= rect.bottom;
+        desktopGuide.style.opacity = mouseIn ? '0' : '1';
+    } else {
+        // 非对比图：直接永久隐藏
+        desktopGuide.style.opacity = '0';
+    }
+            
             updateSlider(50);
             updateDots();
         }
