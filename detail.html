@@ -701,6 +701,33 @@ document.addEventListener('touchend', function(e) {
     }
     lastTouchEnd = now;
 }, { passive: false });
+
+        // 新增：手机端纯浏览图的左右滑动切换功能（第二张及以后）
+let touchStartX = 0;
+let touchEndX = 0;
+wrapper.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+});
+wrapper.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    const deltaX = touchStartX - touchEndX;
+    if (Math.abs(deltaX) > 50 && !scenes[currentScene][currentIndex].compare) {
+        // 非对比图时才启用滑动切换
+        if (deltaX > 0) {
+            // 向左滑动 → 下一张
+            if (currentIndex < scenes[currentScene].length - 1) {
+                currentIndex++;
+                loadImage(currentIndex);
+            }
+        } else {
+            // 向右滑动 → 上一张
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadImage(currentIndex);
+            }
+        }
+    }
+});
     </script>
 </body>
 </html>
