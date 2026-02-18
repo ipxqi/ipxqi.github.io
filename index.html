@@ -90,8 +90,8 @@
 
     .sub-title {
       position:absolute;
-      top:60%;
-      left:65%;
+      top:65%;
+      left:50%;
       transform:translate(-50%, -50%);
       z-index:9;
       font-size:clamp(1.8rem, 5vw, 3.2rem);
@@ -143,22 +143,46 @@
       filter:brightness(0.96);
     }
 
-    /* 品牌列表无限横向滚动区（用图片展示） */
+    /* 品牌列表 + 文字区域（上下布局：文字在上，滚动在下） */
     .clients-section {
       min-height:100vh;
       background:#000;
       display:flex;
+      flex-direction:column;
       align-items:center;
       justify-content:center;
       padding:80px 5%;
       opacity:0;
       transform:translateY(60px);
       transition:opacity 1.2s ease-out, transform 1.2s ease-out;
+      gap:60px;  /* 文字和滚动之间的垂直间距 */
     }
     .clients-section.visible {
       opacity:1;
       transform:translateY(0);
     }
+
+    /* 上方文字 */
+    .partners-text {
+      max-width:800px;
+      text-align:left;
+      font-size:clamp(2.2rem, 5vw, 5rem);
+      font-weight:900;
+      line-height:1.15;
+      color:white;
+      text-shadow:0 0 20px rgba(0,0,0,0.7);
+    }
+    .partners-text small {
+      display:block;
+      font-size:0.45em;
+      font-weight:500;
+      color:rgba(255,255,255,0.6);
+      margin-bottom:20px;
+      letter-spacing:2px;
+      text-transform:uppercase;
+    }
+
+    /* 下方滚动列表 */
     .marquee-wrapper {
       width:100%;
       overflow:hidden;
@@ -167,12 +191,12 @@
     .marquee-track {
       display:flex;
       white-space:nowrap;
-      animation:marquee 10s linear infinite;  /* 滚动速度，可调 */
+      animation:marquee 35s linear infinite;
     }
     .marquee-item {
       flex-shrink:0;
-      margin:0 30px; /* 间距保持30px */
-      height:60px; /* LOGO高度60px */
+      margin:0 30px;
+      height:60px;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -182,14 +206,6 @@
       width:auto;
       max-width:150px;
       object-fit:contain;
-      transition:0.4s;
-    }
-    /* 去掉悬停放大和暂停 */
-    .marquee-item img:hover {
-      /* 无放大效果 */
-    }
-    .marquee-track:hover {
-      animation-play-state:running; /* 强制一直滚动，不暂停 */
     }
 
     @keyframes marquee {
@@ -231,11 +247,15 @@
     </div>
   </div>
 
-  <!-- 品牌列表无限横向滚动区（用图片展示） -->
+  <!-- 品牌列表 + 文字区域（文字在上，滚动在下） -->
   <section class="clients-section">
+    <div class="partners-text">
+      <small>OUR PARTNERS</small>
+      We collaborate with forward thinking brands to build lasting creative impact
+    </div>
+
     <div class="marquee-wrapper">
       <div class="marquee-track">
-        <!-- 你的原LOGO链接保持不变 -->
         <div class="marquee-item"><img src="https://img.adons.top/sucai/67fdfed1d4387726dad284e9_fake-company-logo-3.svg" alt="SAVANNAH"></div>
         <div class="marquee-item"><img src="https://img.adons.top/sucai/67fdfed1d4387726dad284e9_fake-company-logo-3.svg" alt="oslo."></div>
         <div class="marquee-item"><img src="https://img.adons.top/sucai/67fdfed1d4387726dad284e9_fake-company-logo-3.svg" alt="Basel"></div>
