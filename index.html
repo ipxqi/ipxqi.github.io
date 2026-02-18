@@ -82,6 +82,22 @@
     .hero .left { transform:translateX(0); }
     .hero .right { transform:translateX(0); }
 
+    /* 新增：个人作品集 文字（放在标题下方，照片上方） */
+    .sub-title {
+      position:absolute;
+      top:58%;  /* 调整位置，标题下方偏下 */
+      left:50%;
+      transform:translate(-50%, -50%);
+      z-index:9;
+      font-size:clamp(1.8rem, 5vw, 3.2rem);
+      font-weight:500;
+      color:rgba(255,255,255,0.7);
+      letter-spacing:2px;
+      white-space:nowrap;
+      text-shadow:0 0 20px rgba(0,0,0,0.6);
+      pointer-events:none;
+    }
+
     .gallery-container {
       position:absolute;
       top:0;
@@ -104,8 +120,8 @@
     }
     .card {
       position:absolute;
-      width:240px;           /* ← 照片小一点 */
-      height:320px;          /* ← 照片小一点 */
+      width:240px;
+      height:320px;
       border-radius:18px;
       overflow:hidden;
       box-shadow:0 20px 60px rgba(0,0,0,0.7);
@@ -141,6 +157,9 @@
     <span class="left">Personal</span>
     <span class="right">Works</span>
   </div>
+
+  <!-- 新增：个人作品集 文字 -->
+  <div class="sub-title">个人作品集</div>
 
   <div class="gallery-container">
     <div class="gallery">
@@ -185,7 +204,7 @@
         hero.classList.add('expand-title');
       }, 300);
 
-      // 阶段2: 等落地后一起扇形展开（小照片后间距也相应缩小，更紧凑）
+      // 阶段2: 等落地后一起扇形展开
       setTimeout(() => {
         cards.forEach((card, index) => {
           const rotations = [-22, -11, 0, 11, 22];
