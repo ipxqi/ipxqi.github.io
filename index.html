@@ -143,7 +143,7 @@
       filter:brightness(0.96);
     }
 
-    /* 品牌列表无限横向滚动区 */
+    /* 品牌列表无限横向滚动区（用图片展示） */
     .clients-section {
       min-height:100vh;
       background:#000;
@@ -167,38 +167,34 @@
     .marquee-track {
       display:flex;
       white-space:nowrap;
-      animation:marquee 30s linear infinite;  /* 滚动速度：30秒一圈，可调 */
+      animation:marquee 35s linear infinite;  /* 速度：35秒一圈，可调 */
     }
     .marquee-track:hover {
       animation-play-state:paused;  /* 悬停暂停 */
     }
     .marquee-item {
-      font-size:clamp(2rem, 4.5vw, 4rem);
-      font-weight:900;
-      color:rgba(255,255,255,0.6);
-      margin:0 60px;
+      flex-shrink:0;
+      margin:0 60px;  /* 品牌间距 */
+      height:80px;    /* 统一高度，你后期PNG建议也这个高度 */
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .marquee-item img {
+      height:100%;
+      width:auto;
+      max-width:180px;
+      object-fit:contain;
       transition:0.4s;
-      letter-spacing:1px;
     }
-    .marquee-item:hover {
-      color:white;
-      transform:scale(1.1);
-      text-shadow:0 0 20px rgba(255,107,107,0.4);
-    }
-    .marquee-item.check::before {
-      content:"✔ ";
-      color:#ffd166;
-      margin-right:8px;
-    }
-    .marquee-item.circle::before {
-      content:"○ ";
-      color:#ff8e53;
-      margin-right:8px;
+    .marquee-item img:hover {
+      transform:scale(1.15);
+      filter:brightness(1.2);
     }
 
     @keyframes marquee {
       0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }  /* 移动一半距离（因为复制内容） */
+      100% { transform: translateX(-50%); }
     }
   </style>
 </head>
@@ -235,27 +231,28 @@
     </div>
   </div>
 
-  <!-- 品牌列表无限横向滚动区 -->
+  <!-- 品牌列表无限横向滚动区（用图片） -->
   <section class="clients-section">
     <div class="marquee-wrapper">
       <div class="marquee-track">
-        <div class="marquee-item">SAVANNAH</div>
-        <div class="marquee-item">oslo.</div>
-        <div class="marquee-item check">Basel</div>
-        <div class="marquee-item">Manila.</div>
-        <div class="marquee-item circle">Cactus</div>
-        <div class="marquee-item">FeatherDev</div>
-        <div class="marquee-item">SAVANNAH</div>
-        <div class="marquee-item">oslo.</div>
-        <!-- 复制一倍内容实现无缝循环 -->
-        <div class="marquee-item">SAVANNAH</div>
-        <div class="marquee-item">oslo.</div>
-        <div class="marquee-item check">Basel</div>
-        <div class="marquee-item">Manila.</div>
-        <div class="marquee-item circle">Cactus</div>
-        <div class="marquee-item">FeatherDev</div>
-        <div class="marquee-item">SAVANNAH</div>
-        <div class="marquee-item">oslo.</div>
+        <!-- 你后期替换 src 为你的 PNG 文件路径 -->
+        <div class="marquee-item"><img src="https://via.placeholder.com/180x80/111/fff?text=SAVANNAH" alt="SAVANNAH"></div>
+        <div class="marquee-item"><img src="https://via.placeholder.com/180x80/111/fff?text=oslo." alt="oslo."></div>
+        <div class="marquee-item"><img src="https://via.placeholder.com/180x80/111/fff?text=Basel" alt="Basel"></div>
+        <div class="marquee-item"><img src="https://via.placeholder.com/180x80/111/fff?text=Manila." alt="Manila."></div>
+        <div class="marquee-item"><img src="https://via.placeholder.com/180x80/111/fff?text=Cactus" alt="Cactus"></div>
+        <div class="marquee-item"><img src="https://via.placeholder.com/180x80/111/fff?text=FeatherDev" alt="FeatherDev"></div>
+        <div class="marquee-item"><img src="https://via.placeholder.com/180x80/111/fff?text=SAVANNAH" alt="SAVANNAH"></div>
+        <div class="marquee-item"><img src="https://via.placeholder.com/180x80/111/fff?text=oslo." alt="oslo."></div>
+        <!-- 复制一倍实现无缝循环 -->
+        <div class="marquee-item"><img src="https://via.placeholder.com/180x80/111/fff?text=SAVANNAH" alt="SAVANNAH"></div>
+        <div class="marquee-item"><img src="https://via.placeholder.com/180x80/111/fff?text=oslo." alt="oslo."></div>
+        <div class="marquee-item"><img src="https://via.placeholder.com/180x80/111/fff?text=Basel" alt="Basel"></div>
+        <div class="marquee-item"><img src="https://via.placeholder.com/180x80/111/fff?text=Manila." alt="Manila."></div>
+        <div class="marquee-item"><img src="https://via.placeholder.com/180x80/111/fff?text=Cactus" alt="Cactus"></div>
+        <div class="marquee-item"><img src="https://via.placeholder.com/180x80/111/fff?text=FeatherDev" alt="FeatherDev"></div>
+        <div class="marquee-item"><img src="https://via.placeholder.com/180x80/111/fff?text=SAVANNAH" alt="SAVANNAH"></div>
+        <div class="marquee-item"><img src="https://via.placeholder.com/180x80/111/fff?text=oslo." alt="oslo."></div>
       </div>
     </div>
   </section>
