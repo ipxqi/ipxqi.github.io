@@ -31,8 +31,8 @@
 
     nav {
       width:100%;
-      max-width:1280px;  /* 苹果官网常用宽度，收窄不占满屏 */
-      padding:10px 5%;   /* 左右padding保持，但整体居中 */
+      max-width:1280px;
+      padding:10px 5%;
       display:flex;
       justify-content:space-between;
       align-items:center;
@@ -153,7 +153,7 @@
 
     /* 品牌列表 + 文字区域（文字在上，滚动在下） */
     .clients-section {
-      min-height:0vh;
+      min-height:100vh;
       background:#000;
       display:flex;
       flex-direction:column;
@@ -164,31 +164,43 @@
       transform:translateY(60px);
       transition:opacity 1.2s ease-out, transform 1.2s ease-out;
       gap:60px;
+      position:relative;
     }
     .clients-section.visible {
       opacity:1;
       transform:translateY(0);
     }
 
-    .partners-text {
-      max-width:800px;
+    /* 靠右边的文字块：水平齐平，靠右移 */
+    .partners-text-wrapper {
+      position:absolute;
+      right:8%;
+      top:15%;
+      max-width:400px;
       text-align:left;
-      font-size:clamp(2.2rem, 5vw, 5rem);
-      
-      line-height:1.15;
+      z-index:10;
+      pointer-events:none;
+    }
+    .partners-text {
+      display:flex;
+      align-items:baseline;
+      gap:15px;
+      font-size:clamp(1.8rem, 4vw, 3.5rem);
+      font-weight:900;
+      line-height:1.2;
       color:white;
       text-shadow:0 0 20px rgba(0,0,0,0.7);
     }
     .partners-text small {
-      display:block;
-      font-size:0.25em;
+      font-size:0.45em;
       font-weight:500;
       color:rgba(255,255,255,0.6);
-      margin-bottom:20px;
-      
+      letter-spacing:2px;
       text-transform:uppercase;
+      white-space:nowrap;
     }
 
+    /* 下方滚动列表 */
     .marquee-wrapper {
       width:100%;
       overflow:hidden;
@@ -197,7 +209,7 @@
     .marquee-track {
       display:flex;
       white-space:nowrap;
-      animation:marquee 10s linear infinite;
+      animation:marquee 35s linear infinite;
     }
     .marquee-item {
       flex-shrink:0;
@@ -221,7 +233,7 @@
   </style>
 </head>
 <body>
-  <!-- 苹果风格导航栏容器：宽度收窄 + 居中 -->
+  <!-- 苹果风格导航栏容器 -->
   <div class="nav-container">
     <nav>
       <div class="logo">Vertora</div>
@@ -256,10 +268,13 @@
     </div>
   </div>
 
+  <!-- 品牌区：文字靠右水平齐平，滚动在下方 -->
   <section class="clients-section">
-    <div class="partners-text">
-      <small>OUR PARTNERS</small>
-      We collaborate with forward thinking brands to build lasting creative impact
+    <div class="partners-text-wrapper">
+      <div class="partners-text">
+        <small>OUR PARTNERS</small>
+        We collaborate with forward thinking brands to build lasting creative impact
+      </div>
     </div>
 
     <div class="marquee-wrapper">
@@ -306,6 +321,7 @@
 
     function startAnimation() {
       forceReset();
+
       setTimeout(() => {
         cards.forEach((card, index) => {
           setTimeout(() => {
@@ -316,6 +332,7 @@
         });
         hero.classList.add('expand-title');
       }, 300);
+
       setTimeout(() => {
         cards.forEach((card, index) => {
           const rotations = [-22, -11, 0, 11, 22];
@@ -324,12 +341,14 @@
           card.style.transform = `translateY(0) rotate(${rotations[index]}deg) scale(0.96) translateZ(${z[index]}px)`;
         });
       }, 300 + 5 * 120 + 1200 + 500);
+
       setTimeout(() => {
         cards.forEach(card => {
           card.style.transition = 'all 1.4s cubic-bezier(0.34, 0.16, 0.3, 1)';
           card.style.transform = 'translateY(0) translateX(0) rotate(0deg) scale(1)';
         });
       }, 300 + 5 * 120 + 1200 + 500 + 4000);
+
       setTimeout(() => {
         cards.forEach((card, index) => {
           setTimeout(() => {
@@ -340,6 +359,7 @@
         });
         hero.classList.remove('expand-title');
       }, 300 + 5 * 120 + 1200 + 500 + 4000 + 1400);
+
       setTimeout(forceReset, 300 + 5 * 120 + 1200 + 500 + 4000 + 1400 + 5 * 120 + 1000);
     }
 
