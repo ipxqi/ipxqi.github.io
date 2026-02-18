@@ -8,12 +8,13 @@
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      height:100vh;
+      margin:0;
+      padding:0;
       background:linear-gradient(135deg, #0a0a15 0%, #150a15 50%, #150a0a 100%);
       color:white;
       font-family:"Inter Tight", sans-serif;
-      overflow:hidden;
-      position:relative;
+      overflow-y:auto;  /* 允许向下滚动 */
+      min-height:200vh;  /* 确保有滚动空间 */
     }
 
     nav {
@@ -53,6 +54,11 @@
     }
     .menu-icon { display:none; font-size:26px; cursor:pointer; }
 
+    .hero-section {
+      height:100vh;
+      position:relative;
+    }
+
     .hero {
       position:absolute;
       top:50%;
@@ -82,11 +88,10 @@
     .hero .left { transform:translateX(0); }
     .hero .right { transform:translateX(0); }
 
-    /* 新增：个人作品集 文字（放在标题下方，照片上方） */
     .sub-title {
       position:absolute;
-      top:65%;  /* 调整位置，标题下方偏下 */
-      left:60%;
+      top:65%;
+      left:50%;
       transform:translate(-50%, -50%);
       z-index:9;
       font-size:clamp(1.8rem, 5vw, 3.2rem);
@@ -137,44 +142,107 @@
       object-fit:cover;
       filter:brightness(0.96);
     }
+
+    /* 新增：向下滚动出现的品牌列表区 */
+    .clients-section {
+      min-height:100vh;
+      background:#000;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:80px 5%;
+      opacity:0;
+      transform:translateY(60px);
+      transition:opacity 1.2s ease-out, transform 1.2s ease-out;
+    }
+    .clients-section.visible {
+      opacity:1;
+      transform:translateY(0);
+    }
+    .clients-grid {
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:50px 80px;
+      max-width:1400px;
+    }
+    .client-logo {
+      font-size:clamp(2rem, 4.5vw, 4rem);
+      font-weight:900;
+      color:rgba(255,255,255,0.6);
+      transition:0.4s;
+      letter-spacing:1px;
+      white-space:nowrap;
+    }
+    .client-logo:hover {
+      color:white;
+      transform:scale(1.1);
+      text-shadow:0 0 20px rgba(255,107,107,0.4);
+    }
+    .client-logo.check::before {
+      content:"✔ ";
+      color:#ffd166;
+      margin-right:8px;
+    }
+    .client-logo.circle::before {
+      content:"○ ";
+      color:#ff8e53;
+      margin-right:8px;
+    }
   </style>
 </head>
 <body>
-  <nav>
-    <div class="logo">Vertora</div>
-    <div class="nav-links">
-      <a href="#">Home</a>
-      <a href="#">About</a>
-      <a href="#">Service</a>
-      <a href="#">Blog</a>
-      <a href="#">Portfolio</a>
-      <a href="#">Contact</a>
-    </div>
-    <div class="menu-icon">☰</div>
-  </nav>
+  <div class="hero-section">
+    <nav>
+      <div class="logo">Vertora</div>
+      <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Service</a>
+        <a href="#">Blog</a>
+        <a href="#">Portfolio</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="menu-icon">☰</div>
+    </nav>
 
-  <div class="hero">
-    <span class="left">Personal</span>
-    <span class="right">Works</span>
+    <div class="hero">
+      <span class="left">Personal</span>
+      <span class="right">Works</span>
+    </div>
+
+    <div class="sub-title">个人作品集</div>
+
+    <div class="gallery-container">
+      <div class="gallery">
+        <div class="card"><img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800" alt=""></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1553356084-58ef4a67b2a7?w=800" alt=""></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1511671782779-cb56e135bd67?w=800" alt=""></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1557683316-973673baf926?w=800" alt=""></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1557683311-e973673baf926?w=800" alt=""></div>
+      </div>
+    </div>
   </div>
 
-  <!-- 新增：个人作品集 文字 -->
-  <div class="sub-title">个人作品集</div>
-
-  <div class="gallery-container">
-    <div class="gallery">
-      <div class="card"><img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800" alt=""></div>
-      <div class="card"><img src="https://images.unsplash.com/photo-1553356084-58ef4a67b2a7?w=800" alt=""></div>
-      <div class="card"><img src="https://images.unsplash.com/photo-1511671782779-cb56e135bd67?w=800" alt=""></div>
-      <div class="card"><img src="https://images.unsplash.com/photo-1557683316-973673baf926?w=800" alt=""></div>
-      <div class="card"><img src="https://images.unsplash.com/photo-1557683311-e973673baf926?w=800" alt=""></div>
+  <!-- 新增：向下滚动出现的品牌列表区 -->
+  <section class="clients-section">
+    <div class="clients-grid">
+      <div class="client-logo">SAVANNAH</div>
+      <div class="client-logo">oslo.</div>
+      <div class="client-logo check">Basel</div>
+      <div class="client-logo">Manila.</div>
+      <div class="client-logo circle">Cactus</div>
+      <div class="client-logo">FeatherDev</div>
+      <div class="client-logo">SAVANNAH</div>
+      <div class="client-logo">oslo.</div>
     </div>
-  </div>
+  </section>
 
   <script>
     const gallery = document.querySelector('.gallery');
     const hero = document.querySelector('.hero');
     const cards = document.querySelectorAll('.card');
+    const clientsSection = document.querySelector('.clients-section');
 
     function forceReset() {
       cards.forEach(card => {
@@ -192,7 +260,6 @@
     function startAnimation() {
       forceReset();
 
-      // 阶段1: 照片插入 + 标题分开
       setTimeout(() => {
         cards.forEach((card, index) => {
           setTimeout(() => {
@@ -204,7 +271,6 @@
         hero.classList.add('expand-title');
       }, 300);
 
-      // 阶段2: 等落地后一起扇形展开
       setTimeout(() => {
         cards.forEach((card, index) => {
           const rotations = [-22, -11, 0, 11, 22];
@@ -214,7 +280,6 @@
         });
       }, 300 + 5 * 120 + 1200 + 500);
 
-      // 阶段3: 停留 4 秒后收回中心
       setTimeout(() => {
         cards.forEach(card => {
           card.style.transition = 'all 1.4s cubic-bezier(0.34, 0.16, 0.3, 1)';
@@ -222,7 +287,6 @@
         });
       }, 300 + 5 * 120 + 1200 + 500 + 4000);
 
-      // 阶段4: 收回后逐张向上消失
       setTimeout(() => {
         cards.forEach((card, index) => {
           setTimeout(() => {
@@ -234,9 +298,19 @@
         hero.classList.remove('expand-title');
       }, 300 + 5 * 120 + 1200 + 500 + 4000 + 1400);
 
-      // 阶段5: 重置
       setTimeout(forceReset, 300 + 5 * 120 + 1200 + 500 + 4000 + 1400 + 5 * 120 + 1000);
     }
+
+    // 品牌列表滚动出现动画
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.2 });
+
+    observer.observe(clientsSection);
 
     startAnimation();
     setInterval(startAnimation, 13000);
