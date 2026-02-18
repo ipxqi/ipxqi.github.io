@@ -1,77 +1,211 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI智能加人物</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html { 
-            width: 100%; height: 100%; 
-            overflow: hidden; 
-            background: #000; 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; 
-        }
-        .background {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -1;
-        }
-        .layer {
-            position: absolute;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle at center, transparent 0%, #ff5c7a22 30%, transparent 60%);
-            filter: blur(80px);
-            mix-blend-mode: screen;
-            animation: flow linear infinite;
-        }
-        .layer1 { 
-            background: radial-gradient(circle at center, transparent 0%, #ff5c7a33 30%, transparent 60%);
-            animation-duration: 40s;
-            top: -50%; left: -50%;
-        }
-        .layer2 { 
-            background: radial-gradient(circle at center, transparent 0%, #8a5cff33 30%, transparent 60%);
-            animation-duration: 50s;
-            animation-direction: reverse;
-            top: -30%; right: -50%;
-        }
-        .layer3 { 
-            background: radial-gradient(circle at center, transparent 0%, #00ffd133 30%, transparent 60%);
-            animation-duration: 45s;
-            bottom: -40%; left: -30%;
-        }
-        .layer4 { 
-            background: radial-gradient(circle at center, transparent 0%, #ffff0033 30%, transparent 60%);
-            animation-duration: 55s;
-            animation-direction: reverse;
-            top: 0; right: -40%;
-        }
-        @keyframes flow {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            100% { transform: translate(50vw, 50vh) rotate(360deg); }
-        }
-        .content { 
-            position: relative; z-index: 1; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; padding: 20px; 
-        }
-        h1 { font-size: 48px; font-weight: 600; margin-bottom: 20px; text-shadow: 0 4px 20px rgba(0,0,0,0.8); }
-        p { font-size: 24px; max-width: 800px; line-height: 1.6; opacity: 0.9; }
-        a.button { display: inline-block; margin-top: 40px; padding: 16px 32px; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); border-radius: 50px; color: white; text-decoration: none; font-size: 20px; font-weight: bold; box-shadow: 0 8px 32px rgba(0,0,0,0.4); transition: all 0.3s ease; }
-        a.button:hover { background: rgba(255, 255, 255, 0.3); transform: translateY(-4px); }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vertura - Design Studio</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      height: 100vh;
+      background: linear-gradient(135deg, #0f0f1a 0%, #1a0f1a 50%, #1a0f0f 100%);
+      color: white;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* 导航栏 */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 30px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      background: linear-gradient(90deg, #ff6b6b, #ff8e53);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      font-size: 16px;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      transition: 0.4s;
+    }
+    .nav-links a:hover {
+      color: white;
+      text-shadow: 0 0 15px rgba(255,107,107,0.6);
+    }
+    .menu-icon {
+      display: none;
+      font-size: 28px;
+      cursor: pointer;
+    }
+
+    /* 主标题 */
+    .hero {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 10;
+    }
+    .hero h1 {
+      font-size: clamp(4rem, 12vw, 14rem);
+      font-weight: 900;
+      letter-spacing: -8px;
+      line-height: 0.85;
+      background: linear-gradient(90deg, #fff, #ddd, #fff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 200% auto;
+      animation: shine 6s linear infinite;
+    }
+    @keyframes shine {
+      to { background-position: 200%; }
+    }
+
+    /* 照片扇形动画容器 */
+    .gallery {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 5;
+    }
+    .card {
+      position: absolute;
+      width: 280px;
+      height: 380px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      transform-origin: bottom center;
+      opacity: 0;
+      transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+      background: #111;
+      pointer-events: auto;
+    }
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* 扇形展开动画 */
+    .card:nth-child(1) { transform: rotate(-35deg) translateY(-100vh); }
+    .card:nth-child(2) { transform: rotate(-20deg) translateY(-100vh); }
+    .card:nth-child(3) { transform: rotate(0deg)   translateY(-100vh); }
+    .card:nth-child(4) { transform: rotate(20deg)  translateY(-100vh); }
+    .card:nth-child(5) { transform: rotate(35deg)  translateY(-100vh); }
+
+    .animate .card {
+      opacity: 1;
+      transform: translateY(0) rotate(0deg) !important;
+    }
+    .animate .card:nth-child(1) { transform: translate(-220px, 80px) rotate(-18deg); }
+    .animate .card:nth-child(2) { transform: translate(-110px, 40px) rotate(-10deg); }
+    .animate .card:nth-child(3) { transform: translate(0, 0); }
+    .animate .card:nth-child(4) { transform: translate(110px, 40px) rotate(10deg); }
+    .animate .card:nth-child(5) { transform: translate(220px, 80px) rotate(18deg); }
+
+    /* 从下往上收起（第二阶段动画） */
+    .retract .card {
+      transform: translateY(120vh) rotate(0deg) !important;
+      opacity: 0;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 { font-size: clamp(3.5rem, 15vw, 8rem); letter-spacing: -5px; }
+      .nav-links { display: none; }
+      .menu-icon { display: block; }
+      .card { width: 220px; height: 300px; }
+    }
+  </style>
 </head>
 <body>
-    <div class="background">
-        <div class="layer layer1"></div>
-        <div class="layer layer2"></div>
-        <div class="layer layer3"></div>
-        <div class="layer layer4"></div>
+  <nav>
+    <div class="logo">Vertora</div>
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">Service</a>
+      <a href="#">Blog</a>
+      <a href="#">Portfolio</a>
+      <a href="#">Contact</a>
     </div>
-    <div class="content">
-        <h1>AI智能加人物<br>多角度展示</h1>
-        <p>专业室内设计效果图 · 无人场景快速添加真实人物<br>支持任意人数、自然姿势、多角度呈现</p>
-        <a href="/ai.html" class="button">查看作品集 →</a>
-    </div>
+    <div class="menu-icon">☰</div>
+  </nav>
+
+  <div class="hero">
+    <h1>Design<br>Studio</h1>
+  </div>
+
+  <div class="gallery">
+    <div class="card"><img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800" alt=""></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1553356084-58ef4a67b2a7?w=800" alt=""></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1511671782779-cb56e135bd67?w=800" alt=""></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1557683316-973673baf926?w=800" alt=""></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1557683311-e973673baf926?w=800" alt=""></div>
+  </div>
+
+  <script>
+    const gallery = document.querySelector('.gallery');
+    const cards = document.querySelectorAll('.card');
+
+    // 第一阶段：从上往下扇形展开
+    setTimeout(() => {
+      gallery.classList.add('animate');
+    }, 800);
+
+    // 第二阶段：从中间从下往上收起（循环播放）
+    setTimeout(() => {
+      gallery.classList.remove('animate');
+      gallery.classList.add('retract');
+    }, 6000);
+
+    // 第三阶段：重置并重新开始动画（无限循环）
+    setTimeout(() => {
+      gallery.classList.remove('retract');
+      // 可选：重新触发第一阶段动画
+      setTimeout(() => {
+        gallery.classList.add('animate');
+      }, 1500);
+    }, 9000);
+
+    // 无限循环（每 10 秒一次完整动画）
+    setInterval(() => {
+      gallery.classList.remove('animate', 'retract');
+      setTimeout(() => gallery.classList.add('animate'), 100);
+      setTimeout(() => {
+        gallery.classList.remove('animate');
+        gallery.classList.add('retract');
+      }, 5200);
+      setTimeout(() => gallery.classList.remove('retract'), 8200);
+    }, 10000);
+  </script>
 </body>
 </html>
