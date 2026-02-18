@@ -167,15 +167,15 @@
     .marquee-track {
       display:flex;
       white-space:nowrap;
-      animation:marquee 10s linear infinite;  /* 速度：35秒一圈，可调 */
+      animation:marquee 35s linear infinite;  /* 滚动速度，可调 */
     }
-    /* .marquee-track:hover {
-      animation-play-state:paused;  悬停暂停 
-    }*/
+    .marquee-track:hover {
+      animation-play-state:paused;
+    }
     .marquee-item {
       flex-shrink:0;
-      margin:0 60px;  /* 品牌间距 */
-      height:80px;    /* 统一高度，你后期PNG建议也这个高度 */
+      margin:0 30px;  /* 间距缩小到30px */
+      height:60px;    /* LOGO高度缩小到60px */
       display:flex;
       align-items:center;
       justify-content:center;
@@ -183,7 +183,7 @@
     .marquee-item img {
       height:100%;
       width:auto;
-      max-width:180px;
+      max-width:150px;  /* 最大宽度限制，避免过宽 */
       object-fit:contain;
       transition:0.4s;
     }
@@ -231,11 +231,11 @@
     </div>
   </div>
 
-  <!-- 品牌列表无限横向滚动区（用图片） -->
+  <!-- 品牌列表无限横向滚动区（用图片展示） -->
   <section class="clients-section">
     <div class="marquee-wrapper">
       <div class="marquee-track">
-        <!-- 你后期替换 src 为你的 PNG 文件路径 -->
+        <!-- 你的原LOGO链接保持不变 -->
         <div class="marquee-item"><img src="https://img.adons.top/sucai/67fdfed1d4387726dad284e9_fake-company-logo-3.svg" alt="SAVANNAH"></div>
         <div class="marquee-item"><img src="https://img.adons.top/sucai/67fdfed1d4387726dad284e9_fake-company-logo-3.svg" alt="oslo."></div>
         <div class="marquee-item"><img src="https://img.adons.top/sucai/67fdfed1d4387726dad284e9_fake-company-logo-3.svg" alt="Basel"></div>
