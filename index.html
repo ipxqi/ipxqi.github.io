@@ -1,195 +1,164 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Personal Works</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      height: 100vh;
-      background: linear-gradient(135deg, #0a0a15 0%, #150a15 50%, #150a0a 100%);
-      color: white;
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-      overflow: hidden;
-      position: relative;
+      height:100vh;
+      background:linear-gradient(135deg, #0a0a15 0%, #150a15 50%, #150a0a 100%);
+      color:white;
+      font-family:'Helvetica Neue', Arial, sans-serif;
+      overflow:hidden;
+      position:relative;
     }
 
     nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      padding: 30px 5%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(0,0,0,0.4);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      position:fixed;
+      top:0; left:0; right:0;
+      z-index:100;
+      padding:30px 5%;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      background:rgba(0,0,0,0.4);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(255,255,255,0.06);
     }
     .logo {
-      font-size: 28px;
-      font-weight: bold;
-      letter-spacing: 3px;
-      background: linear-gradient(90deg, #ff6b6b, #ff8e53, #ffd166);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-size:28px;
+      font-weight:bold;
+      letter-spacing:3px;
+      background:linear-gradient(90deg, #ff6b6b, #ff8e53, #ffd166);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
     }
     .nav-links {
-      display: flex;
-      gap: 45px;
-      font-size: 16px;
+      display:flex;
+      gap:45px;
+      font-size:16px;
     }
     .nav-links a {
-      color: rgba(255,255,255,0.75);
-      text-decoration: none;
-      transition: 0.4s;
+      color:rgba(255,255,255,0.75);
+      text-decoration:none;
+      transition:0.4s;
     }
     .nav-links a:hover {
-      color: white;
-      text-shadow: 0 0 20px rgba(255,107,107,0.5);
+      color:white;
+      text-shadow:0 0 20px rgba(255,107,107,0.5);
     }
-    .menu-icon {
-      display: none;
-      font-size: 28px;
-      cursor: pointer;
-    }
+    .menu-icon { display:none; font-size:28px; cursor:pointer; }
 
     .hero {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 10;
-      pointer-events: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 50px;
-      font-size: clamp(5.5rem, 13vw, 15rem);
-      font-weight: 900;
-      letter-spacing: -10px;
-      line-height: 1;
-      white-space: nowrap;
+      position:absolute;
+      top:50%;
+      left:50%;
+      transform:translate(-50%, -50%);
+      z-index:10;
+      pointer-events:none;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:50px;
+      font-size:clamp(5.5rem, 13vw, 15rem);
+      font-weight:900;
+      letter-spacing:-10px;
+      line-height:1;
+      white-space:nowrap;
     }
     .hero span {
-      background: linear-gradient(90deg, #ffffff, #e0e0e0, #ffffff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-size: 200% auto;
-      animation: shine 7s linear infinite;
-      transition: transform 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      text-shadow: 0 0 40px rgba(255,255,255,0.3);
+      background:linear-gradient(90deg, #ffffff, #e0e0e0, #ffffff);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-size:200% auto;
+      animation:shine 7s linear infinite;
+      transition:transform 1.8s cubic-bezier(0.25,0.46,0.45,0.94);
+      text-shadow:0 0 40px rgba(255,255,255,0.3);
     }
-    .hero .left { transform: translateX(0); }
-    .hero .right { transform: translateX(0); }
-    .expand-title .left { transform: translateX(-220px); }
-    .expand-title .right { transform: translateX(220px); }
-    @keyframes shine {
-      to { background-position: 200%; }
-    }
+    .hero .left { transform:translateX(0); }
+    .hero .right { transform:translateX(0); }
+    .expand-title .left { transform:translateX(-220px); }
+    .expand-title .right { transform:translateX(220px); }
+    @keyframes shine { to { background-position:200%; } }
 
-    /* 照片容器 - 圆心位置设置 */
     .gallery-container {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      height: 100%;
-      max-width: 1600px;
-      pointer-events: none;
-      z-index: 5;
+      position:absolute;
+      top:0;
+      left:50%;
+      transform:translateX(-50%);
+      width:100%;
+      height:100%;
+      max-width:1600px;
+      pointer-events:none;
+      z-index:5;
     }
     .gallery {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      perspective: 1500px; /* 增加透视感 */
+      position:relative;
+      width:100%;
+      height:100%;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      perspective:1500px;
     }
     .card {
-      position: absolute;
-      width: 320px;
-      height: 420px;
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: 0 30px 80px rgba(0,0,0,0.7), inset 0 0 30px rgba(255,107,107,0.08);
-      opacity: 0;
-      transition: all 1.6s cubic-bezier(0.34, 0.16, 0.3, 1);
-      background: #111;
-      pointer-events: auto;
-      border: 1px solid rgba(255,255,255,0.08);
-      transform-origin: 50% 120%; /* 统一圆心在卡片下方中心偏下 */
-      transform-style: preserve-3d;
+      position:absolute;
+      width:320px;
+      height:420px;
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:0 30px 80px rgba(0,0,0,0.7), inset 0 0 30px rgba(255,107,107,0.08);
+      opacity:0;
+      transition:all 1.6s cubic-bezier(0.34,0.16,0.3,1);
+      background:#111;
+      pointer-events:auto;
+      border:1px solid rgba(255,255,255,0.08);
+      transform-origin:50% 150%;
+      transform-style:preserve-3d;
     }
     .card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: brightness(0.95);
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      filter:brightness(0.95);
     }
 
-    /* 初始位置：从中间上方隐藏 */
     .card {
-      transform: translateY(-180vh) translateX(0) rotateX(0deg) scale(0.85);
+      transform:translateY(-180vh) translateX(0) rotate(0deg) scale(0.85);
+      opacity:0;
     }
 
-    /* 整体一起从上方插进来 */
-    .insert .card:nth-child(1) { transition-delay: 0.3s; }
-    .insert .card:nth-child(2) { transition-delay: 0.45s; }
-    .insert .card:nth-child(3) { transition-delay: 0.6s; }
-    .insert .card:nth-child(4) { transition-delay: 0.75s; }
-    .insert .card:nth-child(5) { transition-delay: 0.9s; }
+    .insert .card:nth-child(1) { transition-delay:0.3s; }
+    .insert .card:nth-child(2) { transition-delay:0.45s; }
+    .insert .card:nth-child(3) { transition-delay:0.6s; }
+    .insert .card:nth-child(4) { transition-delay:0.75s; }
+    .insert .card:nth-child(5) { transition-delay:0.9s; }
 
     .insert .card {
-      opacity: 1;
-      transform: translateY(0) translateX(0) rotateX(0deg) scale(1);
+      opacity:1;
+      transform:translateY(0) translateX(0) rotate(0deg) scale(1);
     }
 
-    /* 紧凑扇形展开：统一圆心，角度更小，重叠更自然 */
     .expand .card {
-      transition-delay: 0s !important;
-      box-shadow: 0 50px 120px rgba(0,0,0,0.8), 0 0 50px rgba(255,107,107,0.25);
+      transition-delay:0s !important;
+      box-shadow:0 50px 120px rgba(0,0,0,0.8), 0 0 50px rgba(255,107,107,0.2);
     }
-    .expand .card:nth-child(1) { transform: translateY(-40px) rotate(-24deg) scale(0.94) translateZ(-20px); }
-    .expand .card:nth-child(2) { transform: translateY(-20px) rotate(-12deg) scale(0.97) translateZ(-10px); }
-    .expand .card:nth-child(3) { transform: translateY(0) rotate(0deg) scale(1) translateZ(0); }
-    .expand .card:nth-child(4) { transform: translateY(-20px) rotate(12deg) scale(0.97) translateZ(-10px); }
-    .expand .card:nth-child(5) { transform: translateY(-40px) rotate(24deg) scale(0.94) translateZ(-20px); }
+    .expand .card:nth-child(1) { transform:translateY(0) rotate(-24deg) scale(0.94) translateZ(-30px); }
+    .expand .card:nth-child(2) { transform:translateY(0) rotate(-12deg) scale(0.97) translateZ(-15px); }
+    .expand .card:nth-child(3) { transform:translateY(0) rotate(0deg) scale(1) translateZ(0); }
+    .expand .card:nth-child(4) { transform:translateY(0) rotate(12deg) scale(0.97) translateZ(-15px); }
+    .expand .card:nth-child(5) { transform:translateY(0) rotate(24deg) scale(0.94) translateZ(-30px); }
 
-    /* 收回中心 */
     .retract .card {
-      transform: translateY(0) translateX(0) rotate(0deg) scale(1) translateZ(0) !important;
-      opacity: 1;
+      transform:translateY(0) translateX(0) rotate(0deg) scale(1) translateZ(0) !important;
+      opacity:1;
     }
 
-    /* 收回后直接向上消失 */
     .exit-up .card {
-      transform: translateY(-180vh) translateX(0) rotate(0deg) scale(0.85) translateZ(0) !important;
-      opacity: 0;
-    }
-
-    @media (max-width: 768px) {
-      .hero { font-size: clamp(4rem, 18vw, 10rem); gap: 30px; letter-spacing: -6px; }
-      .nav-links { display: none; }
-      .menu-icon { display: block; }
-      .card { width: 240px; height: 320px; }
-      .expand .card:nth-child(1) { transform: translateY(-30px) rotate(-24deg) scale(0.94) translateZ(-15px); }
-      .expand .card:nth-child(2) { transform: translateY(-15px) rotate(-12deg) scale(0.97) translateZ(-8px); }
-      .expand .card:nth-child(3) { transform: translateY(0) rotate(0deg) scale(1) translateZ(0); }
-      .expand .card:nth-child(4) { transform: translateY(-15px) rotate(12deg) scale(0.97) translateZ(-8px); }
-      .expand .card:nth-child(5) { transform: translateY(-30px) rotate(24deg) scale(0.94) translateZ(-15px); }
-      .expand-title .left { transform: translateX(-140px); }
-      .expand-title .right { transform: translateX(140px); }
+      transform:translateY(-180vh) translateX(0) rotate(0deg) scale(0.85) translateZ(0) !important;
+      opacity:0;
     }
   </style>
 </head>
@@ -214,21 +183,34 @@
 
   <div class="gallery-container">
     <div class="gallery">
-      <div class="card"><img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800" alt=""></div>
-      <div class="card"><img src="https://images.unsplash.com/photo-1553356084-58ef4a67b2a7?w=800" alt=""></div>
-      <div class="card"><img src="https://images.unsplash.com/photo-1511671782779-cb56e135bd67?w=800" alt=""></div>
-      <div class="card"><img src="https://images.unsplash.com/photo-1557683316-973673baf926?w=800" alt=""></div>
-      <div class="card"><img src="https://images.unsplash.com/photo-1557683311-e973673baf926?w=800" alt=""></div>
+      <!-- 换成稳定图床 + 高清图 -->
+      <div class="card"><img src="https://cdn.pixabay.com/photo/2017/08/07/14/02/people-2604149_1280.jpg" alt=""></div>
+      <div class="card"><img src="https://cdn.pixabay.com/photo/2017/08/07/14/02/people-2604150_1280.jpg" alt=""></div>
+      <div class="card"><img src="https://cdn.pixabay.com/photo/2017/08/07/14/02/people-2604151_1280.jpg" alt=""></div>
+      <div class="card"><img src="https://cdn.pixabay.com/photo/2017/08/07/14/02/people-2604152_1280.jpg" alt=""></div>
+      <div class="card"><img src="https://cdn.pixabay.com/photo/2017/08/07/14/02/people-2604153_1280.jpg" alt=""></div>
     </div>
   </div>
 
   <script>
     const gallery = document.querySelector('.gallery');
     const hero = document.querySelector('.hero');
+    const cards = document.querySelectorAll('.card');
+
+    function resetCards() {
+      cards.forEach(card => {
+        card.style.transition = 'none';
+        card.style.transform = 'translateY(-180vh) translateX(0) rotate(0deg) scale(0.85)';
+        card.style.opacity = '0';
+        card.offsetHeight; // 强制重绘
+        card.style.transition = '';
+      });
+      hero.classList.remove('expand-title');
+      gallery.classList.remove('insert', 'expand', 'retract', 'exit-up');
+    }
 
     function startAnimation() {
-      gallery.classList.remove('insert', 'expand', 'retract', 'exit-up');
-      hero.classList.remove('expand-title');
+      resetCards();
 
       setTimeout(() => {
         gallery.classList.add('insert');
@@ -248,15 +230,15 @@
         gallery.classList.remove('retract');
         gallery.classList.add('exit-up');
         hero.classList.remove('expand-title');
-      }, 400 + 1600 + 5000 + 1600);
+      }, 400 + 1600 + 5000 + 2000);
 
       setTimeout(() => {
         gallery.classList.remove('exit-up');
-      }, 400 + 1600 + 5000 + 1600 + 1000);
+      }, 400 + 1600 + 5000 + 2000 + 1600);
     }
 
     startAnimation();
-    setInterval(startAnimation, 16000);
+    setInterval(startAnimation, 17000);
   </script>
 </body>
 </html>
