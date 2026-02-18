@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Personal Works</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@fontsource/inter-tight@4.5.0/900.css" rel="stylesheet">
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
@@ -104,11 +104,11 @@
     }
     .card {
       position:absolute;
-      width:300px;
-      height:400px;
-      border-radius:22px;
+      width:240px;           /* ← 照片小一点 */
+      height:320px;          /* ← 照片小一点 */
+      border-radius:18px;
       overflow:hidden;
-      box-shadow:0 25px 70px rgba(0,0,0,0.7);
+      box-shadow:0 20px 60px rgba(0,0,0,0.7);
       background:#111;
       pointer-events:auto;
       border:1px solid rgba(255,255,255,0.07);
@@ -139,7 +139,7 @@
 
   <div class="hero">
     <span class="left">Personal</span>
-    <span class="right">works</span>
+    <span class="right">Works</span>
   </div>
 
   <div class="gallery-container">
@@ -173,56 +173,54 @@
     function startAnimation() {
       forceReset();
 
-      // 阶段1: 照片插入 + 标题分开（插入过程中逐张开始轻微展开）
+      // 阶段1: 照片插入 + 标题分开
       setTimeout(() => {
         cards.forEach((card, index) => {
           setTimeout(() => {
             card.style.transition = 'all 1.2s cubic-bezier(0.34, 0.16, 0.3, 1)';
             card.style.opacity = '1';
             card.style.transform = 'translateY(0) translateX(0) rotate(0deg) scale(1)';
-          }, index * 100);  // 插入更快，连续性更强
+          }, index * 120);
         });
         hero.classList.add('expand-title');
-      }, 200);
+      }, 300);
 
-      // 阶段2: 插入过程中逐张轻微展开扇形（落地前就开始旋转），落地后完全展开
+      // 阶段2: 等落地后一起扇形展开（小照片后间距也相应缩小，更紧凑）
       setTimeout(() => {
         cards.forEach((card, index) => {
-          setTimeout(() => {
-            const rotations = [-22, -11, 0, 11, 22];
-            const z = [-25, -12, 0, -12, -25];
-            card.style.transition = 'all 1.3s cubic-bezier(0.34, 0.16, 0.3, 1)';
-            card.style.transform = `translateY(0) rotate(${rotations[index]}deg) scale(0.96) translateZ(${z[index]}px)`;
-          }, index * 100 + 600);  // 插入后600ms开始逐张展开
+          const rotations = [-22, -11, 0, 11, 22];
+          const z = [-25, -12, 0, -12, -25];
+          card.style.transition = 'all 1.4s cubic-bezier(0.34, 0.16, 0.3, 1)';
+          card.style.transform = `translateY(0) rotate(${rotations[index]}deg) scale(0.96) translateZ(${z[index]}px)`;
         });
-      }, 200 + 5 * 100);
+      }, 300 + 5 * 120 + 1200 + 500);
 
-      // 阶段3: 停留 3.5 秒后收回中心
+      // 阶段3: 停留 4 秒后收回中心
       setTimeout(() => {
         cards.forEach(card => {
-          card.style.transition = 'all 1.3s cubic-bezier(0.34, 0.16, 0.3, 1)';
+          card.style.transition = 'all 1.4s cubic-bezier(0.34, 0.16, 0.3, 1)';
           card.style.transform = 'translateY(0) translateX(0) rotate(0deg) scale(1)';
         });
-      }, 200 + 5 * 100 + 1300 + 3500);
+      }, 300 + 5 * 120 + 1200 + 500 + 4000);
 
-      // 阶段4: 收回后逐张向上消失（对称进场）
+      // 阶段4: 收回后逐张向上消失
       setTimeout(() => {
         cards.forEach((card, index) => {
           setTimeout(() => {
             card.style.transition = 'all 1.2s cubic-bezier(0.34, 0.16, 0.3, 1)';
             card.style.opacity = '0';
             card.style.transform = 'translateY(-180vh) translateX(0) rotate(0deg) scale(0.85)';
-          }, index * 100);  // 逐张退出
+          }, index * 120);
         });
         hero.classList.remove('expand-title');
-      }, 200 + 5 * 100 + 1300 + 3500 + 1300);
+      }, 300 + 5 * 120 + 1200 + 500 + 4000 + 1400);
 
       // 阶段5: 重置
-      setTimeout(forceReset, 200 + 5 * 100 + 1300 + 3500 + 1300 + 5 * 100 + 800);
+      setTimeout(forceReset, 300 + 5 * 120 + 1200 + 500 + 4000 + 1400 + 5 * 120 + 1000);
     }
 
     startAnimation();
-    setInterval(startAnimation, 12000);  // 总周期约12秒，更快更连贯
+    setInterval(startAnimation, 13000);
   </script>
 </body>
 </html>
