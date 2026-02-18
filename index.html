@@ -4,13 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Personal Works</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
       height:100vh;
       background:linear-gradient(135deg, #0a0a15 0%, #150a15 50%, #150a0a 100%);
       color:white;
-      font-family:'Helvetica Neue', Arial, sans-serif;
+      font-family:"Inter Tight", sans-serif;
       overflow:hidden;
       position:relative;
     }
@@ -29,7 +30,7 @@
     }
     .logo {
       font-size:26px;
-      font-weight:bold;
+      font-weight:900;
       letter-spacing:3px;
       background:linear-gradient(90deg, #ff6b6b, #ff8e53, #ffd166);
       -webkit-background-clip:text;
@@ -39,6 +40,7 @@
       display:flex;
       gap:40px;
       font-size:15px;
+      font-weight:500;
     }
     .nav-links a {
       color:rgba(255,255,255,0.8);
@@ -166,42 +168,42 @@
       hero.classList.remove('expand-title');
       hero.offsetHeight;
       hero.style.transition = '';
-      gallery.classList.remove('expand', 'retract', 'exit-up');
     }
 
     function startAnimation() {
       forceReset();
 
-      // 阶段1: 照片插入 + 标题分开
+      // 阶段1: 照片插入 + 标题分开（插入过程中逐张开始轻微展开）
       setTimeout(() => {
         cards.forEach((card, index) => {
           setTimeout(() => {
             card.style.transition = 'all 1.2s cubic-bezier(0.34, 0.16, 0.3, 1)';
             card.style.opacity = '1';
             card.style.transform = 'translateY(0) translateX(0) rotate(0deg) scale(1)';
-          }, index * 120);
+          }, index * 100);  // 插入更快，连续性更强
         });
         hero.classList.add('expand-title');
-      }, 300);
+      }, 200);
 
-      // 阶段2: 必须等所有照片完全落地后才一起扇形展开
-      // 插入总时间 = 5张 × 120ms = 600ms + 动画时间1.2s + 额外缓冲0.5s
+      // 阶段2: 插入过程中逐张轻微展开扇形（落地前就开始旋转），落地后完全展开
       setTimeout(() => {
         cards.forEach((card, index) => {
-          const rotations = [-22, -11, 0, 11, 22];
-          const z = [-25, -12, 0, -12, -25];
-          card.style.transition = 'all 1.4s cubic-bezier(0.34, 0.16, 0.3, 1)';
-          card.style.transform = `translateY(0) rotate(${rotations[index]}deg) scale(0.96) translateZ(${z[index]}px)`;
+          setTimeout(() => {
+            const rotations = [-22, -11, 0, 11, 22];
+            const z = [-25, -12, 0, -12, -25];
+            card.style.transition = 'all 1.3s cubic-bezier(0.34, 0.16, 0.3, 1)';
+            card.style.transform = `translateY(0) rotate(${rotations[index]}deg) scale(0.96) translateZ(${z[index]}px)`;
+          }, index * 100 + 600);  // 插入后600ms开始逐张展开
         });
-      }, 300 + 5 * 120 + 1200 + 500);  // 严格等落地完成
+      }, 200 + 5 * 100);
 
-      // 阶段3: 停留 4 秒后收回中心
+      // 阶段3: 停留 3.5 秒后收回中心
       setTimeout(() => {
         cards.forEach(card => {
-          card.style.transition = 'all 1.4s cubic-bezier(0.34, 0.16, 0.3, 1)';
+          card.style.transition = 'all 1.3s cubic-bezier(0.34, 0.16, 0.3, 1)';
           card.style.transform = 'translateY(0) translateX(0) rotate(0deg) scale(1)';
         });
-      }, 300 + 5 * 120 + 1200 + 500 + 4000);
+      }, 200 + 5 * 100 + 1300 + 3500);
 
       // 阶段4: 收回后逐张向上消失（对称进场）
       setTimeout(() => {
@@ -210,17 +212,17 @@
             card.style.transition = 'all 1.2s cubic-bezier(0.34, 0.16, 0.3, 1)';
             card.style.opacity = '0';
             card.style.transform = 'translateY(-180vh) translateX(0) rotate(0deg) scale(0.85)';
-          }, index * 120);  // 逐张延迟退出，进出对称
+          }, index * 100);  // 逐张退出
         });
         hero.classList.remove('expand-title');
-      }, 300 + 5 * 120 + 1200 + 500 + 4000 + 1400);
+      }, 200 + 5 * 100 + 1300 + 3500 + 1300);
 
       // 阶段5: 重置
-      setTimeout(forceReset, 300 + 5 * 120 + 1200 + 500 + 4000 + 1400 + 5 * 120 + 1000);
+      setTimeout(forceReset, 200 + 5 * 100 + 1300 + 3500 + 1300 + 5 * 100 + 800);
     }
 
     startAnimation();
-    setInterval(startAnimation, 13000);
+    setInterval(startAnimation, 12000);  // 总周期约12秒，更快更连贯
   </script>
 </body>
 </html>
