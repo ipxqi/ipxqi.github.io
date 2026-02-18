@@ -77,8 +77,6 @@
       transition:transform 1.8s cubic-bezier(0.25,0.46,0.45,0.94);
       text-shadow:0 0 40px rgba(255,255,255,0.3);
     }
-    .hero .left { transform:translateX(0); }
-    .hero .right { transform:translateX(0); }
 
     .gallery-container {
       position:absolute;
@@ -106,8 +104,7 @@
       height:420px;
       border-radius:24px;
       overflow:hidden;
-      box-shadow:0 30px 80px rgba(0,0,0,0.7), inset 0 0 30px rgba(255,107,107,0.08);
-      transition:all 1.6s cubic-bezier(0.34,0.16,0.3,1);
+      box-shadow:0 30px 80px rgba(0,0,0,0.7);
       background:#111;
       pointer-events:auto;
       border:1px solid rgba(255,255,255,0.08);
@@ -156,58 +153,69 @@
     const hero = document.querySelector('.hero');
     const cards = document.querySelectorAll('.card');
 
-    function forceReset() {
+    function resetAll() {
       cards.forEach(card => {
         card.style.transition = 'none';
-        card.style.transform = 'translateY(-180vh) translateX(0) rotate(0deg) scale(0.85)';
         card.style.opacity = '0';
-        card.offsetHeight; // 强制重绘
+        card.style.transform = 'translateY(-180vh) translateX(0) rotate(0deg) scale(0.85)';
+        card.offsetHeight;
       });
+      hero.style.transition = 'none';
+      hero.style.transform = 'translate(-50%, -50%)';
       hero.classList.remove('expand-title');
-      gallery.classList.remove('insert', 'expand', 'retract', 'exit-up');
-      // 再强制重绘一次
-      void gallery.offsetHeight;
+      hero.offsetHeight;
+      hero.style.transition = '';
     }
 
     function startAnimation() {
-      forceReset(); // 每轮开始前强制重置所有状态
+      resetAll();
 
-      requestAnimationFrame(() => {
-        // 1. 插入 + 标题分开
-        setTimeout(() => {
-          gallery.classList.add('insert');
-          hero.classList.add('expand-title');
-        }, 400);
+      // 阶段1: 插入 + 标题分开
+      setTimeout(() => {
+        cards.forEach((card, index) => {
+          setTimeout(() => {
+            card.style.transition = 'all 1.6s cubic-bezier(0.34, 0.16, 0.3, 1)';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0) translateX(0) rotate(0deg) scale(1)';
+          }, index * 150);
+        });
+        hero.classList.add('expand-title');
+      }, 400);
 
-        // 2. 落地后一起扇形展开
-        setTimeout(() => {
-          gallery.classList.add('expand');
-        }, 400 + 1600);
+      // 阶段2: 落地后一起扇形展开
+      setTimeout(() => {
+        cards.forEach((card, index) => {
+          const rotations = [-24, -12, 0, 12, 24];
+          const z = [-30, -15, 0, -15, -30];
+          const scale = [0.94, 0.97, 1, 0.97, 0.94];
+          card.style.transition = 'all 1.6s cubic-bezier(0.34, 0.16, 0.3, 1)';
+          card.style.transform = `translateY(0) rotate(${rotations[index]}deg) scale(${scale[index]}) translateZ(${z[index]}px)`;
+        });
+      }, 400 + 1600);
 
-        // 3. 停留 5 秒后收回中心
-        setTimeout(() => {
-          gallery.classList.remove('expand');
-          gallery.classList.add('retract');
-        }, 400 + 1600 + 5000);
+      // 阶段3: 停留 5 秒后收回中心
+      setTimeout(() => {
+        cards.forEach(card => {
+          card.style.transition = 'all 1.6s cubic-bezier(0.34, 0.16, 0.3, 1)';
+          card.style.transform = 'translateY(0) translateX(0) rotate(0deg) scale(1)';
+        });
+      }, 400 + 1600 + 5000);
 
-        // 4. 收回完成后向上消失 + 标题归位
-        setTimeout(() => {
-          gallery.classList.remove('retract');
-          gallery.classList.add('exit-up');
-          hero.classList.remove('expand-title');
-        }, 400 + 1600 + 5000 + 2000);
+      // 阶段4: 收回后向上消失 + 标题归位
+      setTimeout(() => {
+        cards.forEach(card => {
+          card.style.transition = 'all 1.6s cubic-bezier(0.34, 0.16, 0.3, 1)';
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(-180vh) translateX(0) rotate(0deg) scale(0.85)';
+        });
+        hero.classList.remove('expand-title');
+      }, 400 + 1600 + 5000 + 1600);
 
-        // 5. 完全消失后重置
-        setTimeout(() => {
-          forceReset(); // 额外再重置一次，确保干净
-        }, 400 + 1600 + 5000 + 2000 + 1600);
-      });
+      // 阶段5: 重置
+      setTimeout(resetAll, 400 + 1600 + 5000 + 1600 + 1000);
     }
 
-    // 启动第一轮
     startAnimation();
-
-    // 每17秒循环一次
     setInterval(startAnimation, 17000);
   </script>
 </body>
