@@ -167,15 +167,12 @@
     .marquee-track {
       display:flex;
       white-space:nowrap;
-      animation:marquee 10s linear infinite;  /* 滚动速度，可调 */
-    }
-    .marquee-track:hover {
-      animation-play-state:paused;
+      animation:marquee 35s linear infinite;  /* 滚动速度，可调 */
     }
     .marquee-item {
       flex-shrink:0;
-      margin:0 30px;  /* 间距缩小到30px */
-      height:60px;    /* LOGO高度缩小到60px */
+      margin:0 30px; /* 间距保持30px */
+      height:60px; /* LOGO高度60px */
       display:flex;
       align-items:center;
       justify-content:center;
@@ -183,13 +180,16 @@
     .marquee-item img {
       height:100%;
       width:auto;
-      max-width:150px;  /* 最大宽度限制，避免过宽 */
+      max-width:150px;
       object-fit:contain;
       transition:0.4s;
     }
+    /* 去掉悬停放大和暂停 */
     .marquee-item img:hover {
-      transform:scale(1.15);
-      filter:brightness(1.2);
+      /* 无放大效果 */
+    }
+    .marquee-track:hover {
+      animation-play-state:running; /* 强制一直滚动，不暂停 */
     }
 
     @keyframes marquee {
