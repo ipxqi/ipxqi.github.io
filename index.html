@@ -191,8 +191,8 @@
       color:white;
       text-shadow:0 0 20px rgba(0,0,0,0.7);
     }
-    .partners-text > :not(small) {  /* 只针对主描述文字调小 */
-  font-size: clamp(1.4rem, 3vw, 2.8rem) !important;  /* 主文字单独缩小 */
+    .main-desc {
+  font-size: clamp(1.4rem, 3vw, 2.8rem) !important;
 }
     .partners-text small {
       font-size:0.45em;
@@ -275,9 +275,9 @@
   <section class="clients-section">
     <div class="partners-text-wrapper">
       <div class="partners-text">
-        <small>OUR PARTNERS</small>
-        We collaborate with forward thinking brands to build lasting creative impact
-      </div>
+  <small>OUR PARTNERS</small>
+  <span class="main-desc">We collaborate with forward thinking brands to build lasting creative impact</span>
+</div>
     </div>
 
     <div class="marquee-wrapper">
