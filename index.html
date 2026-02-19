@@ -191,6 +191,9 @@
       color:white;
       text-shadow:0 0 20px rgba(0,0,0,0.7);
     }
+    .partners-text > :not(small) {  /* 只针对主描述文字调小 */
+  font-size: clamp(1.4rem, 3vw, 2.8rem);  /* 主文字单独缩小 */
+}
     .partners-text small {
       font-size:0.45em;
       font-weight:500;
