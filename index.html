@@ -217,7 +217,7 @@
       100% { transform: translateX(-50%); }
     }
 
-    /* 新增模块：参考图风格 Service hero + 照片更靠下、文字更靠上 + parallax */
+    /* 新增模块：参考图风格 Service hero + 照片居中并排靠下、文字靠上 + parallax */
     .service-hero {
       height: 100vh;
       background: #000;
@@ -225,7 +225,7 @@
       overflow: hidden;
       display: flex;
       align-items: flex-start;
-      padding: 12% 8% 0; /* 文字再靠上一点 */
+      padding: 12% 8% 0; /* 文字靠上 */
     }
     .service-bg-dots {
       position: absolute;
@@ -284,18 +284,25 @@
     }
     .service-gallery {
       position: absolute;
-      inset: 0;
+      bottom: 5%; /* 照片整体靠下 */
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
       pointer-events: none;
     }
     .service-card {
-      position: absolute;
-      width: 380px;
+      width: 360px;
       height: 480px;
       border-radius: 32px;
       overflow: hidden;
       box-shadow: 0 50px 120px rgba(0,0,0,0.7);
       transition: transform 0.4s ease-out;
       will-change: transform;
+      flex-shrink: 0;
     }
     .service-card img {
       width: 100%;
@@ -362,7 +369,7 @@
     </div>
   </section>
 
-  <!-- 新增模块：参考图风格 Service hero + 照片更靠下、文字更靠上 + parallax -->
+  <!-- 新增模块：参考图风格 Service hero + 照片居中并排靠下、文字靠上 + parallax -->
   <section class="service-hero">
     <div class="service-bg-dots"></div>
     <div class="service-content">
@@ -371,15 +378,15 @@
         <p class="service-desc">We provide digital solutions to boost your brand's online presence, from web design to branding and content creation, all tailored to your business needs.</p>
         <a href="#" class="service-btn">Let's talk</a>
       </div>
-      <div class="service-left-gallery">
-        <!-- 照片更靠下（bottom 值调小） -->
-        <div class="service-card" style="bottom:5%; left:8%; width:420px; height:540px; top:auto;">
+      <div class="service-gallery">
+        <!-- 照片居中并排、一样大、靠下 -->
+        <div class="service-card">
           <img src="https://images.unsplash.com/photo-1553356084-58ef4a67b2a7?w=800" alt="">
         </div>
-        <div class="service-card" style="bottom:8%; left:30%; width:400px; height:520px; top:auto;">
+        <div class="service-card">
           <img src="https://images.unsplash.com/photo-1511671782779-cb56e135bd67?w=800" alt="">
         </div>
-        <div class="service-card" style="bottom:4%; right:8%; width:380px; height:480px; top:auto;">
+        <div class="service-card">
           <img src="https://images.unsplash.com/photo-1557683316-973673baf926?w=800" alt="">
         </div>
       </div>
@@ -462,7 +469,7 @@
     startAnimation();
     setInterval(startAnimation, 13000);
 
-    // 向下滚时照片移动（照片更靠下）
+    // 向下滚时照片移动（居中并排靠下）
     window.addEventListener('scroll', () => {
       const scrollY = window.scrollY;
       const parallaxCards = document.querySelectorAll('.service-card');
