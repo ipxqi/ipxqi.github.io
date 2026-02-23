@@ -177,19 +177,21 @@
       color:white;
       text-shadow:0 0 20px rgba(0,0,0,0.7);
     }
-    /* 图标 + 文字 + LOGO 容器 */
+    /* 图标 + 文字容器，宽度加大 */
     .partners-icons-text {
       display: flex;
       align-items: center;
-      gap: 12px;
-      font-size: 1.1rem;
-      color: rgba(255,255,255,0.8);
-      margin-bottom: 24px;
+      gap: 16px;
+      font-size: 1.2rem; /* 文字稍大一点，更清晰 */
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 28px;
+      max-width: 1100px; /* ← 这里加大宽度，比原来宽一点 */
+      width: 100%;
     }
     .partners-icon {
-      width: 88px;
-      height: 88px;
-      fill: #00aaff; /* 蓝色六芒星，可改成 #ff6b6b / #ffd166 / #ffffff 等 */
+      width: 32px;
+      height: 32px;
+      fill: #00aaff; /* 蓝色六芒星（五角星），可改成 #ff6b6b（红）、#ffd166（黄）、#ffffff（白）等 */
     }
     .partners-logos {
       display: flex;
@@ -369,14 +371,15 @@
   <section class="clients-section">
     <div class="partners-text-wrapper">
       <div class="partners-text">
-        <!-- 移除 OUR PARTNERS 小标题 -->
-        <!-- 图标 + 文字 + 四个LOGO -->
+        <!-- 图标 + 文字（放在原来小标题的位置） -->
         <div class="partners-icons-text">
           <svg class="partners-icon" viewBox="0 0 24 24">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
           </svg>
           <span>Loved by 1000+ big & small brands around the worlds</span>
         </div>
+
+        <!-- 四个LOGO照片 -->
         <div class="partners-logos">
           <img class="partners-logo" src="https://img.adons.top/sucai/67fdfed1d4387726dad284e9_fake-company-logo-3.svg" alt="Logo 1">
           <img class="partners-logo" src="https://img.adons.top/sucai/67fdfed1d4387726dad284e9_fake-company-logo-3.svg" alt="Logo 2">
