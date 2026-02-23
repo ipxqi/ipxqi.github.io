@@ -478,6 +478,7 @@
         hero.classList.add('expand-title');
       }, 300);
 
+       // 出场后到展开
       setTimeout(() => {
         cards.forEach((card, index) => {
           const rotations = [-22, -11, 0, 11, 22];
@@ -487,6 +488,7 @@
         });
       }, 300 + 5 * 120 + 1000);
 
+      // 展开后到平复（已缩短）
       setTimeout(() => {
         cards.forEach(card => {
           card.style.transition = 'all 1.4s cubic-bezier(0.34, 0.16, 0.3, 1)';
@@ -494,6 +496,7 @@
         });
       }, 300 + 5 * 120 + 1200 + 500 + 1500);
 
+      // 平复后到退场（现在缩短到800ms）
       setTimeout(() => {
         cards.forEach((card, index) => {
           // 退场顺序：最上面先消失，最下面最后消失
@@ -505,7 +508,7 @@
           }, delayIndex * 120);
         });
         hero.classList.remove('expand-title');
-      }, 300 + 5 * 120 + 1200 + 500 + 4000 + 800);
+      }, 300 + 5 * 120 + 1200 + 500 + 4000 + 100);
 
       setTimeout(forceReset, 300 + 5 * 120 + 1200 + 500 + 4000 + 1400 + 5 * 120 + 1000);
     }
