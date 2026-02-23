@@ -177,34 +177,37 @@
       color:white;
       text-shadow:0 0 20px rgba(0,0,0,0.7);
     }
-    .main-desc {
-      font-size: clamp(1.4rem, 3vw, 2.8rem) !important;
+    /* 新增：图标 + 文字 + 四个LOGO的容器 */
+    .partners-icons-text {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.8);
+      margin: 12px 0 24px;
     }
-    .partners-text small {
-      font-size:0.45em;
-      font-weight:500;
-      color:rgba(255,255,255,0.6);
-      text-transform:uppercase;
-      white-space:nowrap;
+    .partners-icon {
+      width: 28px;
+      height: 28px;
+      fill: #ff6b6b; /* 默认红色，可改成 #ffffff / #00aaff / #ffd166 等 */
     }
-    /* 新增：三个LOGO照片容器，占用原来长描述的位置 */
     .partners-logos {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 80px;
-      max-width: 900px; /* 与原文字宽度一致 */
+      gap: 60px;
+      max-width: 100%;
       width: 100%;
     }
     .partners-logo {
-      width: 220px; /* 适中大小，可调 */
-      height: auto;
-      transition: transform 0.3s ease;
+      height: 60px;
+      width: auto;
+      transition: transform 0.3s ease, filter 0.3s ease;
       filter: brightness(0.9);
     }
     .partners-logo:hover {
-      transform: scale(1.1);
-      filter: brightness(1);
+      transform: scale(1.12);
+      filter: brightness(1.1);
     }
     .marquee-wrapper {
       width:100%;
@@ -237,7 +240,6 @@
       0% { transform: translateX(0); }
       100% { transform: translateX(-50%); }
     }
-    /* Service hero 部分保持不变 */
     .service-hero {
       height: 180vh;
       background: #1d1d1f;
@@ -332,7 +334,6 @@
   </style>
 </head>
 <body>
-  <!-- 原有内容保持不变 -->
   <div class="nav-container">
     <nav>
       <div class="logo">Vertora</div>
@@ -369,11 +370,18 @@
     <div class="partners-text-wrapper">
       <div class="partners-text">
         <small>OUR PARTNERS</small>
-        <!-- 原长描述替换成三个LOGO照片，只占用原来位置 -->
+        <!-- 替换为你的图风格：图标 + 文字 + 四个LOGO -->
+        <div class="partners-icons-text">
+          <svg class="partners-icon" viewBox="0 0 24 24">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+          <span>Loved by 1000+ big & small brands around the worlds</span>
+        </div>
         <div class="partners-logos">
           <img class="partners-logo" src="https://img.adons.top/sucai/67fdfed1d4387726dad284e9_fake-company-logo-3.svg" alt="Logo 1">
           <img class="partners-logo" src="https://img.adons.top/sucai/67fdfed1d4387726dad284e9_fake-company-logo-3.svg" alt="Logo 2">
           <img class="partners-logo" src="https://img.adons.top/sucai/67fdfed1d4387726dad284e9_fake-company-logo-3.svg" alt="Logo 3">
+          <img class="partners-logo" src="https://img.adons.top/sucai/67fdfed1d4387726dad284e9_fake-company-logo-3.svg" alt="Logo 4">
         </div>
       </div>
     </div>
@@ -392,7 +400,6 @@
     </div>
   </section>
 
-  <!-- Service hero 部分保持不变 -->
   <section class="service-hero">
     <div class="service-bg-dots"></div>
     <div class="service-content">
@@ -493,6 +500,7 @@
     window.addEventListener('scroll', () => {
       const scrollY = window.scrollY;
       const parallaxCards = document.querySelectorAll('.service-card');
+
       parallaxCards.forEach((card, index) => {
         const speed = 0.5 + index * 0.18;
         const move = scrollY * speed * -0.75;
