@@ -448,32 +448,48 @@
   <script>
     const gallery = document.querySelector('.gallery');
     const hero = document.querySelector('.hero');
-    const originalCards = Array.from(document.querySelectorAll('.card')); // 保存原始卡片模板
+    const clientsSection = document.querySelector('.clients-section');
+
+    // 保存原始卡片 HTML 模板（只保存一次）
+    const originalCardTemplates = Array.from(document.querySelectorAll('.card')).map(card => card.outerHTML);
 
     function forceReset() {
-      // 彻底清空 gallery 并用全新克隆的卡片替换（避免任何状态残留）
-      gallery.innerHTML = '';
-      originalCards.forEach(original => {
-        const newCard = original.cloneNode(true);
-        gallery.appendChild(newCard);
+      // 获取当前所有卡片
+      const currentCards = gallery.querySelectorAll('.card');
+
+      currentCards.forEach((oldCard, index) => {
+        // 用原始模板创建全新卡片
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = originalCardTemplates[index];
+        const newCard = tempDiv.firstChild;
+
+        // 设置初始状态
+        newCard.style.transition = 'none !important';
+        newCard.style.opacity = '0';
+        newCard.style.transform = 'translateY(-180vh) translateX(0) rotate(0deg) scale(1) translateZ(0px) !important';
+        newCard.style.willChange = 'auto';
+        newCard.style.backfaceVisibility = 'visible';
+
+        // 替换旧卡片为新卡片
+        oldCard.parentNode.replaceChild(newCard, oldCard);
       });
 
-      // 重置 gallery 3D 属性
-      gallery.style.perspective = '1400px';
-      gallery.style.transformStyle = 'preserve-3d';
+      hero.style.transition = 'none';
+      hero.classList.remove('expand-title');
+      hero.offsetHeight;
+      hero.style.transition = '';
     }
 
     function startAnimation() {
       forceReset();
 
-      const cards = document.querySelectorAll('.card'); // 重新获取克隆后的卡片
+      // 重新获取替换后的卡片
+      const cards = gallery.querySelectorAll('.card');
 
       setTimeout(() => {
         cards.forEach((card, index) => {
-          // 显式设置初始状态
           card.style.transform = 'translateY(-180vh) translateX(0) rotate(0deg) scale(0.85) translateZ(0px)';
-          card.style.opacity = '0';
-          card.style.transition = 'none';
+          card.offsetHeight;
 
           setTimeout(() => {
             card.style.transition = 'all 1.2s cubic-bezier(0.34, 0.16, 0.3, 1)';
@@ -484,6 +500,7 @@
         hero.classList.add('expand-title');
       }, 300);
 
+      // 出场后到展开
       setTimeout(() => {
         cards.forEach((card, index) => {
           const rotations = [-22, -11, 0, 11, 22];
@@ -493,6 +510,7 @@
         });
       }, 300 + 5 * 120 + 1000);
 
+      // 展开后到平复
       setTimeout(() => {
         cards.forEach(card => {
           card.style.transition = 'all 1.4s cubic-bezier(0.34, 0.16, 0.3, 1)';
@@ -500,6 +518,7 @@
         });
       }, 300 + 5 * 120 + 1200 + 500 + 1500);
 
+      // 平复后到退场
       setTimeout(() => {
         cards.forEach((card, index) => {
           const delayIndex = cards.length - 1 - index;
