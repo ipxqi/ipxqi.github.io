@@ -184,7 +184,6 @@
     }
     .partners-icons-text {
       display: flex;
-      
       align-items: center;
       justify-content: flex-start;
       gap: 10px;
@@ -208,10 +207,9 @@
       justify-content: flex-start;
       gap: 4px;
     }
-    /* 4个LOGO改成红框位置：靠下、横排、居中 */
     .partners-logos {
       position: absolute;
-      bottom: 12%;                /* 靠底部，可调 5%~15% */
+      bottom: 12%;
       left: 60%;
       transform: translateX(-50%);
       display: flex;
@@ -223,20 +221,18 @@
       z-index: 9;
     }
     .partners-logo {
-      height: 30px;               /* 稍大一点，更显眼 */
+      height: 30px;
       width: auto;
-      transition: none;          /* 新增/修改：取消所有过渡动画 */
+      transition: none;
       filter: brightness(0.9);
     }
     .partners-logo:hover {
-  /* 完全删除或注释掉 hover 效果 */
-  /* transform: scale(1.12); */
-  /* filter: brightness(1.1); */
-}
+      /* 无 hover 效果 */
+    }
     .marquee-wrapper {
       width:100%;
       position:relative;
-      margin-top: 120px;          /* 给LOGO留出空间 */
+      margin-top: 120px;
     }
     .marquee-track {
       display:flex;
@@ -394,7 +390,6 @@
   <section class="clients-section">
     <div class="partners-text-wrapper">
       <div class="partners-text">
-        <!-- 五角星 + 两行文字（垂直左对齐） -->
         <div class="partners-icons-text">
           <svg class="partners-icon" viewBox="0 0 24 24">
             <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
@@ -407,7 +402,6 @@
       </div>
     </div>
 
-    <!-- 4个LOGO放到红框位置：靠下、横排、居中 -->
     <div class="partners-logos">
       <img class="partners-logo" src="https://img.adons.top/sucai/67fdfed1d4387726dad284e9_fake-company-logo-3.svg" alt="Logo 1">
       <img class="partners-logo" src="https://img.adons.top/sucai/67fdfed1d4387726dad284e9_fake-company-logo-3.svg" alt="Logo 2">
@@ -474,6 +468,7 @@
       forceReset();
       setTimeout(() => {
         cards.forEach((card, index) => {
+          // 出场顺序：恢复原样，最上面先出现
           setTimeout(() => {
             card.style.transition = 'all 1.2s cubic-bezier(0.34, 0.16, 0.3, 1)';
             card.style.opacity = '1';
@@ -490,7 +485,7 @@
           card.style.transition = 'all 1.4s cubic-bezier(0.34, 0.16, 0.3, 1)';
           card.style.transform = `translateY(0) rotate(${rotations[index]}deg) scale(0.96) translateZ(${z[index]}px)`;
         });
-      }, 300 + 5 * 120 + 200);
+      }, 300 + 5 * 120 + 1200 + 500);
 
       setTimeout(() => {
         cards.forEach(card => {
@@ -501,11 +496,13 @@
 
       setTimeout(() => {
         cards.forEach((card, index) => {
+          // 退场顺序：最上面先消失，最下面最后消失
+          const delayIndex = cards.length - 1 - index;
           setTimeout(() => {
             card.style.transition = 'all 1.2s cubic-bezier(0.34, 0.16, 0.3, 1)';
             card.style.opacity = '0';
             card.style.transform = 'translateY(-180vh) translateX(0) rotate(0deg) scale(0.85)';
-          }, index * 120);
+          }, delayIndex * 120);
         });
         hero.classList.remove('expand-title');
       }, 300 + 5 * 120 + 1200 + 500 + 4000 + 1400);
@@ -529,7 +526,6 @@
     window.addEventListener('scroll', () => {
       const scrollY = window.scrollY;
       const parallaxCards = document.querySelectorAll('.service-card');
-
       parallaxCards.forEach((card, index) => {
         const speed = 0.5 + index * 0.18;
         const move = scrollY * speed * -0.75;
