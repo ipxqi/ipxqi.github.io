@@ -524,8 +524,9 @@
     observer.observe(clientsSection);
 
     startAnimation();
-    setInterval(startAnimation, 13000);
+    setInterval(startAnimation,9000);  // ← 这里改成 9000ms（9秒一循环）
 
+    
     window.addEventListener('scroll', () => {
       const scrollY = window.scrollY;
       const parallaxCards = document.querySelectorAll('.service-card');
