@@ -233,11 +233,13 @@
       width:100%;
       position:relative;
       margin-top: 120px;
+      overflow-x: hidden; /* 强制隐藏横向滚动条 */
     }
     .marquee-track {
       display:flex;
       white-space:nowrap;
       animation:marquee 15s linear infinite;
+      width: max-content; /* 确保宽度足够容纳所有项 */
     }
     .marquee-item {
       flex-shrink:0;
@@ -450,27 +452,23 @@
     const hero = document.querySelector('.hero');
     const clientsSection = document.querySelector('.clients-section');
 
-    // 保存原始卡片 HTML 模板（只保存一次）
+    // 保存原始卡片模板（outerHTML）
     const originalCardTemplates = Array.from(document.querySelectorAll('.card')).map(card => card.outerHTML);
 
     function forceReset() {
-      // 获取当前所有卡片
+      // 只替换 .card 元素，不动其他子元素
       const currentCards = gallery.querySelectorAll('.card');
-
       currentCards.forEach((oldCard, index) => {
-        // 用原始模板创建全新卡片
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = originalCardTemplates[index];
         const newCard = tempDiv.firstChild;
 
-        // 设置初始状态
         newCard.style.transition = 'none !important';
         newCard.style.opacity = '0';
         newCard.style.transform = 'translateY(-180vh) translateX(0) rotate(0deg) scale(1) translateZ(0px) !important';
         newCard.style.willChange = 'auto';
         newCard.style.backfaceVisibility = 'visible';
 
-        // 替换旧卡片为新卡片
         oldCard.parentNode.replaceChild(newCard, oldCard);
       });
 
@@ -483,7 +481,6 @@
     function startAnimation() {
       forceReset();
 
-      // 重新获取替换后的卡片
       const cards = gallery.querySelectorAll('.card');
 
       setTimeout(() => {
@@ -500,7 +497,6 @@
         hero.classList.add('expand-title');
       }, 300);
 
-      // 出场后到展开
       setTimeout(() => {
         cards.forEach((card, index) => {
           const rotations = [-22, -11, 0, 11, 22];
@@ -510,7 +506,6 @@
         });
       }, 300 + 5 * 120 + 1000);
 
-      // 展开后到平复
       setTimeout(() => {
         cards.forEach(card => {
           card.style.transition = 'all 1.4s cubic-bezier(0.34, 0.16, 0.3, 1)';
@@ -518,7 +513,6 @@
         });
       }, 300 + 5 * 120 + 1200 + 500 + 1500);
 
-      // 平复后到退场
       setTimeout(() => {
         cards.forEach((card, index) => {
           const delayIndex = cards.length - 1 - index;
@@ -531,7 +525,8 @@
         hero.classList.remove('expand-title');
       }, 300 + 5 * 120 + 1200 + 500 + 2800);
 
-      setTimeout(forceReset, 300 + 5 * 120 + 1200 + 500 + 4000 + 1400 + 5 * 120 + 1000);
+      // 自动调度下一轮
+      setTimeout(startAnimation, 9000);
     }
 
     const observer = new IntersectionObserver((entries) => {
@@ -544,9 +539,10 @@
 
     observer.observe(clientsSection);
 
-    startAnimation();
-    setInterval(startAnimation, 9000);
+    startAnimation();  // 第一次启动
 
+    // 移除原来的 setInterval，改用递归调用 startAnimation，确保循环稳定
+    // window.addEventListener('scroll', ... ) 保持不变
     window.addEventListener('scroll', () => {
       const scrollY = window.scrollY;
       const parallaxCards = document.querySelectorAll('.service-card');
