@@ -162,7 +162,7 @@
     .partners-text-wrapper {
       position: absolute;
       top: 70%;
-      max-width: 1400px;          /* 加大父级宽度，让文字有足够空间拉宽 */
+      max-width: 1400px;
       width: 90%;
       left: 50%;
       transform: translateX(-50%);
@@ -172,7 +172,7 @@
     }
     .partners-text {
       display: flex;
-      flex-direction: column;     /* 改成 column，让图标和文字垂直排列 */
+      flex-direction: column;
       align-items: center;
       gap: 20px;
       font-size: clamp(1.8rem, 4vw, 3.5rem);
@@ -184,20 +184,28 @@
     }
     .partners-icons-text {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
-      gap: 12px;
-      font-size: 1.4rem;          /* 文字稍大，更醒目 */
+      justify-content: center;
+      gap: 24px;
+      font-size: 1.4rem;
       color: rgba(255,255,255,0.95);
+      margin-bottom: 32px;
       width: 100%;
-      max-width: none;            /* 移除限制，让文字拉满宽度 */
-      text-align: center;
+      max-width: none;
+      text-align: left;
       line-height: 1.4;
     }
     .partners-icon {
-      width: 48px;                /* 图标稍大，更突出 */
-      height: 48px;
-      fill: #00aaff;              /* 蓝色五角星，可改成 #ff6b6b（红）、#ffd166（黄）、#ffffff（白） */
+      width: 56px;
+      height: 56px;
+      fill: #00aaff; /* 蓝色五角星，可改成 #ff6b6b（红）、#ffd166（黄）、#ffffff（白）等 */
+      flex-shrink: 0;
+    }
+    .text-wrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     .partners-logos {
       display: flex;
@@ -377,12 +385,15 @@
   <section class="clients-section">
     <div class="partners-text-wrapper">
       <div class="partners-text">
-        <!-- 图标 + 两行文字 -->
+        <!-- 五角星 + 两行文字（水平对齐） -->
         <div class="partners-icons-text">
           <svg class="partners-icon" viewBox="0 0 24 24">
             <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
           </svg>
-          <span>Loved by 1000+ big & small brands<br>around the worlds</span>
+          <div class="text-wrapper">
+            <span>Loved by 1000+ big & small brands</span>
+            <span>around the worlds</span>
+          </div>
         </div>
 
         <!-- 四个LOGO照片 -->
