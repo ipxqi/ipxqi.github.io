@@ -453,7 +453,7 @@
 
   function forceReset() {
     cards.forEach(card => {
-      card.style.transition = 'none';
+      card.style.transform = 'none !important';
       card.style.opacity = '0';
       // 彻底重置所有 transform 属性，避免残留旋转/缩放/Z轴导致不出场
       card.style.transform = 'translateY(-180vh) translateX(0) rotate(0deg) scale(0.85) translateZ(0px)';
