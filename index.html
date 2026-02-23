@@ -364,6 +364,64 @@
       object-fit: cover;
       filter: brightness(0.92) contrast(1.1);
     }
+
+    /* 新增服务模块样式，参考 dashfluence 风格 */
+.services-section {
+  padding: 120px 5%;
+  background: #0a0a0a; /* 深黑背景，与你的整体风格一致 */
+  color: white;
+  text-align: center;
+}
+
+.services-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.services-title {
+  font-size: clamp(4rem, 10vw, 8rem);
+  font-weight: 900;
+  letter-spacing: -4px;
+  line-height: 1.1;
+  margin-bottom: 80px;
+  background: linear-gradient(90deg, #fff, #ccc, #fff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 60px;
+}
+
+.service-item {
+  text-align: left;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.4s ease;
+}
+
+.service-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-10px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+.service-item h3 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.service-item p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.85);
+}
   </style>
 </head>
 <body>
@@ -434,6 +492,35 @@
       </div>
     </div>
   </section>
+
+  <section class="services-section">
+  <div class="services-container">
+    <h2 class="services-title">
+      Performance-Driven Services,<br>
+      Built to Convert
+    </h2>
+
+    <div class="services-grid">
+      <!-- 服务项 1 -->
+      <div class="service-item">
+        <h3>CRO & Analytics Optimization</h3>
+        <p>We design smart systems that integrate content, channels, and automation — optimized for measurable performance gains.</p>
+      </div>
+
+      <!-- 服务项 2 -->
+      <div class="service-item">
+        <h3>Paid Media Management</h3>
+        <p>Strategy & execution across Meta, Google, TikTok, and more — focused on ROAS and scalable growth.</p>
+      </div>
+
+      <!-- 服务项 3 -->
+      <div class="service-item">
+        <h3>Strategy & Content Production</h3>
+        <p>We craft strategic identities that inspire connection. Recent win: 4.8x ROAS for a global wellness company.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
   <section class="service-hero">
     <div class="service-bg-dots"></div>
