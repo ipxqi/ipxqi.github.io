@@ -173,7 +173,7 @@
     .partners-text {
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;      /* 整体左对齐 */
       gap: 20px;
       font-size: clamp(1.8rem, 4vw, 3.5rem);
       letter-spacing: -1px;
@@ -185,9 +185,9 @@
     .partners-icons-text {
       display: flex;
       flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      gap: 24px;
+      align-items: flex-start;      /* 顶部对齐，让图标和第一行文字顶部齐平 */
+      justify-content: flex-start;  /* 左对齐 */
+      gap: 20px;
       font-size: 1.4rem;
       color: rgba(255,255,255,0.95);
       margin-bottom: 32px;
@@ -199,17 +199,18 @@
     .partners-icon {
       width: 56px;
       height: 56px;
-      fill: #00aaff; /* 蓝色五角星，可改成 #ff6b6b（红）、#ffd166（黄）、#ffffff（白）等 */
+      fill: #00aaff;
       flex-shrink: 0;
     }
     .text-wrapper {
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
+      gap: 4px;
     }
     .partners-logos {
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;  /* LOGO 也左对齐，与文字一致 */
       align-items: center;
       gap: 60px;
       max-width: 100%;
@@ -385,7 +386,7 @@
   <section class="clients-section">
     <div class="partners-text-wrapper">
       <div class="partners-text">
-        <!-- 五角星 + 两行文字（水平对齐） -->
+        <!-- 五角星 + 两行文字（垂直左对齐） -->
         <div class="partners-icons-text">
           <svg class="partners-icon" viewBox="0 0 24 24">
             <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
@@ -443,6 +444,7 @@
   </section>
 
   <script>
+    // 脚本部分保持不变...
     const gallery = document.querySelector('.gallery');
     const hero = document.querySelector('.hero');
     const cards = document.querySelectorAll('.card');
