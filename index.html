@@ -365,62 +365,68 @@
       filter: brightness(0.92) contrast(1.1);
     }
 
-    /* 新增服务模块样式，参考 dashfluence 风格 */
-.services-section {
-  padding: 120px 5%;
-  background: #0a0a0a; /* 深黑背景，与你的整体风格一致 */
-  color: white;
+ /* 复刻 dashfluence “How we work” 模块 - 高度匹配图片样式 */
+.how-we-work-section {
+  padding: 180px 5% 140px;
+  background: #000000; /* 纯黑，与图片一致 */
+  color: #ffffff;
   text-align: center;
 }
 
-.services-container {
-  max-width: 1200px;
+.how-we-work-container {
+  max-width: 1100px;
   margin: 0 auto;
 }
 
-.services-title {
-  font-size: clamp(4rem, 10vw, 8rem);
-  font-weight: 900;
-  letter-spacing: -4px;
-  line-height: 1.1;
-  margin-bottom: 80px;
-  background: linear-gradient(90deg, #fff, #ccc, #fff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.how-we-work-title {
+  font-size: clamp(5rem, 12vw, 11rem);
+  font-weight: 900;           /* 极粗，匹配图片粗体感 */
+  letter-spacing: -0.08em;    /* 负间距，更紧凑 */
+  line-height: 0.95;
+  margin: 0 0 100px 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 60px;
+.services-list {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;                  /* 每项大间距，匹配图片 */
 }
 
-.service-item {
+.service-entry {
   text-align: left;
-  padding: 40px;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: all 0.4s ease;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.service-item:hover {
-  background: rgba(255, 255, 255, 0.06);
-  transform: translateY(-10px);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+.service-title {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  margin: 0 0 24px 0;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-.service-item h3 {
-  font-size: 2.2rem;
-  font-weight: 800;
-  margin-bottom: 20px;
-  color: white;
+.service-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.15); /* 细灰横线 */
+  border: none;
+  margin: 0 0 32px 0;
 }
 
-.service-item p {
-  font-size: 1.1rem;
+.service-desc {
+  font-size: 1.4rem;
   line-height: 1.6;
-  color: rgba(255,255,255,0.85);
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.highlight-win {
+  color: #ff9500;             /* 橙色高亮，匹配图片的“Recent win” */
+  font-weight: 600;
 }
   </style>
 </head>
@@ -493,30 +499,38 @@
     </div>
   </section>
 
-  <section class="services-section">
-  <div class="services-container">
-    <h2 class="services-title">
+  <!-- 复刻 dashfluence 的“How we work”模块 -->
+<section class="how-we-work-section">
+  <div class="how-we-work-container">
+    <h2 class="how-we-work-title">
       Performance-Driven Services,<br>
       Built to Convert
     </h2>
 
-    <div class="services-grid">
-      <!-- 服务项 1 -->
-      <div class="service-item">
-        <h3>CRO & Analytics Optimization</h3>
-        <p>We design smart systems that integrate content, channels, and automation — optimized for measurable performance gains.</p>
+    <div class="services-list">
+      <div class="service-entry">
+        <h3 class="service-title">CRO & Analytics Optimization</h3>
+        <hr class="service-divider">
+        <p class="service-desc">
+          We design smart systems that integrate content, channels, and automation — optimized for measurable performance gains.
+        </p>
       </div>
 
-      <!-- 服务项 2 -->
-      <div class="service-item">
-        <h3>Paid Media Management</h3>
-        <p>Strategy & execution across Meta, Google, TikTok, and more — focused on ROAS and scalable growth.</p>
+      <div class="service-entry">
+        <h3 class="service-title">Paid Media Management</h3>
+        <hr class="service-divider">
+        <p class="service-desc">
+          Strategy & execution across Meta, Google, TikTok, and more — focused on ROAS and scalable growth.
+        </p>
       </div>
 
-      <!-- 服务项 3 -->
-      <div class="service-item">
-        <h3>Strategy & Content Production</h3>
-        <p>We craft strategic identities that inspire connection. Recent win: 4.8x ROAS for a global wellness company.</p>
+      <div class="service-entry">
+        <h3 class="service-title">Strategy & Content Production</h3>
+        <hr class="service-divider">
+        <p class="service-desc">
+          We craft strategic identities that inspire connection.<br>
+          <span class="highlight-win">Recent win: 4.8x ROAS for a global wellness company.</span>
+        </p>
       </div>
     </div>
   </div>
