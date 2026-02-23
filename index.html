@@ -453,16 +453,19 @@
 
     function forceReset() {
       cards.forEach(card => {
+        // 1. 清除 transition 防止动画残留
         card.style.transition = 'none !important';
+        // 2. 设置 opacity 和基本位置
         card.style.opacity = '0';
-        // 彻底重置所有变换，避免残留导致第二次不出场
+        // 3. 彻底清零所有 transform（包括 rotate, scale, translateZ 等 3D 属性）
         card.style.transform = 'translateY(-180vh) translateX(0) rotate(0deg) scale(1) translateZ(0px) !important';
         card.style.willChange = 'auto';
-        // 强制浏览器重新渲染元素
-        card.style.display = 'none';
+        // 4. 强制浏览器重新创建元素布局（关键修复多次循环问题）
+        card.style.visibility = 'hidden';
         card.offsetHeight;
-        card.style.display = 'block';
+        card.style.visibility = 'visible';
       });
+
       hero.style.transition = 'none';
       hero.classList.remove('expand-title');
       hero.offsetHeight;
@@ -474,7 +477,7 @@
 
       setTimeout(() => {
         cards.forEach((card, index) => {
-          // 显式重置初始状态
+          // 出场前再次显式设置初始状态（防止任何继承）
           card.style.transform = 'translateY(-180vh) translateX(0) rotate(0deg) scale(0.85) translateZ(0px)';
           card.offsetHeight;
 
