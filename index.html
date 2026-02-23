@@ -225,13 +225,14 @@
     .partners-logo {
       height: 30px;               /* 稍大一点，更显眼 */
       width: auto;
-      transition: transform 0.3s ease, filter 0.3s ease;
+      transition: none;          /* 新增/修改：取消所有过渡动画 */
       filter: brightness(0.9);
     }
     .partners-logo:hover {
-      transform: scale(1.12);
-      filter: brightness(1.1);
-    }
+  /* 完全删除或注释掉 hover 效果 */
+  /* transform: scale(1.12); */
+  /* filter: brightness(1.1); */
+}
     .marquee-wrapper {
       width:100%;
       position:relative;
