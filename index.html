@@ -445,97 +445,96 @@
     </div>
   </section>
 
-  <script>
-    const gallery = document.querySelector('.gallery');
-    const hero = document.querySelector('.hero');
-    const cards = document.querySelectorAll('.card');
-    const clientsSection = document.querySelector('.clients-section');
+<script>
+  const gallery = document.querySelector('.gallery');
+  const hero = document.querySelector('.hero');
+  const cards = document.querySelectorAll('.card');
+  const clientsSection = document.querySelector('.clients-section');
 
-    function forceReset() {
-      cards.forEach(card => {
-        card.style.transition = 'none';
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(-180vh) translateX(0) rotate(0deg) scale(0.85)';
-        card.offsetHeight;
-      });
-      hero.style.transition = 'none';
-      hero.classList.remove('expand-title');
-      hero.offsetHeight;
-      hero.style.transition = '';
-    }
-
-    function startAnimation() {
-      forceReset();
-      setTimeout(() => {
-        cards.forEach((card, index) => {
-          // 出场顺序：恢复原样，最上面先出现
-          setTimeout(() => {
-            card.style.transition = 'all 1.2s cubic-bezier(0.34, 0.16, 0.3, 1)';
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0) translateX(0) rotate(0deg) scale(1)';
-          }, index * 120);
-        });
-        hero.classList.add('expand-title');
-      }, 300);
-
-       // 出场后到展开
-      setTimeout(() => {
-        cards.forEach((card, index) => {
-          const rotations = [-22, -11, 0, 11, 22];
-          const z = [-25, -12, 0, -12, -25];
-          card.style.transition = 'all 1.4s cubic-bezier(0.34, 0.16, 0.3, 1)';
-          card.style.transform = `translateY(0) rotate(${rotations[index]}deg) scale(0.96) translateZ(${z[index]}px)`;
-        });
-      }, 300 + 5 * 120 + 1000);
-
-      // 展开后到平复（已缩短）
-      setTimeout(() => {
-        cards.forEach(card => {
-          card.style.transition = 'all 1.4s cubic-bezier(0.34, 0.16, 0.3, 1)';
-          card.style.transform = 'translateY(0) translateX(0) rotate(0deg) scale(1)';
-        });
-      }, 300 + 5 * 120 + 1200 + 500 + 1500);
-
-      // 平复后到退场（现在缩短到800ms）
-      setTimeout(() => {
-        cards.forEach((card, index) => {
-          // 退场顺序：最上面先消失，最下面最后消失
-          const delayIndex = cards.length - 1 - index;
-          setTimeout(() => {
-            card.style.transition = 'all 1.2s cubic-bezier(0.34, 0.16, 0.3, 1)';
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(-180vh) translateX(0) rotate(0deg) scale(0.85)';
-          }, delayIndex * 120);
-        });
-        hero.classList.remove('expand-title');
-      }, 300 + 5 * 120 + 1200 + 500 + 2800);
-
-      setTimeout(forceReset, 300 + 5 * 120 + 1200 + 500 + 4000 + 1400 + 5 * 120 + 1000);
-    }
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.2 });
-
-    observer.observe(clientsSection);
-
-    startAnimation();
-    setInterval(startAnimation,9000);  // ← 这里改成 9000ms（9秒一循环）
-
-    
-    window.addEventListener('scroll', () => {
-      const scrollY = window.scrollY;
-      const parallaxCards = document.querySelectorAll('.service-card');
-      parallaxCards.forEach((card, index) => {
-        const speed = 0.5 + index * 0.18;
-        const move = scrollY * speed * -0.75;
-        card.style.transform = `translateY(${move}px) scale(${1 - index * 0.08})`;
-      });
+  function forceReset() {
+    cards.forEach(card => {
+      card.style.transition = 'none';
+      card.style.opacity = '0';
+      // 彻底重置所有 transform 属性，避免残留旋转/缩放/Z轴导致不出场
+      card.style.transform = 'translateY(-180vh) translateX(0) rotate(0deg) scale(0.85) translateZ(0px)';
+      card.style.willChange = 'auto'; // 清除 will-change 残留
+      card.offsetHeight; // 强制浏览器重绘
     });
-  </script>
+    hero.style.transition = 'none';
+    hero.classList.remove('expand-title');
+    hero.offsetHeight;
+    hero.style.transition = '';
+  }
+
+  function startAnimation() {
+    forceReset();
+    setTimeout(() => {
+      cards.forEach((card, index) => {
+        setTimeout(() => {
+          card.style.transition = 'all 1.2s cubic-bezier(0.34, 0.16, 0.3, 1)';
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0) translateX(0) rotate(0deg) scale(1)';
+        }, index * 120);
+      });
+      hero.classList.add('expand-title');
+    }, 300);
+
+    // 出场后到展开（你的当前值）
+    setTimeout(() => {
+      cards.forEach((card, index) => {
+        const rotations = [-22, -11, 0, 11, 22];
+        const z = [-25, -12, 0, -12, -25];
+        card.style.transition = 'all 1.4s cubic-bezier(0.34, 0.16, 0.3, 1)';
+        card.style.transform = `translateY(0) rotate(${rotations[index]}deg) scale(0.96) translateZ(${z[index]}px)`;
+      });
+    }, 300 + 5 * 120 + 1000);
+
+    // 展开后到平复
+    setTimeout(() => {
+      cards.forEach(card => {
+        card.style.transition = 'all 1.4s cubic-bezier(0.34, 0.16, 0.3, 1)';
+        card.style.transform = 'translateY(0) translateX(0) rotate(0deg) scale(1)';
+      });
+    }, 300 + 5 * 120 + 1200 + 500 + 1500);
+
+    // 平复后到退场
+    setTimeout(() => {
+      cards.forEach((card, index) => {
+        const delayIndex = cards.length - 1 - index;
+        setTimeout(() => {
+          card.style.transition = 'all 1.2s cubic-bezier(0.34, 0.16, 0.3, 1)';
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(-180vh) translateX(0) rotate(0deg) scale(0.85)';
+        }, delayIndex * 120);
+      });
+      hero.classList.remove('expand-title');
+    }, 300 + 5 * 120 + 1200 + 500 + 2800);
+
+    setTimeout(forceReset, 300 + 5 * 120 + 1200 + 500 + 4000 + 1400 + 5 * 120 + 1000);
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.2 });
+
+  observer.observe(clientsSection);
+
+  startAnimation();
+  setInterval(startAnimation, 9000);
+
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    const parallaxCards = document.querySelectorAll('.service-card');
+    parallaxCards.forEach((card, index) => {
+      const speed = 0.5 + index * 0.18;
+      const move = scrollY * speed * -0.75;
+      card.style.transform = `translateY(${move}px) scale(${1 - index * 0.08})`;
+    });
+  });
+</script>
 </body>
 </html>
