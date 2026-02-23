@@ -160,42 +160,44 @@
       transform:translateY(0);
     }
     .partners-text-wrapper {
-  position: absolute;
-  top: 70%;
-  max-width: 900px;          /* ← 加大父级容器宽度到 1400px（或更大，比如 1600px），让它能容纳宽文字 */
-  width: 90%;                 /* ← 加这一行，用百分比自适应，更灵活 */
-  left: 50%;
-  transform: translateX(-50%); /* ← 加这一行，让整个块居中，避免偏左 */
-  text-align: center;         /* ← 改成 center，让文字和图标整体居中 */
-  z-index: 10;
-  pointer-events: none;
-}
-    .partners-text {
-      display:flex;
-      align-items:baseline;
-      gap:355px;
-      font-size:clamp(1.8rem, 4vw, 3.5rem);
-      letter-spacing: -1px;
-      line-height:1.2;
-      color:white;
-      text-shadow:0 0 20px rgba(0,0,0,0.7);
+      position: absolute;
+      top: 70%;
+      max-width: 1400px;          /* 加大父级宽度，让文字有足够空间拉宽 */
+      width: 90%;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 10;
+      pointer-events: none;
     }
-    /* 图标 + 文字容器，宽度加大 */
+    .partners-text {
+      display: flex;
+      flex-direction: column;     /* 改成 column，让图标和文字垂直排列 */
+      align-items: center;
+      gap: 20px;
+      font-size: clamp(1.8rem, 4vw, 3.5rem);
+      letter-spacing: -1px;
+      line-height: 1.2;
+      color: white;
+      text-shadow: 0 0 20px rgba(0,0,0,0.7);
+      width: 100%;
+    }
     .partners-icons-text {
-  display: flex;
-  align-items: center;
-  justify-content: center;    /* ← 加这一行，让图标 + 文字在容器内水平居中 */
-  gap: 16px;
-  font-size: 1.2rem;
-  color: rgba(255,255,255,0.9);
-  margin-bottom: 28px;
-  max-width: none;            /* ← 关键！移除或设为 none，让它不受 max-width 限制，拉满父级宽度 */
-  width: 100%;                /* ← 占满父级宽度 */
-}
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.4rem;          /* 文字稍大，更醒目 */
+      color: rgba(255,255,255,0.95);
+      width: 100%;
+      max-width: none;            /* 移除限制，让文字拉满宽度 */
+      text-align: center;
+      line-height: 1.4;
+    }
     .partners-icon {
-      width: 88px;
-      height: 88px;
-      fill: #00aaff; /* 蓝色六芒星（五角星），可改成 #ff6b6b（红）、#ffd166（黄）、#ffffff（白）等 */
+      width: 48px;                /* 图标稍大，更突出 */
+      height: 48px;
+      fill: #00aaff;              /* 蓝色五角星，可改成 #ff6b6b（红）、#ffd166（黄）、#ffffff（白） */
     }
     .partners-logos {
       display: flex;
@@ -375,12 +377,12 @@
   <section class="clients-section">
     <div class="partners-text-wrapper">
       <div class="partners-text">
-        <!-- 图标 + 文字（放在原来小标题的位置） -->
+        <!-- 图标 + 两行文字 -->
         <div class="partners-icons-text">
           <svg class="partners-icon" viewBox="0 0 24 24">
             <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
           </svg>
-          <span>Loved by 1000+ big & small brands around the worlds</span>
+          <span>Loved by 1000+ big & small brands<br>around the worlds</span>
         </div>
 
         <!-- 四个LOGO照片 -->
