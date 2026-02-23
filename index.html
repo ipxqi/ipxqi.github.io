@@ -144,19 +144,17 @@
     }
     .clients-section {
       min-height:40vh;
-    
       display:flex;
       flex-direction:column;
       align-items:center;
       justify-content:center;
-      padding:0 5% 150px;     /* ← 改成这样：顶部 0px，左右 5%，底部保留 80px */
+      padding:0 5% 150px;
       opacity:0;
       transform:translateY(60px);
       transition:opacity 1.2s ease-out, transform 1.2s ease-out;
       gap:60px;
       position:relative;
     }
-    
     .clients-section.visible {
       opacity:1;
       transform:translateY(0);
@@ -189,9 +187,27 @@
       text-transform:uppercase;
       white-space:nowrap;
     }
+    /* 新增：三个LOGO照片容器，占用原来长描述的位置 */
+    .partners-logos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 80px;
+      max-width: 900px; /* 与原文字宽度一致 */
+      width: 100%;
+    }
+    .partners-logo {
+      width: 220px; /* 适中大小，可调 */
+      height: auto;
+      transition: transform 0.3s ease;
+      filter: brightness(0.9);
+    }
+    .partners-logo:hover {
+      transform: scale(1.1);
+      filter: brightness(1);
+    }
     .marquee-wrapper {
       width:100%;
-      
       position:relative;
     }
     .marquee-track {
@@ -206,25 +222,22 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      border-radius: 16px;          /* ← 加这行：圆角大小，调 12px / 20px / 30px 都行 */
-  background: rgba(255, 255, 255, 0.08);   /* ← 加浅色背景，更像卡片 */
-  
-  overflow: hidden;             /* ← 防止图片超出圆角 */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);   /* ← 可选：加点阴影，更立体 */
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
     .marquee-item img {
       height:100%;
       width:auto;
       max-width:400px;
       object-fit:contain;
-      
     }
     @keyframes marquee {
       0% { transform: translateX(0); }
       100% { transform: translateX(-50%); }
     }
-
-    /* 新增模块：参考图风格 Service hero + 照片居中并排靠下、文字靠上 + parallax */
+    /* Service hero 部分保持不变 */
     .service-hero {
       height: 180vh;
       background: #1d1d1f;
@@ -232,7 +245,7 @@
       overflow: hidden;
       display: flex;
       align-items: flex-start;
-      padding: 5% 17% 0; /* 文字靠上 */
+      padding: 5% 17% 0;
     }
     .service-bg-dots {
       position: absolute;
@@ -242,10 +255,8 @@
       pointer-events: none;
     }
     .service-content {
-      
       z-index: 2;
       width: 100%;
-      
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
@@ -262,7 +273,6 @@
     }
     .service-right-text {
       max-width: 1000px;
-      
       padding-top: 1rem;
     }
     .service-desc {
@@ -289,31 +299,30 @@
       transform: translateY(-4px);
       box-shadow: 0 15px 40px rgba(0,0,0,0.5);
     }
-   .service-gallery {
-  position: absolute;
-  bottom: 5%;  /* 整体靠下 */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 1200px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;  /* 改成顶部对齐，确保顶部水平平行 */
-  gap: 60px;  /* 间距加大，避免挤在一起 */
-  pointer-events: none;
-}
-
-.service-card {
-  width: 360px;
-  height: 480px;  /* 强制统一高度 */
-  border-radius: 32px;
-  overflow: hidden;
-  box-shadow: 0 50px 120px rgba(0,0,0,0.7);
-  transition: transform 0.4s ease-out;
-  will-change: transform;
-  flex-shrink: 0;
-  background: #111;  /* 加背景色，避免透明导致错觉 */
-}
+    .service-gallery {
+      position: absolute;
+      bottom: 5%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 60px;
+      pointer-events: none;
+    }
+    .service-card {
+      width: 360px;
+      height: 480px;
+      border-radius: 32px;
+      overflow: hidden;
+      box-shadow: 0 50px 120px rgba(0,0,0,0.7);
+      transition: transform 0.4s ease-out;
+      will-change: transform;
+      flex-shrink: 0;
+      background: #111;
+    }
     .service-card img {
       width: 100%;
       height: 100%;
@@ -360,7 +369,12 @@
     <div class="partners-text-wrapper">
       <div class="partners-text">
         <small>OUR PARTNERS</small>
-        <span class="main-desc">We collaborate with forward thinking brands to build lasting creative impact</span>
+        <!-- 原长描述替换成三个LOGO照片，只占用原来位置 -->
+        <div class="partners-logos">
+          <img class="partners-logo" src="https://img.adons.top/sucai/67fdfed1d4387726dad284e9_fake-company-logo-3.svg" alt="Logo 1">
+          <img class="partners-logo" src="https://img.adons.top/sucai/67fdfed1d4387726dad284e9_fake-company-logo-3.svg" alt="Logo 2">
+          <img class="partners-logo" src="https://img.adons.top/sucai/67fdfed1d4387726dad284e9_fake-company-logo-3.svg" alt="Logo 3">
+        </div>
       </div>
     </div>
 
@@ -374,12 +388,11 @@
         <div class="marquee-item"><img src="https://cdn.prod.website-files.com/6936b9d0d832aff71133a757/6939575b9e299d9fd071c164_thumb-12.webp" alt="FeatherDev"></div>
         <div class="marquee-item"><img src="https://cdn.prod.website-files.com/6936b9d0d832aff71133a757/6939575b9e299d9fd071c164_thumb-12.webp" alt="SAVANNAH"></div>
         <div class="marquee-item"><img src="https://cdn.prod.website-files.com/6936b9d0d832aff71133a757/6939575b9e299d9fd071c164_thumb-12.webp" alt="oslo."></div>
-        <!-- 复制部分保持原样 -->
       </div>
     </div>
   </section>
 
-  <!-- 新增模块：参考图风格 Service hero + 照片居中并排靠下、文字靠上 + parallax -->
+  <!-- Service hero 部分保持不变 -->
   <section class="service-hero">
     <div class="service-bg-dots"></div>
     <div class="service-content">
@@ -389,7 +402,6 @@
         <a href="#" class="service-btn">Let's talk</a>
       </div>
       <div class="service-gallery">
-        <!-- 照片居中并排、一样大、靠下 -->
         <div class="service-card">
           <img src="https://images.unsplash.com/photo-1553356084-58ef4a67b2a7?w=800" alt="">
         </div>
@@ -404,7 +416,6 @@
   </section>
 
   <script>
-    // 原有脚本保持不变...
     const gallery = document.querySelector('.gallery');
     const hero = document.querySelector('.hero');
     const cards = document.querySelectorAll('.card');
@@ -479,15 +490,12 @@
     startAnimation();
     setInterval(startAnimation, 13000);
 
-    // 向下滚时照片移动（居中并排靠下）
     window.addEventListener('scroll', () => {
       const scrollY = window.scrollY;
       const parallaxCards = document.querySelectorAll('.service-card');
-
       parallaxCards.forEach((card, index) => {
-        const speed = 0.5 + index * 0.18; // 前快后慢
-        const move = scrollY * speed * -0.75; // 向下滚 → 照片向上移
-
+        const speed = 0.5 + index * 0.18;
+        const move = scrollY * speed * -0.75;
         card.style.transform = `translateY(${move}px) scale(${1 - index * 0.08})`;
       });
     });
