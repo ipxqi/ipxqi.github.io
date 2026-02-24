@@ -739,18 +739,25 @@
 // Mouse Hover Driven Services（完全仿你参考的网站交互）
 const services = document.querySelectorAll('.single-service');
 const servicesContainer = document.querySelector('.services-list');
-const previewImg = document.querySelector('.preview-img');   // 左侧图片
+const previewImg = document.querySelector('.preview-img'); // 左侧图片
 const previewText = document.querySelector('.preview-text'); // 左侧文字
+const previewImgLink = document.querySelector('.preview-image-wrap a:first-child'); // 图片链接
+const previewTextLink = document.querySelector('.preview-image-wrap a:last-child'); // 文字链接
 
 if (services.length) {
   // 页面加载默认高亮第一个
   services[0].classList.add('active');
 
-  // 默认左侧图片和文字
+  // 默认左侧图片、文字和链接
   const firstImg = services[0].getAttribute('data-img');
   const firstText = services[0].getAttribute('data-text');
+  const firstLink = services[0].getAttribute('data-link');
   if (firstImg) previewImg.src = firstImg;
   if (firstText) previewText.textContent = firstText;
+  if (firstLink) {
+    previewImgLink.href = firstLink;
+    previewTextLink.href = firstLink;
+  }
 
   services.forEach((service) => {
     service.addEventListener('mouseenter', () => {
@@ -777,13 +784,26 @@ if (services.length) {
           previewText.style.opacity = '1';
         }, 150);
       }
+
+      // 更新左侧链接
+      const newLink = service.getAttribute('data-link');
+      if (newLink) {
+        previewImgLink.href = newLink;
+        previewTextLink.href = newLink;
+      }
+    });
+
+    // 右侧项目点击直接跳转
+    service.addEventListener('click', () => {
+      const link = service.getAttribute('data-link');
+      if (link && link !== '#') window.location.href = link;
     });
   });
 
-  // 鼠标离开整个区域时，保持当前高亮
+  // 鼠标离开整个区域时，保持当前高亮和链接
   if (servicesContainer) {
     servicesContainer.addEventListener('mouseleave', () => {
-      // 故意不重置，保持最后一次hover状态
+      // 故意不重置，保持最后一次 hover 状态
     });
   }
 }
