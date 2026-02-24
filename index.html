@@ -365,7 +365,7 @@
       filter: brightness(0.92) contrast(1.1);
     }
 
-/* 扑克牌式堆叠展开 + 丝滑覆盖动画 */
+/* 复刻 Webflow dashfluence “How we work” - 高度展开 + 覆盖 + 丝滑 */
 .how-we-work-section {
   padding: 80px 5% 140px;
   background: #000000;
@@ -391,18 +391,16 @@
 .services-list {
   display: flex;
   flex-direction: column;
-  gap: 0; /* 紧叠像扑克牌 */
+  gap: 0; /* 紧叠，实现覆盖 */
   text-align: right;
-  position: relative;
   max-width: 800px;
   margin-left: auto;
 }
 
 .service-entry {
-  position: relative;
   cursor: pointer;
-  z-index: 1; /* 默认层级 */
-  transition: z-index 0s; /* 层级即时变化 */
+  position: relative;
+  background: #000000;
 }
 
 .service-title {
@@ -411,44 +409,39 @@
   letter-spacing: -0.04em;
   line-height: 1.1;
   margin: 0;
+  padding: 20px 0;
   color: #ffffff;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  padding: 20px 0;
-  display: block;
-  position: relative;
-  z-index: 2; /* 标题始终在上 */
+  transition: opacity 0.4s ease; /* 轻微标题过渡 */
 }
 
 .service-content {
-  max-height: 0;
-  overflow: hidden;
+  height: 0px;
   opacity: 0;
-  background: #000000; /* 黑背景覆盖上面 */
-  position: absolute; /* 绝对定位实现覆盖 */
-  top: 100%; /* 从标题下面展开 */
-  left: 0;
-  right: 0;
+  overflow: hidden;
   transition: 
-    max-height 0.8s cubic-bezier(0.4, 0.0, 0.2, 1),  /* 丝滑展开曲线，像扑克翻开 */
-    opacity 0.6s ease 0.1s,                         /* 延迟淡入 */
-    transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);  /* 轻微滑出感 */
-  transform: translateY(-10px);                      /* 默认稍向上隐藏 */
-  z-index: 1; /* 默认层级 */
-  padding: 0;
+    height 0.8s cubic-bezier(0.165, 0.84, 0.44, 1),  /* Webflow 常用丝滑曲线 */
+    opacity 0.6s ease 0.2s;                           /* 延迟淡入 */
+  background: #000000; /* 黑背景覆盖 */
+  padding: 0 0 30px 0;
 }
 
-.service-entry.active .service-content,
-.service-entry:hover .service-content {
-  max-height: 300px; /* 足够内容高度 */
+/* 默认展开第一个 */
+.service-entry.active .service-content {
+  height: auto;
   opacity: 1;
-  transform: translateY(0); /* 展开时滑到正常位置 */
-  z-index: 3; /* 展开时最高层级，覆盖上面 */
-  padding: 20px 0 30px 0; /* 展开后内间距 */
 }
 
-/* hover 时展开当前，覆盖上面（无关闭其他） */
-.service-entry:hover {
-  z-index: 4; /* 当前项最高 */
+/* hover 展开当前项，覆盖上面 */
+.service-entry:hover .service-content {
+  height: auto;
+  opacity: 1;
+}
+
+/* 关闭其他项（hover 时只保持当前） */
+.services-list:hover .service-entry:not(:hover) .service-content {
+  height: 0px !important;
+  opacity: 0 !important;
 }
 
 /* 描述文字 */
@@ -538,7 +531,6 @@
     </div>
   </section>
 
- <!-- 复刻模块 - 右对齐 + hover 展开 -->
 <section class="how-we-work-section">
   <div class="how-we-work-container">
     <h2 class="how-we-work-title">
@@ -547,39 +539,41 @@
     </h2>
 
     <div class="services-list">
-      <div class="service-entry active">  <!-- 默认打开第一个 -->
+      <!-- 第一项，默认展开 -->
+      <div class="service-entry active">
         <h3 class="service-title">品牌与标志</h3>
-        <div class="service-content">
+        <div class="service-content" style="height: auto; opacity: 1;">
           <p class="service-desc">
-            Logo、品牌色彩系统、辅助图形、品牌应用规范、手册等<br>
-            <span class="highlight-win">Recent win: 4.8x ROAS for a global wellness company.</span>
+            Logo、品牌色彩系统、辅助图形、品牌应用规范、手册等
           </p>
         </div>
       </div>
 
+      <!-- 第二项 -->
       <div class="service-entry">
         <h3 class="service-title">广告创意设计</h3>
-        <div class="service-content">
+        <div class="service-content" style="height: 0px; opacity: 0;">
           <p class="service-desc">
-            海报、Banner、线上线下广告、社交媒体视觉、户外大牌等<br>
-            <span class="highlight-win">Recent win: 4.8x ROAS for a global wellness company.</span>
+            海报、Banner、线上线下广告、社交媒体视觉、户外大牌等
           </p>
         </div>
       </div>
 
+      <!-- 第三项 -->
       <div class="service-entry">
         <h3 class="service-title">生成式AI包装</h3>
-        <div class="service-content">
+        <div class="service-content" style="height: 0px; opacity: 0;">
           <p class="service-desc">
-            食品、化妆品、电子产品、日化、奢侈品包装等<br>
+            We craft strategic identities that inspire connection.<br>
             <span class="highlight-win">Recent win: 4.8x ROAS for a global wellness company.</span>
           </p>
         </div>
       </div>
-
-        <div class="service-entry">
+      
+       <!-- 第四项 -->
+      <div class="service-entry">
         <h3 class="service-title">书籍/出版物</h3>
-        <div class="service-content">
+        <div class="service-content" style="height: 0px; opacity: 0;">
           <p class="service-desc">
             书籍封面+内页、杂志排版、画册、年报、产品说明书等<br>
             <span class="highlight-win">Recent win: 4.8x ROAS for a global wellness company.</span>
@@ -587,9 +581,10 @@
         </div>
       </div>
 
-        <div class="service-entry">
+       <!-- 第五项 -->
+      <div class="service-entry">
         <h3 class="service-title">数字界面/社交媒体</h3>
-        <div class="service-content">
+        <div class="service-content" style="height: 0px; opacity: 0;">
           <p class="service-desc">
             网站首页、落地页、后台管理系统、H5、App界面<br>
             <span class="highlight-win">Recent win: 4.8x ROAS for a global wellness company.</span>
@@ -728,22 +723,29 @@
       });
     });
 
-   // 简化 JS：hover 展开当前，移开保留最后一个
+  // hover 只展开当前，移开保留最后一个
 const servicesList = document.querySelector('.services-list');
 if (servicesList) {
   let lastActive = servicesList.querySelector('.service-entry.active');
 
-  servicesList.addEventListener('mouseleave', () => {
-    servicesList.querySelectorAll('.service-entry').forEach(entry => entry.classList.remove('active'));
-    if (lastActive) lastActive.classList.add('active');
-  });
-
   servicesList.querySelectorAll('.service-entry').forEach(entry => {
     entry.addEventListener('mouseenter', () => {
-      servicesList.querySelectorAll('.service-entry').forEach(e => e.classList.remove('active'));
+      // 关闭所有
+      servicesList.querySelectorAll('.service-entry').forEach(e => {
+        e.classList.remove('active');
+      });
+      // 打开当前
       entry.classList.add('active');
       lastActive = entry;
     });
+  });
+
+  servicesList.addEventListener('mouseleave', () => {
+    // 离开后恢复最后一个
+    servicesList.querySelectorAll('.service-entry').forEach(entry => {
+      entry.classList.remove('active');
+    });
+    if (lastActive) lastActive.classList.add('active');
   });
 }
     
