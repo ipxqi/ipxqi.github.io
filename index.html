@@ -481,6 +481,21 @@
 .services-list:hover .single-service:not(:hover):not(.active) {
   opacity: 0.18;
 }
+
+    /* 去掉左侧文字链接的下划线 */
+.preview-link,
+.preview-link:hover,
+.preview-link:visited,
+.preview-link:active {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer; /* 保持手型光标 */
+}
+
+.preview-link .preview-text {
+  text-decoration: none;
+}
+    
   </style>
 </head>
 <body>
