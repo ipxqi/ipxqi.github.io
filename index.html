@@ -365,7 +365,7 @@
       filter: brightness(0.92) contrast(1.1);
     }
 
-/* 优化 hover 展开：更丝滑、自然过渡 */
+/* 右对齐 + 默认展开第一个 + hover 丝滑展开 */
 .how-we-work-section {
   padding: 80px 5% 140px;
   background: #000000;
@@ -399,7 +399,7 @@
   max-width: 800px;
   margin-left: auto;
   cursor: pointer;
-  transition: all 0.4s ease; /* 整体轻微过渡 */
+  transition: all 0.4s ease;
 }
 
 .service-title {
@@ -418,16 +418,24 @@
   overflow: hidden;
   opacity: 0;
   transition: 
-    height 0.6s cubic-bezier(0.4, 0, 0.2, 1),  /* 更自然的贝塞尔曲线 */
-    opacity 0.4s ease 0.1s,                 /* 延迟一点出现 */
+    height 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.4s ease 0.1s,
     margin-top 0.6s ease;
   margin-top: 0;
 }
 
-.service-entry:hover .service-content {
-  height: auto;           /* 用 auto 代替 max-height，避免抖动 */
+/* 默认打开第一个 */
+.service-entry.active .service-content {
+  height: auto;
   opacity: 1;
-  margin-top: 24px;       /* 展开时自然间距 */
+  margin-top: 24px;
+}
+
+/* hover 展开（包括第一个也会响应 hover） */
+.service-entry:hover .service-content {
+  height: auto;
+  opacity: 1;
+  margin-top: 24px;
 }
 
 .service-desc {
@@ -436,7 +444,7 @@
   color: rgba(255, 255, 255, 0.85);
   margin: 0;
   text-align: right;
-  padding-bottom: 20px;   /* 底部留白，避免收起时跳动 */
+  padding-bottom: 20px;
 }
 
 .highlight-win {
@@ -444,9 +452,10 @@
   font-weight: 600;
 }
 
-/* hover 时标题轻微抬升（可选，更丝滑的交互感） */
+/* hover 时标题轻微抬升（增强交互感） */
 .service-entry:hover .service-title {
   transform: translateY(-4px);
+}
 }
   </style>
 </head>
