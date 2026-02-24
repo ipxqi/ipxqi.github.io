@@ -354,113 +354,113 @@
       filter: brightness(0.92) contrast(1.1);
     }
 
-    /* 扑克牌式整体向上滑出覆盖 - 最终防抖版 */
-    .how-we-work-section {
-      padding: 80px 5% 140px;
-      background: #000000;
-      color: #ffffff;
-    }
+    /* 扑克牌式整体向上滑出 - 消除冲顶回落 */
+.how-we-work-section {
+  padding: 80px 5% 140px;
+  background: #000000;
+  color: #ffffff;
+}
 
-    .how-we-work-container {
-      max-width: 1100px;
-      margin: 0 auto;
-      text-align: right;
-    }
+.how-we-work-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: right;
+}
 
-    .how-we-work-title {
-      font-size: clamp(2rem, 4vw, 4rem);
-      font-weight: 900;
-      letter-spacing: -0.08em;
-      line-height: 1.15;
-      margin: 0 0 100px 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      text-align: right;
-    }
+.how-we-work-title {
+  font-size: clamp(2rem, 4vw, 4rem);
+  font-weight: 900;
+  letter-spacing: -0.08em;
+  line-height: 1.15;
+  margin: 0 0 100px 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  text-align: right;
+}
 
-    .services-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      text-align: right;
-      max-width: 800px;
-      margin-left: auto;
-      position: relative;
-    }
+.services-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  text-align: right;
+  max-width: 800px;
+  margin-left: auto;
+  position: relative;
+}
 
-    .single-service {
+.single-service {
   position: relative;
   background: #000000;
   z-index: 1;
-  transition: transform 1.0s cubic-bezier(0.165, 0.84, 0.44, 1), margin-bottom 1.0s ease;
-  will-change: transform, margin-bottom;
+  transition: transform 0.9s cubic-bezier(0.165, 0.84, 0.44, 1); /* 先移动 */
+  will-change: transform;
   backface-visibility: hidden;
 }
 
-    .service-title-wrapper {
-      padding: 20px 0;
-      background: #000000;
-      position: relative;
-      z-index: 2;
-    }
+.service-title-wrapper {
+  padding: 20px 0;
+  background: #000000;
+  position: relative;
+  z-index: 2;
+}
 
-    .service-title {
-      font-size: clamp(2.2rem, 5vw, 4rem);
-      font-weight: 900;
-      letter-spacing: -0.04em;
-      line-height: 1.1;
-      margin: 0;
-      color: #ffffff;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      opacity: 0.4;
-      transition: opacity 0.4s ease;
-    }
+.service-title {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  margin: 0;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  opacity: 0.4;
+  transition: opacity 0.4s ease;
+}
 
-    .single-service:hover .service-title,
-    .single-service.active .service-title {
-      opacity: 1;
-    }
+.single-service:hover .service-title,
+.single-service.active .service-title {
+  opacity: 1;
+}
 
-    .service-content {
-      height: 0;
-      overflow: hidden;
-      background: #000000;
-      transition: height 1.0s cubic-bezier(0.165, 0.84, 0.44, 1);
-      padding: 0 0 0 0;
-      box-shadow: 0 -10px 30px rgba(0,0,0,0.6);
-    }
+.service-content {
+  max-height: 0;
+  overflow: hidden;
+  background: #000000;
+  transition: max-height 0.9s cubic-bezier(0.165, 0.84, 0.44, 1) 0.1s; /* 延迟一点展开 */
+  padding: 0 0 0 0;
+  box-shadow: 0 -10px 30px rgba(0,0,0,0.6);
+}
 
-    .single-service.active .service-content,
-    .single-service:hover .service-content {
-      height: auto;
-      padding: 20px 0 40px 0;
-    }
+.single-service:hover .service-content,
+.single-service.active .service-content {
+  max-height: 600px; /* 固定足够大的值，避免 auto 冲顶 */
+  padding: 20px 0 40px 0;
+}
 
-    /* 向上滑出覆盖 - 用固定像素更稳定 */
+/* 向上滑出覆盖 */
 .single-service:hover,
 .single-service.active {
-  transform: translateY(-120px);  /* 向上移动 120px（根据你的项高度调整，建议 100~140px） */
-  margin-bottom: -120px;         /* 补偿下面空间，避免布局塌陷或跳动 */
+  transform: translateY(-120px); /* 用像素更可控，避免百分比计算偏差 */
+  margin-bottom: -120px; /* 补偿空间，避免布局塌陷 */
   z-index: 10;
 }
 
-   /* 鼠标移开时恢复 */
+/* 恢复 */
 .services-list:hover .single-service:not(:hover):not(.active) {
   transform: translateY(0);
   margin-bottom: 0;
 }
 
-    .service-desc {
-      font-size: 1.3rem;
-      line-height: 1.6;
-      color: rgba(255, 255, 255, 0.85);
-      margin: 0;
-      text-align: right;
-    }
+.service-desc {
+  font-size: 1.3rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+  text-align: right;
+}
 
-    .highlight-win {
-      color: #ff9500;
-      font-weight: 600;
-    }
+.highlight-win {
+  color: #ff9500;
+  font-weight: 600;
+}
   </style>
 </head>
 <body>
