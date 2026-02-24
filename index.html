@@ -365,7 +365,7 @@
       filter: brightness(0.92) contrast(1.1);
     }
 
-/* 极致丝滑展开动画 - 像纸张缓缓推开 */
+/* 扑克牌式堆叠展开 + 丝滑覆盖动画 */
 .how-we-work-section {
   padding: 80px 5% 140px;
   background: #000000;
@@ -391,19 +391,18 @@
 .services-list {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 0; /* 紧叠像扑克牌 */
   text-align: right;
   position: relative;
-  overflow: hidden;
+  max-width: 800px;
+  margin-left: auto;
 }
 
 .service-entry {
-  max-width: 800px;
-  margin-left: auto;
-  cursor: pointer;
   position: relative;
-  z-index: 1;
-  background: #000000;
+  cursor: pointer;
+  z-index: 1; /* 默认层级 */
+  transition: z-index 0s; /* 层级即时变化 */
 }
 
 .service-title {
@@ -414,42 +413,42 @@
   margin: 0;
   color: #ffffff;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  padding: 20px 0 20px 0;
+  padding: 20px 0;
+  display: block;
+  position: relative;
+  z-index: 2; /* 标题始终在上 */
 }
 
-/* 内容容器 - 核心丝滑展开 */
 .service-content {
   max-height: 0;
   overflow: hidden;
   opacity: 0;
-  padding-top: 0;
+  background: #000000; /* 黑背景覆盖上面 */
+  position: absolute; /* 绝对定位实现覆盖 */
+  top: 100%; /* 从标题下面展开 */
+  left: 0;
+  right: 0;
   transition: 
-    max-height 0.9s cubic-bezier(0.22, 0.61, 0.36, 1),   /* 极柔和展开曲线 */
-    opacity 0.7s ease 0.25s,                            /* 延迟淡入 */
-    padding-top 0.9s cubic-bezier(0.22, 0.61, 0.36, 1); /* 内容从上滑入 */
-  background: #000000;
+    max-height 0.8s cubic-bezier(0.4, 0.0, 0.2, 1),  /* 丝滑展开曲线，像扑克翻开 */
+    opacity 0.6s ease 0.1s,                         /* 延迟淡入 */
+    transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);  /* 轻微滑出感 */
+  transform: translateY(-10px);                      /* 默认稍向上隐藏 */
+  z-index: 1; /* 默认层级 */
+  padding: 0;
 }
 
-/* 默认打开第一个 */
-.service-entry.active .service-content {
-  max-height: 500px; /* 足够大，避免内容被截 */
-  opacity: 1;
-  padding-top: 20px;
-}
-
-/* hover 展开当前项，覆盖上面 */
+.service-entry.active .service-content,
 .service-entry:hover .service-content {
-  max-height: 500px;
+  max-height: 300px; /* 足够内容高度 */
   opacity: 1;
-  padding-top: 20px;
-  z-index: 3;
+  transform: translateY(0); /* 展开时滑到正常位置 */
+  z-index: 3; /* 展开时最高层级，覆盖上面 */
+  padding: 20px 0 30px 0; /* 展开后内间距 */
 }
 
-/* 关闭其他项 */
-.services-list:hover .service-entry:not(:hover) .service-content {
-  max-height: 0 !important;
-  opacity: 0 !important;
-  padding-top: 0 !important;
+/* hover 时展开当前，覆盖上面（无关闭其他） */
+.service-entry:hover {
+  z-index: 4; /* 当前项最高 */
 }
 
 /* 描述文字 */
