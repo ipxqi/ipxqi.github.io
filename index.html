@@ -73,25 +73,15 @@
       justify-content:center;
       gap:40px;
       font-size: clamp(4.5rem, 11vw, 12rem);
-     
       letter-spacing:-7px;
       line-height:1;
       white-space:nowrap;
-      font-weight: 700;  /* 保持加粗 */
-      /* 苹果官方字体栈（SF Pro） */
-  font-family: 
-    -apple-system, 
-    BlinkMacSystemFont, 
-    "Segoe UI", 
-    Roboto, 
-    "Helvetica Neue", 
-    Arial, 
-    sans-serif;
-}
+      font-weight: 700;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
     .hero span {
       background:linear-gradient(90deg, #ffffff, #e0e0e0, #ffffff);
       -webkit-background-clip:text;
-      /* -webkit-text-fill-color:transparent; */
       background-size:200% auto;
       animation:shine 6s linear infinite;
       transition:transform 1.4s cubic-bezier(0.25,0.46,0.45,0.94);
@@ -242,14 +232,13 @@
     .marquee-wrapper {
       width:100%;
       position:relative;
-     
-      overflow-x: hidden; /* 强制隐藏横向滚动条 */
+      overflow-x: hidden;
     }
     .marquee-track {
       display:flex;
       white-space:nowrap;
       animation:marquee 15s linear infinite;
-      width: max-content; /* 确保宽度足够容纳所有项 */
+      width: max-content;
     }
     .marquee-item {
       flex-shrink:0;
@@ -365,118 +354,99 @@
       filter: brightness(0.92) contrast(1.1);
     }
 
-/* 完全复刻 dashfluence Webflow 动画 - 高度 + opacity + 覆盖 */
-.how-we-work-section {
-  padding: 80px 5% 140px;
-  background: #000000;
-  color: #ffffff;
-}
+    /* 扑克牌式覆盖展开 - 最终丝滑版 */
+    .how-we-work-section {
+      padding: 80px 5% 140px;
+      background: #000000;
+      color: #ffffff;
+    }
 
-.how-we-work-container {
-  max-width: 1100px;
-  margin: 0 auto;
-  text-align: right;
-}
+    .how-we-work-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      text-align: right;
+    }
 
-.how-we-work-title {
-  font-size: clamp(2rem, 4vw, 4rem);
-  font-weight: 900;
-  letter-spacing: -0.08em;
-  line-height: 1.15;
-  margin: 0 0 100px 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  text-align: right;
-}
+    .how-we-work-title {
+      font-size: clamp(2rem, 4vw, 4rem);
+      font-weight: 900;
+      letter-spacing: -0.08em;
+      line-height: 1.15;
+      margin: 0 0 100px 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      text-align: right;
+    }
 
-.services-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  text-align: right;
-  max-width: 800px;
-  margin-left: auto;
-}
+    .services-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      text-align: right;
+      max-width: 800px;
+      margin-left: auto;
+      position: relative;
+    }
 
-.single-service {
-  cursor: pointer;
-  position: relative;
-  background: #000000;
-}
+    .single-service {
+      cursor: pointer;
+      position: relative;
+      background: #000000;
+      z-index: 1;
+    }
 
-.single-service-left {
-  display: block; /* 默认显示短版 */
-}
+    .service-title-wrapper {
+      padding: 20px 0;
+    }
 
-.service-short-title-wrapper {
-  padding: 20px 0;
-}
+    .service-title {
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin: 0;
+      color: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
 
-.service-short-title {
-  font-size: 2.2rem;
-  font-weight: 900;
-  margin: 0;
-}
+    .service-content {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      background: #000000;
+      transition: 
+        max-height 1.0s cubic-bezier(0.165, 0.84, 0.44, 1),  /* 更慢、更丝滑的展开 */
+        opacity 0.8s ease 0.3s,                             /* 更明显的延迟淡入 */
+        padding 1.0s ease;
+      padding: 0 0 0 0;
+    }
 
-.service-short-excerpt {
-  font-size: 1.1rem;
-  color: rgba(255,255,255,0.6);
-  margin: 8px 0 0;
-}
+    .single-service.active .service-content,
+    .single-service:hover .service-content {
+      max-height: 800px;
+      opacity: 1;
+      padding: 20px 0 40px 0;
+      z-index: 3; /* 确保展开时覆盖上面所有内容 */
+    }
 
-.service-content {
-  height: 0px;
-  opacity: 0;
-  overflow: hidden;
-  transition: 
-    height 0.8s cubic-bezier(0.165, 0.84, 0.44, 1),  /* 丝滑高度展开 */
-    opacity 0.6s ease 0.2s;                           /* 延迟淡入 */
-  background: #000000;
-  padding: 0 0 30px 0;
-}
+    /* hover 时关闭其他项 */
+    .services-list:hover .single-service:not(:hover) .service-content {
+      max-height: 0 !important;
+      opacity: 0 !important;
+      padding: 0 !important;
+    }
 
-.service-title {
-  font-size: 2.5rem;
-  font-weight: 900;
-  margin: 0 0 20px;
-  color: #ffffff;
-  opacity: 0.3; /* 默认半透明 */
-  transition: opacity 0.4s ease;
-}
+    .service-desc {
+      font-size: 1.3rem;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.85);
+      margin: 0;
+      text-align: right;
+    }
 
-.single-service-bottom {
-  transition: height 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-
-.service-desc {
-  font-size: 1.3rem;
-  line-height: 1.6;
-  color: rgba(255,255,255,0.85);
-  margin: 0 0 16px;
-}
-
-.highlight-win {
-  color: #ff9500;
-  font-weight: 600;
-}
-
-/* hover 展开 */
-.single-service:hover .single-service-left {
-  display: none; /* 隐藏短版 */
-}
-
-.single-service:hover .service-content {
-  height: auto;
-  opacity: 1;
-}
-
-.single-service:hover .service-title {
-  opacity: 1;
-}
-
-/* 覆盖效果：由于堆叠 + 黑背景 + 高度变化，展开项自然盖住上面 */
-
-
-}
+    .highlight-win {
+      color: #ff9500;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
@@ -548,97 +518,62 @@
     </div>
   </section>
 
-<section class="how-we-work-section">
-  <div class="how-we-work-container">
-    <h2 class="how-we-work-title">
-      将想法转化为<br>
-      有力量的视觉表达
-    </h2>
-
-    <div class="services-list">
-      <!-- 第一项 -->
-      <div class="single-service">
-        <a href="#" class="single-service-left">
-          <div class="service-short-title-wrapper">
-            <p class="service-short-title">品牌与标志</p>
-            <p class="service-short-excerpt">Logo、品牌色彩系统、辅助图形等</p>
+  <section class="how-we-work-section">
+    <div class="how-we-work-container">
+      <h2 class="how-we-work-title">
+        将想法转化为<br>
+        有力量的视觉表达
+      </h2>
+      <div class="services-list">
+        <div class="single-service active">
+          <div class="service-title-wrapper">
+            <h3 class="service-title">品牌与标志</h3>
           </div>
-        </a>
-        <div class="service-content">
-          <h2 class="service-title">品牌与标志</h2>
-          <div class="single-service-bottom">
+          <div class="service-content">
             <p class="service-desc">
               Logo、品牌色彩系统、辅助图形、品牌应用规范、手册等
             </p>
           </div>
         </div>
-      </div>
 
-      <!-- 第二项 -->
-      <div class="single-service">
-        <a href="#" class="single-service-left">
-          <div class="service-short-title-wrapper">
-            <p class="service-short-title">广告创意设计</p>
-            <p class="service-short-excerpt">海报、Banner、社交媒体视觉等</p>
+        <div class="single-service">
+          <div class="service-title-wrapper">
+            <h3 class="service-title">广告创意设计</h3>
           </div>
-        </a>
-        <div class="service-content">
-          <h2 class="service-title">广告创意设计</h2>
-          <div class="single-service-bottom">
+          <div class="service-content">
             <p class="service-desc">
               海报、Banner、线上线下广告、社交媒体视觉、户外大牌等
             </p>
           </div>
         </div>
-      </div>
 
-      <!-- 第三项 -->
-      <div class="single-service">
-        <a href="#" class="single-service-left">
-          <div class="service-short-title-wrapper">
-            <p class="service-short-title">生成式AI包装</p>
-            <p class="service-short-excerpt">AI生成包装、3D渲染等</p>
+        <div class="single-service">
+          <div class="service-title-wrapper">
+            <h3 class="service-title">生成式AI包装</h3>
           </div>
-        </a>
-        <div class="service-content">
-          <h2 class="service-title">生成式AI包装</h2>
-          <div class="single-service-bottom">
+          <div class="service-content">
             <p class="service-desc">
               AI生成包装设计、3D渲染、产品视觉等
             </p>
           </div>
         </div>
-      </div>
 
-      <!-- 第四项 -->
-      <div class="single-service">
-        <a href="#" class="single-service-left">
-          <div class="service-short-title-wrapper">
-            <p class="service-short-title">书籍/出版物</p>
-            <p class="service-short-excerpt">书籍封面+内页、画册等</p>
+        <div class="single-service">
+          <div class="service-title-wrapper">
+            <h3 class="service-title">书籍/出版物</h3>
           </div>
-        </a>
-        <div class="service-content">
-          <h2 class="service-title">书籍/出版物</h2>
-          <div class="single-service-bottom">
+          <div class="service-content">
             <p class="service-desc">
               书籍封面+内页、杂志排版、画册、年报、产品说明书等
             </p>
           </div>
         </div>
-      </div>
 
-      <!-- 第五项 -->
-      <div class="single-service">
-        <a href="#" class="single-service-left">
-          <div class="service-short-title-wrapper">
-            <p class="service-short-title">数字界面/社交媒体</p>
-            <p class="service-short-excerpt">网站、H5、App界面等</p>
+        <div class="single-service">
+          <div class="service-title-wrapper">
+            <h3 class="service-title">数字界面/社交媒体</h3>
           </div>
-        </a>
-        <div class="service-content">
-          <h2 class="service-title">数字界面/社交媒体</h2>
-          <div class="single-service-bottom">
+          <div class="service-content">
             <p class="service-desc">
               网站首页、落地页、后台管理系统、H5、App界面
             </p>
@@ -646,8 +581,7 @@
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
   <section class="service-hero">
     <div class="service-bg-dots"></div>
@@ -675,27 +609,21 @@
     const gallery = document.querySelector('.gallery');
     const hero = document.querySelector('.hero');
     const clientsSection = document.querySelector('.clients-section');
-
-    // 保存原始卡片模板（outerHTML）
     const originalCardTemplates = Array.from(document.querySelectorAll('.card')).map(card => card.outerHTML);
 
     function forceReset() {
-      // 只替换 .card 元素，不动其他子元素
       const currentCards = gallery.querySelectorAll('.card');
       currentCards.forEach((oldCard, index) => {
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = originalCardTemplates[index];
         const newCard = tempDiv.firstChild;
-
         newCard.style.transition = 'none !important';
         newCard.style.opacity = '0';
         newCard.style.transform = 'translateY(-180vh) translateX(0) rotate(0deg) scale(1) translateZ(0px) !important';
         newCard.style.willChange = 'auto';
         newCard.style.backfaceVisibility = 'visible';
-
         oldCard.parentNode.replaceChild(newCard, oldCard);
       });
-
       hero.style.transition = 'none';
       hero.classList.remove('expand-title');
       hero.offsetHeight;
@@ -704,14 +632,11 @@
 
     function startAnimation() {
       forceReset();
-
       const cards = gallery.querySelectorAll('.card');
-
       setTimeout(() => {
         cards.forEach((card, index) => {
           card.style.transform = 'translateY(-180vh) translateX(0) rotate(0deg) scale(0.85) translateZ(0px)';
           card.offsetHeight;
-
           setTimeout(() => {
             card.style.transition = 'all 1.2s cubic-bezier(0.34, 0.16, 0.3, 1)';
             card.style.opacity = '1';
@@ -720,7 +645,6 @@
         });
         hero.classList.add('expand-title');
       }, 300);
-
       setTimeout(() => {
         cards.forEach((card, index) => {
           const rotations = [-22, -11, 0, 11, 22];
@@ -729,14 +653,12 @@
           card.style.transform = `translateY(0) rotate(${rotations[index]}deg) scale(0.96) translateZ(${z[index]}px)`;
         });
       }, 300 + 5 * 120 + 1000);
-
       setTimeout(() => {
         cards.forEach(card => {
           card.style.transition = 'all 1.4s cubic-bezier(0.34, 0.16, 0.3, 1)';
           card.style.transform = 'translateY(0) translateX(0) rotate(0deg) scale(1) translateZ(0px)';
         });
       }, 300 + 5 * 120 + 1200 + 500 + 1500);
-
       setTimeout(() => {
         cards.forEach((card, index) => {
           const delayIndex = cards.length - 1 - index;
@@ -748,8 +670,6 @@
         });
         hero.classList.remove('expand-title');
       }, 300 + 5 * 120 + 1200 + 500 + 2800);
-
-      // 自动调度下一轮
       setTimeout(startAnimation, 9000);
     }
 
@@ -763,10 +683,8 @@
 
     observer.observe(clientsSection);
 
-    startAnimation();  // 第一次启动
+    startAnimation();
 
-    // 移除原来的 setInterval，改用递归调用 startAnimation，确保循环稳定
-    // window.addEventListener('scroll', ... ) 保持不变
     window.addEventListener('scroll', () => {
       const scrollY = window.scrollY;
       const parallaxCards = document.querySelectorAll('.service-card');
@@ -777,32 +695,28 @@
       });
     });
 
-  // hover 只展开当前，移开保留最后一个
-const servicesList = document.querySelector('.services-list');
-if (servicesList) {
-  let lastActive = servicesList.querySelector('.service-entry.active');
-
-  servicesList.querySelectorAll('.service-entry').forEach(entry => {
-    entry.addEventListener('mouseenter', () => {
-      // 关闭所有
-      servicesList.querySelectorAll('.service-entry').forEach(e => {
-        e.classList.remove('active');
+    // How we work 模块交互 - 复刻 Webflow hover 展开
+    const servicesList = document.querySelector('.services-list');
+    if (servicesList) {
+      servicesList.querySelectorAll('.single-service').forEach(entry => {
+        entry.addEventListener('mouseenter', () => {
+          // 关闭所有其他项
+          servicesList.querySelectorAll('.single-service').forEach(e => {
+            e.classList.remove('active');
+          });
+          // 打开当前项
+          entry.classList.add('active');
+        });
       });
-      // 打开当前
-      entry.classList.add('active');
-      lastActive = entry;
-    });
-  });
 
-  servicesList.addEventListener('mouseleave', () => {
-    // 离开后恢复最后一个
-    servicesList.querySelectorAll('.service-entry').forEach(entry => {
-      entry.classList.remove('active');
-    });
-    if (lastActive) lastActive.classList.add('active');
-  });
-}
-    
+      servicesList.addEventListener('mouseleave', () => {
+        // 离开时只保留第一个默认打开（或可改成保留最后一个）
+        servicesList.querySelectorAll('.single-service').forEach(entry => {
+          entry.classList.remove('active');
+        });
+        servicesList.querySelector('.single-service:first-child').classList.add('active');
+      });
+    }
   </script>
 </body>
 </html>
