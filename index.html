@@ -365,7 +365,7 @@
       filter: brightness(0.92) contrast(1.1);
     }
 
-/* 右对齐 + hover 展开描述 */
+/* 优化 hover 展开：更丝滑、自然过渡 */
 .how-we-work-section {
   padding: 80px 5% 140px;
   background: #000000;
@@ -375,7 +375,7 @@
 .how-we-work-container {
   max-width: 1100px;
   margin: 0 auto;
-  text-align: right; /* 整体右对齐 */
+  text-align: right;
 }
 
 .how-we-work-title {
@@ -385,20 +385,21 @@
   line-height: 1.15;
   margin: 0 0 100px 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  text-align: left; /* 标题左对齐 */
+  text-align: right;
 }
 
 .services-list {
   display: flex;
   flex-direction: column;
   gap: 60px;
-  text-align: right; /* 列表右对齐 */
+  text-align: right;
 }
 
 .service-entry {
   max-width: 800px;
-  margin-left: auto; /* 推到右边 */
+  margin-left: auto;
   cursor: pointer;
+  transition: all 0.4s ease; /* 整体轻微过渡 */
 }
 
 .service-title {
@@ -406,35 +407,46 @@
   font-weight: 900;
   letter-spacing: -0.04em;
   line-height: 1.1;
-  margin: 0 0 0 0;
+  margin: 0;
   color: #ffffff;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   transition: all 0.4s ease;
 }
 
 .service-content {
-  max-height: 0;
+  height: 0;
   overflow: hidden;
-  transition: max-height 0.6s ease, opacity 0.4s ease;
   opacity: 0;
+  transition: 
+    height 0.6s cubic-bezier(0.4, 0, 0.2, 1),  /* 更自然的贝塞尔曲线 */
+    opacity 0.4s ease 0.1s,                 /* 延迟一点出现 */
+    margin-top 0.6s ease;
+  margin-top: 0;
 }
 
 .service-entry:hover .service-content {
-  max-height: 300px; /* 根据内容调整，够用即可 */
+  height: auto;           /* 用 auto 代替 max-height，避免抖动 */
   opacity: 1;
+  margin-top: 24px;       /* 展开时自然间距 */
 }
 
 .service-desc {
   font-size: 1.3rem;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.85);
-  margin: 24px 0 0 0;
+  margin: 0;
   text-align: right;
+  padding-bottom: 20px;   /* 底部留白，避免收起时跳动 */
 }
 
 .highlight-win {
   color: #ff9500;
   font-weight: 600;
+}
+
+/* hover 时标题轻微抬升（可选，更丝滑的交互感） */
+.service-entry:hover .service-title {
+  transform: translateY(-4px);
 }
   </style>
 </head>
