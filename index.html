@@ -354,7 +354,7 @@
       filter: brightness(0.92) contrast(1.1);
     }
 
-    /* 扑克牌式覆盖展开 - 最终丝滑版 */
+    /* 扑克牌式向上覆盖 - 最终优化版 */
     .how-we-work-section {
       padding: 80px 5% 140px;
       background: #000000;
@@ -362,7 +362,7 @@
     }
 
     .how-we-work-container {
-      max-width: 1000px;
+      max-width: 1100px;
       margin: 0 auto;
       text-align: right;
     }
@@ -381,8 +381,8 @@
       display: flex;
       flex-direction: column;
       gap: 0;
-      text-align: left;
-      max-width: 500px;
+      text-align: right;
+      max-width: 800px;
       margin-left: auto;
       position: relative;
     }
@@ -392,10 +392,14 @@
       position: relative;
       background: #000000;
       z-index: 1;
+      transition: transform 1.0s cubic-bezier(0.165, 0.84, 0.44, 1); /* 丝滑向上移动 */
     }
 
     .service-title-wrapper {
-      padding: 10px 0;
+      padding: 20px 0;
+      background: #000000;
+      position: relative;
+      z-index: 2; /* 标题始终在上 */
     }
 
     .service-title {
@@ -406,33 +410,39 @@
       margin: 0;
       color: #ffffff;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      opacity: 0.4; /* 未激活灰暗 */
+      transition: opacity 0.4s ease;
+    }
+
+    .single-service.active .service-title,
+    .single-service:hover .service-title {
+      opacity: 1;
     }
 
     .service-content {
-      max-height: 0;
+      height: 0;
       overflow: hidden;
-      opacity: 0;
       background: #000000;
-      transition: 
-        max-height 1.0s cubic-bezier(0.165, 0.84, 0.44, 1),  /* 更慢、更丝滑的展开 */
-        opacity 0.8s ease 0.3s,                             /* 更明显的延迟淡入 */
-        padding 1.0s ease;
+      transition: height 1.0s cubic-bezier(0.165, 0.84, 0.44, 1);
       padding: 0 0 0 0;
+      box-shadow: 0 -10px 30px rgba(0,0,0,0.6); /* 轻微阴影，增强覆盖感 */
     }
 
     .single-service.active .service-content,
     .single-service:hover .service-content {
-      max-height: 800px;
-      opacity: 1;
-      padding: 0px 0 40px 0;
-      z-index: 3; /* 确保展开时覆盖上面所有内容 */
+      height: auto;
+      padding: 20px 0 40px 0;
     }
 
-    /* hover 时关闭其他项 */
-    .services-list:hover .single-service:not(:hover) .service-content {
-      max-height: 0 !important;
-      opacity: 0 !important;
-      padding: 0 !important;
+    /* hover 时当前项向上移动覆盖上面 */
+    .single-service:hover {
+      transform: translateY(-100%); /* 向上移动一个项的高度，覆盖上面 */
+      z-index: 10;
+    }
+
+    /* 鼠标移开时恢复原位（保留展开） */
+    .services-list:hover .single-service:not(:hover) {
+      transform: translateY(0);
     }
 
     .service-desc {
@@ -695,26 +705,22 @@
       });
     });
 
-    // How we work 模块交互 - 复刻 Webflow hover 展开
+    // How we work 模块交互 - 向上覆盖，无淡出
     const servicesList = document.querySelector('.services-list');
     if (servicesList) {
+      let lastActive = servicesList.querySelector('.single-service.active');
+
       servicesList.querySelectorAll('.single-service').forEach(entry => {
         entry.addEventListener('mouseenter', () => {
-          // 关闭所有其他项
-          servicesList.querySelectorAll('.single-service').forEach(e => {
-            e.classList.remove('active');
-          });
-          // 打开当前项
+          servicesList.querySelectorAll('.single-service').forEach(e => e.classList.remove('active'));
           entry.classList.add('active');
+          lastActive = entry;
         });
       });
 
       servicesList.addEventListener('mouseleave', () => {
-        // 离开时只保留第一个默认打开（或可改成保留最后一个）
-        servicesList.querySelectorAll('.single-service').forEach(entry => {
-          entry.classList.remove('active');
-        });
-        servicesList.querySelector('.single-service:first-child').classList.add('active');
+        servicesList.querySelectorAll('.single-service').forEach(entry => entry.classList.remove('active'));
+        if (lastActive) lastActive.classList.add('active');
       });
     }
   </script>
