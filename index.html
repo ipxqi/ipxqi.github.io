@@ -365,7 +365,7 @@
       filter: brightness(0.92) contrast(1.1);
     }
 
-/* 优化动画曲线 + 纸张覆盖效果 + 流畅展开/收起 */
+/* 纯展开 + 覆盖隐藏 + 零位移 + 丝滑动画（复刻 dashfluence） */
 .how-we-work-section {
   padding: 80px 5% 140px;
   background: #000000;
@@ -391,85 +391,74 @@
 .services-list {
   display: flex;
   flex-direction: column;
-  gap: 0; /* 移除gap，让项紧挨，便于覆盖 */
+  gap: 0; /* 项紧挨，实现覆盖 */
   text-align: right;
-  position: relative; /* 相对定位，便于位移覆盖 */
-  overflow: hidden; /* 隐藏溢出部分 */
+  position: relative;
+  overflow: hidden;
 }
 
 .service-entry {
   max-width: 800px;
   margin-left: auto;
   cursor: pointer;
-  position: relative; /* 每个项相对定位 */
-  z-index: 1; /* 默认层级 */
-  transition: 
-    transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), /* 流畅位移曲线，匹配 dashfluence 自然感 */
-    z-index 0.1s step-end;
-  transform: translateY(0);
+  position: relative;
+  z-index: 1;
+  background: #000000; /* 确保背景黑，覆盖时无缝 */
 }
 
-.service-entry.active {
-  z-index: 2; /* 展开时层级最高，覆盖下面 */
-}
-
+/* 标题无任何 hover 变化 */
 .service-title {
   font-size: clamp(2.2rem, 5vw, 4rem);
   font-weight: 900;
   letter-spacing: -0.04em;
   line-height: 1.1;
-  margin: 0;
+  margin: 0 0 20px 0;
   color: #ffffff;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  transition: color 0.3s ease;  /* 只保留颜色过渡（如果不需要颜色变化，可以删掉整个 transition） */
+  padding: 20px 0;
 }
 
-.service-entry:hover .service-title {
-  color: #ffffff; /* hover 颜色微变（可选） */
-}
-
+/* 内容容器 - 默认隐藏 */
 .service-content {
   height: 0;
   overflow: hidden;
   opacity: 0;
   transition: 
-    height 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), /* 更长的展开时间，更流畅 */
-    opacity 0.6s ease 0.2s; /* 延迟淡入，避免卡顿 */
-  background: #000000; /* 背景黑，确保覆盖时无缝 */
-  padding: 0 0 20px 0;
-  margin-top: 0;
+    height 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),  /* dashfluence 风格自然展开 */
+    opacity 0.6s ease 0.2s;                           /* 延迟淡入，避免卡顿 */
+  background: #000000; /* 黑背景，确保覆盖时隐藏上面内容 */
+  padding: 0 0 30px 0;
 }
 
+/* 默认打开第一个 */
 .service-entry.active .service-content {
   height: auto;
   opacity: 1;
 }
 
+/* hover 时：只展开当前，覆盖上面（通过 z-index + 背景） */
+.service-entry:hover .service-content {
+  height: auto;
+  opacity: 1;
+  z-index: 3; /* 最高层级，覆盖上面 */
+}
+
+/* 关闭所有其他项 */
+.services-list:hover .service-entry:not(:hover) .service-content {
+  height: 0 !important;
+  opacity: 0 !important;
+}
+
+/* 描述文字 */
 .service-desc {
   font-size: 1.3rem;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.85);
   margin: 0;
   text-align: right;
+  padding-bottom: 20px;
 }
 
-/* hover 时：关闭所有其他项，只展开当前，并向上移位覆盖上一个 */
-.service-entry:hover {
-  transform: translateY(-20px); /* 向上移位，模拟纸张覆盖（可调-30px/-40px） */
-  z-index: 3; /* 最高层级 */
-}
-
-.services-list:hover .service-entry:not(:hover) .service-content {
-  height: 0 !important;
-  opacity: 0 !important;
-}
-
-.service-entry:hover .service-content {
-  height: auto !important;
-  opacity: 1 !important;
-}
-
-/* 鼠标移开列表后，保留最后一个 active */
 .highlight-win {
   color: #ff9500;
   font-weight: 600;
