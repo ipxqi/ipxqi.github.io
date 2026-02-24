@@ -365,7 +365,7 @@
       filter: brightness(0.92) contrast(1.1);
     }
 
-/* 右对齐 + 默认展开第一个 + hover 丝滑展开 */
+/* hover 只展开一个 + 默认第一个打开 + 丝滑过渡 */
 .how-we-work-section {
   padding: 80px 5% 140px;
   background: #000000;
@@ -402,6 +402,7 @@
   transition: all 0.4s ease;
 }
 
+/* 标题样式 */
 .service-title {
   font-size: clamp(2.2rem, 5vw, 4rem);
   font-weight: 900;
@@ -413,6 +414,7 @@
   transition: all 0.4s ease;
 }
 
+/* 内容容器 - 默认隐藏 */
 .service-content {
   height: 0;
   overflow: hidden;
@@ -425,19 +427,32 @@
 }
 
 /* 默认打开第一个 */
+.service-entry:first-child .service-content,
 .service-entry.active .service-content {
   height: auto;
   opacity: 1;
   margin-top: 24px;
 }
 
-/* hover 展开（包括第一个也会响应 hover） */
-.service-entry:hover .service-content {
-  height: auto;
-  opacity: 1;
-  margin-top: 24px;
+/* hover 时：关闭所有兄弟项，只展开当前 */
+.services-list:hover .service-content {
+  height: 0 !important;
+  opacity: 0 !important;
+  margin-top: 0 !important;
 }
 
+.service-entry:hover .service-content {
+  height: auto !important;
+  opacity: 1 !important;
+  margin-top: 24px !important;
+}
+
+/* hover 时标题轻抬 */
+.service-entry:hover .service-title {
+  transform: translateY(-4px);
+}
+
+/* 描述文字 */
 .service-desc {
   font-size: 1.3rem;
   line-height: 1.6;
