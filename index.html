@@ -365,7 +365,7 @@
       filter: brightness(0.92) contrast(1.1);
     }
 
-/* 复刻 Webflow dashfluence “How we work” - 高度展开 + 覆盖 + 丝滑 */
+/* 完全复刻 dashfluence Webflow 动画 - 高度 + opacity + 覆盖 */
 .how-we-work-section {
   padding: 80px 5% 140px;
   background: #000000;
@@ -391,28 +391,36 @@
 .services-list {
   display: flex;
   flex-direction: column;
-  gap: 0; /* 紧叠，实现覆盖 */
+  gap: 0;
   text-align: right;
   max-width: 800px;
   margin-left: auto;
 }
 
-.service-entry {
+.single-service {
   cursor: pointer;
   position: relative;
   background: #000000;
 }
 
-.service-title {
-  font-size: clamp(2.2rem, 5vw, 4rem);
-  font-weight: 900;
-  letter-spacing: -0.04em;
-  line-height: 1.1;
-  margin: 0;
+.single-service-left {
+  display: block; /* 默认显示短版 */
+}
+
+.service-short-title-wrapper {
   padding: 20px 0;
-  color: #ffffff;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  transition: opacity 0.4s ease; /* 轻微标题过渡 */
+}
+
+.service-short-title {
+  font-size: 2.2rem;
+  font-weight: 900;
+  margin: 0;
+}
+
+.service-short-excerpt {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.6);
+  margin: 8px 0 0;
 }
 
 .service-content {
@@ -420,43 +428,52 @@
   opacity: 0;
   overflow: hidden;
   transition: 
-    height 0.8s cubic-bezier(0.165, 0.84, 0.44, 1),  /* Webflow 常用丝滑曲线 */
+    height 0.8s cubic-bezier(0.165, 0.84, 0.44, 1),  /* 丝滑高度展开 */
     opacity 0.6s ease 0.2s;                           /* 延迟淡入 */
-  background: #000000; /* 黑背景覆盖 */
+  background: #000000;
   padding: 0 0 30px 0;
 }
 
-/* 默认展开第一个 */
-.service-entry.active .service-content {
-  height: auto;
-  opacity: 1;
+.service-title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin: 0 0 20px;
+  color: #ffffff;
+  opacity: 0.3; /* 默认半透明 */
+  transition: opacity 0.4s ease;
 }
 
-/* hover 展开当前项，覆盖上面 */
-.service-entry:hover .service-content {
-  height: auto;
-  opacity: 1;
+.single-service-bottom {
+  transition: height 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-/* 关闭其他项（hover 时只保持当前） */
-.services-list:hover .service-entry:not(:hover) .service-content {
-  height: 0px !important;
-  opacity: 0 !important;
-}
-
-/* 描述文字 */
 .service-desc {
   font-size: 1.3rem;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.85);
-  margin: 0;
-  text-align: right;
+  color: rgba(255,255,255,0.85);
+  margin: 0 0 16px;
 }
 
 .highlight-win {
   color: #ff9500;
   font-weight: 600;
 }
+
+/* hover 展开 */
+.single-service:hover .single-service-left {
+  display: none; /* 隐藏短版 */
+}
+
+.single-service:hover .service-content {
+  height: auto;
+  opacity: 1;
+}
+
+.single-service:hover .service-title {
+  opacity: 1;
+}
+
+/* 覆盖效果：由于堆叠 + 黑背景 + 高度变化，展开项自然盖住上面 */
 
 
 }
@@ -539,56 +556,93 @@
     </h2>
 
     <div class="services-list">
-      <!-- 第一项，默认展开 -->
-      <div class="service-entry active">
-        <h3 class="service-title">品牌与标志</h3>
-        <div class="service-content" style="height: auto; opacity: 1;">
-          <p class="service-desc">
-            Logo、品牌色彩系统、辅助图形、品牌应用规范、手册等
-          </p>
+      <!-- 第一项 -->
+      <div class="single-service">
+        <a href="#" class="single-service-left">
+          <div class="service-short-title-wrapper">
+            <p class="service-short-title">品牌与标志</p>
+            <p class="service-short-excerpt">Logo、品牌色彩系统、辅助图形等</p>
+          </div>
+        </a>
+        <div class="service-content">
+          <h2 class="service-title">品牌与标志</h2>
+          <div class="single-service-bottom">
+            <p class="service-desc">
+              Logo、品牌色彩系统、辅助图形、品牌应用规范、手册等
+            </p>
+          </div>
         </div>
       </div>
 
       <!-- 第二项 -->
-      <div class="service-entry">
-        <h3 class="service-title">广告创意设计</h3>
-        <div class="service-content" style="height: 0px; opacity: 0;">
-          <p class="service-desc">
-            海报、Banner、线上线下广告、社交媒体视觉、户外大牌等
-          </p>
+      <div class="single-service">
+        <a href="#" class="single-service-left">
+          <div class="service-short-title-wrapper">
+            <p class="service-short-title">广告创意设计</p>
+            <p class="service-short-excerpt">海报、Banner、社交媒体视觉等</p>
+          </div>
+        </a>
+        <div class="service-content">
+          <h2 class="service-title">广告创意设计</h2>
+          <div class="single-service-bottom">
+            <p class="service-desc">
+              海报、Banner、线上线下广告、社交媒体视觉、户外大牌等
+            </p>
+          </div>
         </div>
       </div>
 
       <!-- 第三项 -->
-      <div class="service-entry">
-        <h3 class="service-title">生成式AI包装</h3>
-        <div class="service-content" style="height: 0px; opacity: 0;">
-          <p class="service-desc">
-            We craft strategic identities that inspire connection.<br>
-            <span class="highlight-win">Recent win: 4.8x ROAS for a global wellness company.</span>
-          </p>
-        </div>
-      </div>
-      
-       <!-- 第四项 -->
-      <div class="service-entry">
-        <h3 class="service-title">书籍/出版物</h3>
-        <div class="service-content" style="height: 0px; opacity: 0;">
-          <p class="service-desc">
-            书籍封面+内页、杂志排版、画册、年报、产品说明书等<br>
-            <span class="highlight-win">Recent win: 4.8x ROAS for a global wellness company.</span>
-          </p>
+      <div class="single-service">
+        <a href="#" class="single-service-left">
+          <div class="service-short-title-wrapper">
+            <p class="service-short-title">生成式AI包装</p>
+            <p class="service-short-excerpt">AI生成包装、3D渲染等</p>
+          </div>
+        </a>
+        <div class="service-content">
+          <h2 class="service-title">生成式AI包装</h2>
+          <div class="single-service-bottom">
+            <p class="service-desc">
+              AI生成包装设计、3D渲染、产品视觉等
+            </p>
+          </div>
         </div>
       </div>
 
-       <!-- 第五项 -->
-      <div class="service-entry">
-        <h3 class="service-title">数字界面/社交媒体</h3>
-        <div class="service-content" style="height: 0px; opacity: 0;">
-          <p class="service-desc">
-            网站首页、落地页、后台管理系统、H5、App界面<br>
-            <span class="highlight-win">Recent win: 4.8x ROAS for a global wellness company.</span>
-          </p>
+      <!-- 第四项 -->
+      <div class="single-service">
+        <a href="#" class="single-service-left">
+          <div class="service-short-title-wrapper">
+            <p class="service-short-title">书籍/出版物</p>
+            <p class="service-short-excerpt">书籍封面+内页、画册等</p>
+          </div>
+        </a>
+        <div class="service-content">
+          <h2 class="service-title">书籍/出版物</h2>
+          <div class="single-service-bottom">
+            <p class="service-desc">
+              书籍封面+内页、杂志排版、画册、年报、产品说明书等
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 第五项 -->
+      <div class="single-service">
+        <a href="#" class="single-service-left">
+          <div class="service-short-title-wrapper">
+            <p class="service-short-title">数字界面/社交媒体</p>
+            <p class="service-short-excerpt">网站、H5、App界面等</p>
+          </div>
+        </a>
+        <div class="service-content">
+          <h2 class="service-title">数字界面/社交媒体</h2>
+          <div class="single-service-bottom">
+            <p class="service-desc">
+              网站首页、落地页、后台管理系统、H5、App界面
+            </p>
+          </div>
         </div>
       </div>
     </div>
