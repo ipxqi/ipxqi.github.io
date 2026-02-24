@@ -539,50 +539,63 @@
     
     <!-- 左侧固定标题（Webflow同款结构） -->
     <div class="how-we-work-left">
-      <h2 class="how-we-work-title">
-        将想法转化为<br>
-        有力量的视觉表达
-      </h2>
-    </div>
+  <h2 class="how-we-work-title">
+    将想法转化为<br>
+    有力量的视觉表达
+  </h2>
+
+  <!-- 新增：图片和文字展示 -->
+  <div class="preview-image-wrap" style="margin-top:30px;">
+    <img class="preview-img" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600" alt="" style="width:100%;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.7);">
+    <p class="preview-text" style="margin-top:12px;font-size:1.3rem;color:rgba(255,255,255,0.85);line-height:1.5;">
+      品牌视觉设计，让企业形象更出彩
+    </p>
+  </div>
+</div>
 
     <!-- 右侧滚动内容 -->
     <div class="how-we-work-right">
       <div class="services-list">
         
-        <div class="single-service">
-          <h3 class="service-title">品牌与标志</h3>
-          <p class="service-desc">
-            Logo、品牌色彩系统、辅助图形、品牌应用规范、手册等
-          </p>
-        </div>
+        <div class="single-service" data-img="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600"
+     data-text="品牌视觉设计，让企业形象更出彩">
+  <h3 class="service-title">品牌与标志</h3>
+  <p class="service-desc">
+    Logo、品牌色彩系统、辅助图形、品牌应用规范、手册等
+  </p>
+</div>
 
-        <div class="single-service">
-          <h3 class="service-title">广告创意设计</h3>
-          <p class="service-desc">
-            海报、Banner、线上线下广告、社交媒体视觉、户外大牌等
-          </p>
-        </div>
+<div class="single-service" data-img="https://images.unsplash.com/photo-1553356084-58ef4a67b2a7?w=600"
+     data-text="创意广告设计，让品牌更具吸引力">
+  <h3 class="service-title">广告创意设计</h3>
+  <p class="service-desc">
+    海报、Banner、线上线下广告、社交媒体视觉、户外大牌等
+  </p>
+</div>
 
-        <div class="single-service">
-          <h3 class="service-title">生成式AI包装</h3>
-          <p class="service-desc">
-            AI生成包装设计、3D渲染、产品视觉等
-          </p>
-        </div>
+<div class="single-service" data-img="https://images.unsplash.com/photo-1511671782779-cb56e135bd67?w=600"
+     data-text="生成式AI包装，提升产品视觉质感">
+  <h3 class="service-title">生成式AI包装</h3>
+  <p class="service-desc">
+    AI生成包装设计、3D渲染、产品视觉等
+  </p>
+</div>
 
-        <div class="single-service">
-          <h3 class="service-title">书籍/出版物</h3>
-          <p class="service-desc">
-            书籍封面+内页、杂志排版、画册、年报、产品说明书等
-          </p>
-        </div>
+<div class="single-service" data-img="https://images.unsplash.com/photo-1557683316-973673baf926?w=600"
+     data-text="出版物设计，呈现专业视觉排版">
+  <h3 class="service-title">书籍/出版物</h3>
+  <p class="service-desc">
+    书籍封面+内页、杂志排版、画册、年报、产品说明书等
+  </p>
+</div>
 
-        <div class="single-service">
-          <h3 class="service-title">数字界面/社交媒体</h3>
-          <p class="service-desc">
-            网站首页、落地页、后台管理系统、H5、App界面
-          </p>
-        </div>
+<div class="single-service" data-img="https://images.unsplash.com/photo-1557683311-e973673baf926?w=600"
+     data-text="数字界面设计，打造流畅用户体验">
+  <h3 class="service-title">数字界面/社交媒体</h3>
+  <p class="service-desc">
+    网站首页、落地页、后台管理系统、H5、App界面
+  </p>
+</div>
 
       </div>
     </div>
@@ -705,22 +718,51 @@
 // Mouse Hover Driven Services（完全仿你参考的网站交互）
 const services = document.querySelectorAll('.single-service');
 const servicesContainer = document.querySelector('.services-list');
+const previewImg = document.querySelector('.preview-img');   // 左侧图片
+const previewText = document.querySelector('.preview-text'); // 左侧文字
 
 if (services.length) {
-  // 页面加载默认高亮第一个（和高端网站一致）
+  // 页面加载默认高亮第一个
   services[0].classList.add('active');
+
+  // 默认左侧图片和文字
+  const firstImg = services[0].getAttribute('data-img');
+  const firstText = services[0].getAttribute('data-text');
+  if (firstImg) previewImg.src = firstImg;
+  if (firstText) previewText.textContent = firstText;
 
   services.forEach((service) => {
     service.addEventListener('mouseenter', () => {
+      // 右侧高亮
       services.forEach(item => item.classList.remove('active'));
       service.classList.add('active');
+
+      // 左侧图片切换
+      const newImg = service.getAttribute('data-img');
+      if (newImg && previewImg.src !== newImg) {
+        previewImg.style.opacity = '0';
+        setTimeout(() => {
+          previewImg.src = newImg;
+          previewImg.style.opacity = '1';
+        }, 150);
+      }
+
+      // 左侧文字切换
+      const newText = service.getAttribute('data-text');
+      if (newText) {
+        previewText.style.opacity = '0';
+        setTimeout(() => {
+          previewText.textContent = newText;
+          previewText.style.opacity = '1';
+        }, 150);
+      }
     });
   });
 
-  // 鼠标离开整个区域时，保持当前高亮（不会闪回）
+  // 鼠标离开整个区域时，保持当前高亮
   if (servicesContainer) {
     servicesContainer.addEventListener('mouseleave', () => {
-      // 故意不重置，保持最后一次hover状态（高级体验）
+      // 故意不重置，保持最后一次hover状态
     });
   }
 }
