@@ -354,112 +354,110 @@
       filter: brightness(0.92) contrast(1.1);
     }
 
-   /* 扑克牌式向上覆盖 - 彻底防抖动版 */
-.how-we-work-section {
-  padding: 80px 5% 140px;
-  background: #000000;
-  color: #ffffff;
-}
+    /* 扑克牌式整体向上滑出覆盖 - 最终防抖版 */
+    .how-we-work-section {
+      padding: 80px 5% 140px;
+      background: #000000;
+      color: #ffffff;
+    }
 
-.how-we-work-container {
-  max-width: 1100px;
-  margin: 0 auto;
-  text-align: right;
-}
+    .how-we-work-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      text-align: right;
+    }
 
-.how-we-work-title {
-  font-size: clamp(2rem, 4vw, 4rem);
-  font-weight: 900;
-  letter-spacing: -0.08em;
-  line-height: 1.15;
-  margin: 0 0 100px 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  text-align: right;
-}
+    .how-we-work-title {
+      font-size: clamp(2rem, 4vw, 4rem);
+      font-weight: 900;
+      letter-spacing: -0.08em;
+      line-height: 1.15;
+      margin: 0 0 100px 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      text-align: right;
+    }
 
-.services-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  text-align: right;
-  max-width: 800px;
-  margin-left: auto;
-  position: relative;
-}
+    .services-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      text-align: right;
+      max-width: 800px;
+      margin-left: auto;
+      position: relative;
+    }
 
-.single-service {
-  position: relative;
-  background: #000000;
-  z-index: 1;
-  will-change: height; /* 提前优化高度变化 */
-}
+    .single-service {
+      position: relative;
+      background: #000000;
+      z-index: 1;
+      transition: transform 1.0s cubic-bezier(0.165, 0.84, 0.44, 1);
+      will-change: transform;
+      backface-visibility: hidden;
+    }
 
-.service-title-wrapper {
-  padding: 20px 0;
-  background: #000000;
-  position: sticky;
-  top: 0;
-  z-index: 2; /* 标题固定在上方，不随内容移动 */
-}
+    .service-title-wrapper {
+      padding: 20px 0;
+      background: #000000;
+      position: relative;
+      z-index: 2;
+    }
 
-.service-title {
-  font-size: clamp(2.2rem, 5vw, 4rem);
-  font-weight: 900;
-  letter-spacing: -0.04em;
-  line-height: 1.1;
-  margin: 0;
-  color: #ffffff;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  opacity: 0.4;
-  transition: opacity 0.4s ease;
-}
+    .service-title {
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin: 0;
+      color: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      opacity: 0.4;
+      transition: opacity 0.4s ease;
+    }
 
-.single-service:hover .service-title,
-.single-service.active .service-title {
-  opacity: 1;
-}
+    .single-service:hover .service-title,
+    .single-service.active .service-title {
+      opacity: 1;
+    }
 
-.service-content {
-  height: 0;
-  overflow: hidden;
-  background: #000000;
-  transition: height 1.0s cubic-bezier(0.165, 0.84, 0.44, 1);
-  padding: 0 0 0 0;
-  box-shadow: 0 -10px 30px rgba(0,0,0,0.6);
-  position: relative;
-  z-index: 3; /* 展开时覆盖上面 */
-}
+    .service-content {
+      height: 0;
+      overflow: hidden;
+      background: #000000;
+      transition: height 1.0s cubic-bezier(0.165, 0.84, 0.44, 1);
+      padding: 0 0 0 0;
+      box-shadow: 0 -10px 30px rgba(0,0,0,0.6);
+    }
 
-.single-service:hover .service-content,
-.single-service.active .service-content {
-  height: auto;
-  padding: 20px 0 40px 0;
-}
+    .single-service.active .service-content,
+    .single-service:hover .service-content {
+      height: auto;
+      padding: 20px 0 40px 0;
+    }
 
-/* hover 时当前项内容直接展开覆盖（无移动抖动） */
-.single-service:hover .service-content,
-.single-service.active .service-content {
-  z-index: 10;
-}
+    /* 向上滑出覆盖 */
+    .single-service:hover,
+    .single-service.active {
+      transform: translateY(-100%);
+      z-index: 10;
+    }
 
-/* 鼠标移开时关闭非当前项 */
-.services-list:hover .single-service:not(:hover) .service-content {
-  height: 0 !important;
-  padding: 0 !important;
-}
+    .services-list:hover .single-service:not(:hover) {
+      transform: translateY(0);
+    }
 
-.service-desc {
-  font-size: 1.3rem;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.85);
-  margin: 0;
-  text-align: right;
-}
+    .service-desc {
+      font-size: 1.3rem;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.85);
+      margin: 0;
+      text-align: right;
+    }
 
-.highlight-win {
-  color: #ff9500;
-  font-weight: 600;
-}
+    .highlight-win {
+      color: #ff9500;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
@@ -633,7 +631,7 @@
         newCard.style.transition = 'none !important';
         newCard.style.opacity = '0';
         newCard.style.transform = 'translateY(-180vh) translateX(0) rotate(0deg) scale(1) translateZ(0px) !important';
-        newCard.style.willChange = 'auto';
+        newCard.style.will-change = 'auto';
         newCard.style.backfaceVisibility = 'visible';
         oldCard.parentNode.replaceChild(newCard, oldCard);
       });
@@ -708,34 +706,24 @@
       });
     });
 
-    // How we work 模块交互 - 向上覆盖，无淡出
-   const servicesList = document.querySelector('.services-list');
-if (servicesList) {
-  // 默认第一个激活
-  servicesList.querySelector('.single-service:first-child').classList.add('active');
+    // How we work 模块交互 - 稳定防抖
+    const servicesList = document.querySelector('.services-list');
+    if (servicesList) {
+      let lastActive = servicesList.querySelector('.single-service.active');
 
-  // 只记录最后一个 hovered，不频繁改 class
-  let lastHovered = null;
-
-  servicesList.querySelectorAll('.single-service').forEach(entry => {
-    entry.addEventListener('mouseenter', () => {
-      lastHovered = entry;
-      // 移除所有 active，只保留当前
-      servicesList.querySelectorAll('.single-service').forEach(e => {
-        if (e !== entry) e.classList.remove('active');
+      servicesList.querySelectorAll('.single-service').forEach(entry => {
+        entry.addEventListener('mouseenter', () => {
+          servicesList.querySelectorAll('.single-service').forEach(e => e.classList.remove('active'));
+          entry.classList.add('active');
+          lastActive = entry;
+        });
       });
-      entry.classList.add('active');
-    });
-  });
 
-  servicesList.addEventListener('mouseleave', () => {
-    // 离开时恢复最后一个 hovered 的 active
-    servicesList.querySelectorAll('.single-service').forEach(entry => {
-      entry.classList.remove('active');
-    });
-    if (lastHovered) lastHovered.classList.add('active');
-  });
-}
+      servicesList.addEventListener('mouseleave', () => {
+        servicesList.querySelectorAll('.single-service').forEach(entry => entry.classList.remove('active'));
+        if (lastActive) lastActive.classList.add('active');
+      });
+    }
   </script>
 </body>
 </html>
