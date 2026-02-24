@@ -365,75 +365,75 @@
       filter: brightness(0.92) contrast(1.1);
     }
 
- /* 复刻 dashfluence “How we work” 模块 - 高度匹配图片样式 */
+/* 右对齐 + hover 展开描述 */
 .how-we-work-section {
   padding: 80px 5% 140px;
-  background: #000000; /* 纯黑，与图片一致 */
+  background: #000000;
   color: #ffffff;
-  text-align: center;
 }
 
 .how-we-work-container {
   max-width: 1100px;
   margin: 0 auto;
-  text-align: left;
+  text-align: right; /* 整体右对齐 */
 }
 
 .how-we-work-title {
   font-size: clamp(2rem, 4vw, 4rem);
-  font-weight: 900;           /* 极粗，匹配图片粗体感 */
-  letter-spacing: -0.08em;    /* 负间距，更紧凑 */
+  font-weight: 900;
+  letter-spacing: -0.08em;
   line-height: 1.15;
   margin: 0 0 100px 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-
-text-align: left;          /* ← 改成左对齐 */
-  max-width: 1000px;         /* 限制宽度，避免太长拉伸 */
-  margin-left: auto;         /* 整体居中容器内左对齐 */
-  margin-right: auto;
-
+  text-align: right; /* 标题右对齐 */
 }
 
 .services-list {
   display: flex;
   flex-direction: column;
-  gap: 80px;                  /* 每项大间距，匹配图片 */
-  text-align: left;          /* 确保列表左对齐 */
+  gap: 60px;
+  text-align: right; /* 列表右对齐 */
 }
 
 .service-entry {
-  text-align: left;
   max-width: 800px;
-  margin: 0 auto;
+  margin-left: auto; /* 推到右边 */
+  cursor: pointer;
 }
 
 .service-title {
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-size: clamp(2.2rem, 5vw, 4rem);
   font-weight: 900;
   letter-spacing: -0.04em;
   line-height: 1.1;
-  margin: 0 0 24px 0;
+  margin: 0 0 0 0;
   color: #ffffff;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  transition: all 0.4s ease;
 }
 
-.service-divider {
-  height: 1px;
-  background: rgba(255, 255, 255, 0.15); /* 细灰横线 */
-  border: none;
-  margin: 0 0 32px 0;
+.service-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.6s ease, opacity 0.4s ease;
+  opacity: 0;
+}
+
+.service-entry:hover .service-content {
+  max-height: 300px; /* 根据内容调整，够用即可 */
+  opacity: 1;
 }
 
 .service-desc {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.85);
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  margin: 24px 0 0 0;
+  text-align: right;
 }
 
 .highlight-win {
-  color: #ff9500;             /* 橙色高亮，匹配图片的“Recent win” */
+  color: #ff9500;
   font-weight: 600;
 }
   </style>
@@ -507,7 +507,7 @@ text-align: left;          /* ← 改成左对齐 */
     </div>
   </section>
 
-  <!-- 复刻 dashfluence 的“How we work”模块 -->
+ <!-- 复刻模块 - 右对齐 + hover 展开 -->
 <section class="how-we-work-section">
   <div class="how-we-work-container">
     <h2 class="how-we-work-title">
@@ -517,28 +517,49 @@ text-align: left;          /* ← 改成左对齐 */
 
     <div class="services-list">
       <div class="service-entry">
-        <h3 class="service-title">CRO & Analytics Optimization</h3>
-        <hr class="service-divider">
-        <p class="service-desc">
-          We design smart systems that integrate content, channels, and automation — optimized for measurable performance gains.
-        </p>
+        <h3 class="service-title">品牌与标志</h3>
+        <div class="service-content">
+          <p class="service-desc">
+            Logo、品牌色彩系统、辅助图形、品牌应用规范、手册等
+          </p>
+        </div>
       </div>
 
       <div class="service-entry">
-        <h3 class="service-title">Paid Media Management</h3>
-        <hr class="service-divider">
-        <p class="service-desc">
-          Strategy & execution across Meta, Google, TikTok, and more — focused on ROAS and scalable growth.
-        </p>
+        <h3 class="service-title">广告创意设计</h3>
+        <div class="service-content">
+          <p class="service-desc">
+            海报、Banner、线上线下广告、社交媒体视觉、户外大牌等
+          </p>
+        </div>
       </div>
 
       <div class="service-entry">
-        <h3 class="service-title">Strategy & Content Production</h3>
-        <hr class="service-divider">
-        <p class="service-desc">
-          We craft strategic identities that inspire connection.<br>
-          <span class="highlight-win">Recent win: 4.8x ROAS for a global wellness company.</span>
-        </p>
+        <h3 class="service-title">包装设计</h3>
+        <div class="service-content">
+          <p class="service-desc">
+            食品、化妆品、电子产品、日化、奢侈品包装等<br>
+            <span class="highlight-win">Recent win: 4.8x ROAS for a global wellness company.</span>
+          </p>
+        </div>
+      </div>
+
+        <div class="service-entry">
+        <h3 class="service-title">书籍/出版物</h3>
+        <div class="service-content">
+          <p class="service-desc">
+            书籍封面+内页、杂志排版、画册、年报、产品说明书等
+          </p>
+        </div>
+      </div>
+
+        <div class="service-entry">
+        <h3 class="service-title">数字界面/社交媒体</h3>
+        <div class="service-content">
+          <p class="service-desc">
+            网站首页、落地页、后台管理系统、H5、App界面
+          </p>
+        </div>
       </div>
     </div>
   </div>
