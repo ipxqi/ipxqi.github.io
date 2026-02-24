@@ -354,113 +354,119 @@
       filter: brightness(0.92) contrast(1.1);
     }
 
-    /* 扑克牌式整体向上滑出 - 消除冲顶回落 */
-.how-we-work-section {
-  padding: 80px 5% 140px;
-  background: #000000;
-  color: #ffffff;
-}
+    /* How we work 模块 - 第一个标题固定，其他不变 */
+    .how-we-work-section {
+      padding: 80px 5% 140px;
+      background: #000000;
+      color: #ffffff;
+    }
 
-.how-we-work-container {
-  max-width: 1100px;
-  margin: 0 auto;
-  text-align: right;
-}
+    .how-we-work-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      text-align: right;
+    }
 
-.how-we-work-title {
-  font-size: clamp(2rem, 4vw, 4rem);
-  font-weight: 900;
-  letter-spacing: -0.08em;
-  line-height: 1.15;
-  margin: 0 0 100px 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  text-align: right;
-}
+    .how-we-work-title {
+      font-size: clamp(2rem, 4vw, 4rem);
+      font-weight: 900;
+      letter-spacing: -0.08em;
+      line-height: 1.15;
+      margin: 0 0 100px 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      text-align: right;
+    }
 
-.services-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  text-align: right;
-  max-width: 800px;
-  margin-left: auto;
-  position: relative;
-}
+    .fixed-first-title {
+      position: sticky;
+      top: 80px; /* 调整这个值来控制固定位置，建议 80~120px，根据你的导航高度测试 */
+      z-index: 20;
+      background: #000000;
+      padding: 20px 0;
+      margin-bottom: 20px; /* 给下面内容留点间距 */
+    }
 
-.single-service {
-  position: relative;
-  background: #000000;
-  z-index: 1;
-  transition: transform 0.9s cubic-bezier(0.165, 0.84, 0.44, 1); /* 先移动 */
-  will-change: transform;
-  backface-visibility: hidden;
-}
+    .services-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      text-align: right;
+      max-width: 800px;
+      margin-left: auto;
+      position: relative;
+    }
 
-.service-title-wrapper {
-  padding: 20px 0;
-  background: #000000;
-  position: relative;
-  z-index: 2;
-}
+    .single-service {
+      position: relative;
+      background: #000000;
+      z-index: 1;
+      transition: transform 0.9s cubic-bezier(0.165, 0.84, 0.44, 1);
+      will-change: transform;
+      backface-visibility: hidden;
+    }
 
-.service-title {
-  font-size: clamp(2.2rem, 5vw, 4rem);
-  font-weight: 900;
-  letter-spacing: -0.04em;
-  line-height: 1.1;
-  margin: 0;
-  color: #ffffff;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  opacity: 0.4;
-  transition: opacity 0.4s ease;
-}
+    .service-title-wrapper {
+      padding: 20px 0;
+      background: #000000;
+      z-index: 2;
+    }
 
-.single-service:hover .service-title,
-.single-service.active .service-title {
-  opacity: 1;
-}
+    .service-title {
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin: 0;
+      color: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      opacity: 0.4;
+      transition: opacity 0.4s ease;
+    }
 
-.service-content {
-  max-height: 0;
-  overflow: hidden;
-  background: #000000;
-  transition: max-height 0.9s cubic-bezier(0.165, 0.84, 0.44, 1) 0.1s; /* 延迟一点展开 */
-  padding: 0 0 0 0;
-  box-shadow: 0 -10px 30px rgba(0,0,0,0.6);
-}
+    .single-service:hover .service-title,
+    .single-service.active .service-title {
+      opacity: 1;
+    }
 
-.single-service:hover .service-content,
-.single-service.active .service-content {
-  max-height: 600px; /* 固定足够大的值，避免 auto 冲顶 */
-  padding: 20px 0 40px 0;
-}
+    .service-content {
+      max-height: 0;
+      overflow: hidden;
+      background: #000000;
+      transition: max-height 0.9s cubic-bezier(0.165, 0.84, 0.44, 1) 0.1s;
+      padding: 0 0 0 0;
+      box-shadow: 0 -10px 30px rgba(0,0,0,0.6);
+    }
 
-/* 向上滑出覆盖 */
-.single-service:hover,
-.single-service.active {
-  transform: translateY(-120px); /* 用像素更可控，避免百分比计算偏差 */
-  margin-bottom: -120px; /* 补偿空间，避免布局塌陷 */
-  z-index: 10;
-}
+    .single-service:hover .service-content,
+    .single-service.active .service-content {
+      max-height: 600px;
+      padding: 20px 0 40px 0;
+    }
 
-/* 恢复 */
-.services-list:hover .single-service:not(:hover):not(.active) {
-  transform: translateY(0);
-  margin-bottom: 0;
-}
+    .single-service:hover,
+    .single-service.active {
+      transform: translateY(-120px);
+      margin-bottom: -120px;
+      z-index: 10;
+    }
 
-.service-desc {
-  font-size: 1.3rem;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.85);
-  margin: 0;
-  text-align: right;
-}
+    .services-list:hover .single-service:not(:hover):not(.active) {
+      transform: translateY(0);
+      margin-bottom: 0;
+    }
 
-.highlight-win {
-  color: #ff9500;
-  font-weight: 600;
-}
+    .service-desc {
+      font-size: 1.3rem;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.85);
+      margin: 0;
+      text-align: right;
+    }
+
+    .highlight-win {
+      color: #ff9500;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
@@ -538,11 +544,16 @@
         将想法转化为<br>
         有力量的视觉表达
       </h2>
+
+      <!-- 第一个标题单独抽出来，永远固定 -->
+      <div class="fixed-first-title">
+        <h3 class="service-title">品牌与标志</h3>
+      </div>
+
       <div class="services-list">
-        <div class="single-service active fixed=title">
-          <div class="service-title-wrapper">
-            <h3 class="service-title">品牌与标志</h3>
-          </div>
+        <!-- 第一个项目的内容（标题已移出，用空 wrapper 占位） -->
+        <div class="single-service active">
+          <div class="service-title-wrapper" style="height: 84px;"></div> <!-- 占位高度 = 原标题高度 + padding -->
           <div class="service-content">
             <p class="service-desc">
               Logo、品牌色彩系统、辅助图形、品牌应用规范、手册等
