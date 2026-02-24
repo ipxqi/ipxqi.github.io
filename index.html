@@ -466,24 +466,36 @@
 
     /* 左侧跟随图片 */
 .service-preview {
-  margin-top: 40px;
-  width: 420px;
-  height: 320px;
-  border-radius: 24px;
-  overflow: hidden;
   position: relative;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+  width: 400px;
+  margin-bottom: 40px; /* 离上方标题间距 */
 }
 
 .service-preview img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 1;
-  transform: scale(1.02);
-  transition: 
-    opacity 0.5s ease,
-    transform 0.8s ease;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  display: block;
+}
+
+.preview-text {
+  margin-top: 16px;
+  text-align: left; /* 也可以 center */
+}
+
+.preview-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+
+.preview-desc {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: rgba(255,255,255,0.75);
+  margin-top: 4px;
+  line-height: 1.4;
 }
   </style>
 </head>
@@ -740,39 +752,20 @@
     });
 
 // Mouse Hover Driven Services（完全仿你参考的网站交互）
-const services = document.querySelectorAll('.single-service');
-const previewImg = document.querySelector('.service-preview img');
+const previewTitle = document.querySelector('.preview-title');
+const previewDesc = document.querySelector('.preview-desc');
 
-if (services.length && previewImg) {
+services.forEach((service) => {
+  service.addEventListener('mouseenter', () => {
+    const newImg = service.getAttribute('data-img');
+    const newTitle = service.getAttribute('data-title');
+    const newDesc = service.getAttribute('data-desc');
 
-  // 默认第一张图
-  const firstImg = services[0].getAttribute('data-img');
-  if (firstImg) {
-    previewImg.src = firstImg;
-  }
-
-  services[0].classList.add('active');
-
-  services.forEach((service) => {
-    service.addEventListener('mouseenter', () => {
-      // 高亮逻辑（保留你原来的高级交互）
-      services.forEach(item => item.classList.remove('active'));
-      service.classList.add('active');
-
-      // 切换图片（核心）
-      const newImg = service.getAttribute('data-img');
-      if (newImg && previewImg.src !== newImg) {
-        previewImg.style.opacity = '0';
-        previewImg.style.transform = 'scale(1.08)';
-
-        setTimeout(() => {
-          previewImg.src = newImg;
-          previewImg.style.opacity = '1';
-          previewImg.style.transform = 'scale(1.02)';
-        }, 200);
-      }
-    });
+    if(newImg) previewImg.src = newImg;
+    if(newTitle) previewTitle.textContent = newTitle;
+    if(newDesc) previewDesc.textContent = newDesc;
   });
+});
 }
   </script>
 </body>
