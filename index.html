@@ -388,13 +388,13 @@
     }
 
     .single-service {
-      position: relative;
-      background: #000000;
-      z-index: 1;
-      transition: transform 1.0s cubic-bezier(0.165, 0.84, 0.44, 1);
-      will-change: transform;
-      backface-visibility: hidden;
-    }
+  position: relative;
+  background: #000000;
+  z-index: 1;
+  transition: transform 1.0s cubic-bezier(0.165, 0.84, 0.44, 1), margin-bottom 1.0s ease;
+  will-change: transform, margin-bottom;
+  backface-visibility: hidden;
+}
 
     .service-title-wrapper {
       padding: 20px 0;
@@ -435,16 +435,19 @@
       padding: 20px 0 40px 0;
     }
 
-    /* 向上滑出覆盖 */
-    .single-service:hover,
-    .single-service.active {
-      transform: translateY(-100%);
-      z-index: 10;
-    }
+    /* 向上滑出覆盖 - 用固定像素更稳定 */
+.single-service:hover,
+.single-service.active {
+  transform: translateY(-120px);  /* 向上移动 120px（根据你的项高度调整，建议 100~140px） */
+  margin-bottom: -120px;         /* 补偿下面空间，避免布局塌陷或跳动 */
+  z-index: 10;
+}
 
-    .services-list:hover .single-service:not(:hover) {
-      transform: translateY(0);
-    }
+   /* 鼠标移开时恢复 */
+.services-list:hover .single-service:not(:hover):not(.active) {
+  transform: translateY(0);
+  margin-bottom: 0;
+}
 
     .service-desc {
       font-size: 1.3rem;
