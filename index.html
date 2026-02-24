@@ -365,7 +365,106 @@
       filter: brightness(0.92) contrast(1.1);
     }
 
-空当接龙
+/* 极致丝滑展开动画 - 像纸张缓缓推开 */
+.how-we-work-section {
+  padding: 80px 5% 140px;
+  background: #000000;
+  color: #ffffff;
+}
+
+.how-we-work-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: right;
+}
+
+.how-we-work-title {
+  font-size: clamp(2rem, 4vw, 4rem);
+  font-weight: 900;
+  letter-spacing: -0.08em;
+  line-height: 1.15;
+  margin: 0 0 100px 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  text-align: right;
+}
+
+.services-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  text-align: right;
+  position: relative;
+  overflow: hidden;
+}
+
+.service-entry {
+  max-width: 800px;
+  margin-left: auto;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  background: #000000;
+}
+
+.service-title {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  margin: 0;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  padding: 20px 0 20px 0;
+}
+
+/* 内容容器 - 核心丝滑展开 */
+.service-content {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  padding-top: 0;
+  transition: 
+    max-height 0.9s cubic-bezier(0.22, 0.61, 0.36, 1),   /* 极柔和展开曲线 */
+    opacity 0.7s ease 0.25s,                            /* 延迟淡入 */
+    padding-top 0.9s cubic-bezier(0.22, 0.61, 0.36, 1); /* 内容从上滑入 */
+  background: #000000;
+}
+
+/* 默认打开第一个 */
+.service-entry.active .service-content {
+  max-height: 500px; /* 足够大，避免内容被截 */
+  opacity: 1;
+  padding-top: 20px;
+}
+
+/* hover 展开当前项，覆盖上面 */
+.service-entry:hover .service-content {
+  max-height: 500px;
+  opacity: 1;
+  padding-top: 20px;
+  z-index: 3;
+}
+
+/* 关闭其他项 */
+.services-list:hover .service-entry:not(:hover) .service-content {
+  max-height: 0 !important;
+  opacity: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* 描述文字 */
+.service-desc {
+  font-size: 1.3rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+  text-align: right;
+}
+
+.highlight-win {
+  color: #ff9500;
+  font-weight: 600;
+}
 
 
 }
