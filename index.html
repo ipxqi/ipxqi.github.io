@@ -463,6 +463,28 @@
 .services-list:hover .single-service:not(:hover):not(.active) {
   opacity: 0.18;
 }
+
+    /* 左侧跟随图片 */
+.service-preview {
+  margin-top: 40px;
+  width: 420px;
+  height: 520px;
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+}
+
+.service-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 1;
+  transform: scale(1.02);
+  transition: 
+    opacity 0.5s ease,
+    transform 0.8s ease;
+}
   </style>
 </head>
 <body>
@@ -543,41 +565,51 @@
         将想法转化为<br>
         有力量的视觉表达
       </h2>
+      
+       <!-- 新增：跟随显示的图片 -->
+  <div class="service-preview">
+    <img src="https://images.unsplash.com/photo-1557683316-973673baf926?w=800" alt="preview">
+  </div>
     </div>
 
     <!-- 右侧滚动内容 -->
     <div class="how-we-work-right">
       <div class="services-list">
         
-        <div class="single-service">
+        <div class="single-service"
+          data-img="https://images.unsplash.com/photo-1553356084-58ef4a67b2a7?w=800">
           <h3 class="service-title">品牌与标志</h3>
           <p class="service-desc">
             Logo、品牌色彩系统、辅助图形、品牌应用规范、手册等
           </p>
         </div>
 
-        <div class="single-service">
+        <div class="single-service"
+          data-img="https://images.unsplash.com/photo-1511671782779-cb56e135bd67?w=800">
           <h3 class="service-title">广告创意设计</h3>
           <p class="service-desc">
             海报、Banner、线上线下广告、社交媒体视觉、户外大牌等
           </p>
         </div>
 
-        <div class="single-service">
+        <div class="single-service"
+          data-img="https://images.unsplash.com/photo-1511671782779-cb56e135bd67?w=800">
           <h3 class="service-title">生成式AI包装</h3>
           <p class="service-desc">
             AI生成包装设计、3D渲染、产品视觉等
           </p>
         </div>
 
-        <div class="single-service">
+        <div class="single-service"
+          data-img="https://images.unsplash.com/photo-1511671782779-cb56e135bd67?w=800">
           <h3 class="service-title">书籍/出版物</h3>
           <p class="service-desc">
             书籍封面+内页、杂志排版、画册、年报、产品说明书等
           </p>
         </div>
 
-        <div class="single-service">
+        <div class="single-service"
+          data-img="https://images.unsplash.com/photo-1511671782779-cb56e135bd67?w=800">
           <h3 class="service-title">数字界面/社交媒体</h3>
           <p class="service-desc">
             网站首页、落地页、后台管理系统、H5、App界面
@@ -704,25 +736,38 @@
 
 // Mouse Hover Driven Services（完全仿你参考的网站交互）
 const services = document.querySelectorAll('.single-service');
-const servicesContainer = document.querySelector('.services-list');
+const previewImg = document.querySelector('.service-preview img');
 
-if (services.length) {
-  // 页面加载默认高亮第一个（和高端网站一致）
+if (services.length && previewImg) {
+
+  // 默认第一张图
+  const firstImg = services[0].getAttribute('data-img');
+  if (firstImg) {
+    previewImg.src = firstImg;
+  }
+
   services[0].classList.add('active');
 
   services.forEach((service) => {
     service.addEventListener('mouseenter', () => {
+      // 高亮逻辑（保留你原来的高级交互）
       services.forEach(item => item.classList.remove('active'));
       service.classList.add('active');
+
+      // 切换图片（核心）
+      const newImg = service.getAttribute('data-img');
+      if (newImg && previewImg.src !== newImg) {
+        previewImg.style.opacity = '0';
+        previewImg.style.transform = 'scale(1.08)';
+
+        setTimeout(() => {
+          previewImg.src = newImg;
+          previewImg.style.opacity = '1';
+          previewImg.style.transform = 'scale(1.02)';
+        }, 200);
+      }
     });
   });
-
-  // 鼠标离开整个区域时，保持当前高亮（不会闪回）
-  if (servicesContainer) {
-    servicesContainer.addEventListener('mouseleave', () => {
-      // 故意不重置，保持最后一次hover状态（高级体验）
-    });
-  }
 }
   </script>
 </body>
