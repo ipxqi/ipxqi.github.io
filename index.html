@@ -365,7 +365,7 @@
       filter: brightness(0.92) contrast(1.1);
     }
 
-/* hover 只展开一个 + 默认第一个打开 + 丝滑过渡 */
+/* 复刻 dashfluence hover 动画 + 默认第一个打开 + 鼠标移开保留最后一个 */
 .how-we-work-section {
   padding: 80px 5% 140px;
   background: #000000;
@@ -393,6 +393,7 @@
   flex-direction: column;
   gap: 60px;
   text-align: right;
+  position: relative;
 }
 
 .service-entry {
@@ -402,54 +403,55 @@
   transition: all 0.4s ease;
 }
 
-/* 标题样式 */
 .service-title {
   font-size: clamp(2.2rem, 5vw, 4rem);
   font-weight: 900;
   letter-spacing: -0.04em;
   line-height: 1.1;
-  margin: 0;
+  margin: 0 0 20px 0;
   color: #ffffff;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  transition: all 0.4s ease;
+  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); /* dashfluence 风格缓动 */
 }
 
-/* 内容容器 - 默认隐藏 */
 .service-content {
   height: 0;
   overflow: hidden;
   opacity: 0;
   transition: 
-    height 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 0.4s ease 0.1s,
-    margin-top 0.6s ease;
+    height 0.7s cubic-bezier(0.165, 0.84, 0.44, 1), /* 复刻 dashfluence 的自然展开曲线 */
+    opacity 0.5s ease 0.2s,                      /* 延迟淡入，更丝滑 */
+    margin-top 0.7s ease;
   margin-top: 0;
 }
 
 /* 默认打开第一个 */
-.service-entry:first-child .service-content,
 .service-entry.active .service-content {
   height: auto;
   opacity: 1;
-  margin-top: 24px;
+  margin-top: 0;
 }
 
-/* hover 时：关闭所有兄弟项，只展开当前 */
-.services-list:hover .service-content {
+/* hover 时：关闭所有其他项，只展开当前 */
+.service-entry:hover ~ .service-entry .service-content,
+.service-entry:hover .service-content ~ .service-content {
   height: 0 !important;
   opacity: 0 !important;
   margin-top: 0 !important;
 }
 
+/* 当前 hover 项展开 */
 .service-entry:hover .service-content {
   height: auto !important;
   opacity: 1 !important;
-  margin-top: 24px !important;
+  margin-top: 0 !important;
 }
 
-/* hover 时标题轻抬 */
-.service-entry:hover .service-title {
-  transform: translateY(-4px);
+/* 鼠标移开整个列表时，保留最后一个 hovered 的状态（通过 JS 记录） */
+.services-list:hover .service-entry:not(:hover) .service-content {
+  height: 0 !important;
+  opacity: 0 !important;
+  margin-top: 0 !important;
 }
 
 /* 描述文字 */
@@ -465,6 +467,12 @@
 .highlight-win {
   color: #ff9500;
   font-weight: 600;
+}
+
+/* 标题 hover 微抬升（dashfluence 常见微交互） */
+.service-entry:hover .service-title {
+  transform: translateY(-3px);
+  color: #ffffff;
 }
 
 /* hover 时标题轻微抬升（增强交互感） */
@@ -732,6 +740,36 @@
         card.style.transform = `translateY(${move}px) scale(${1 - index * 0.08})`;
       });
     });
+
+    // How we work 模块交互优化：保留最后一个 hovered 项
+const servicesList = document.querySelector('.services-list');
+if (servicesList) {
+  let lastActive = null;
+
+  servicesList.addEventListener('mouseenter', () => {
+    // 进入列表时，如果有 lastActive，保持它
+  });
+
+  servicesList.addEventListener('mouseleave', () => {
+    // 离开整个列表时，移除所有 active，只保留 lastActive
+    document.querySelectorAll('.service-entry').forEach(entry => {
+      if (entry !== lastActive) {
+        entry.classList.remove('active');
+      }
+    });
+  });
+
+  document.querySelectorAll('.service-entry').forEach(entry => {
+    entry.addEventListener('mouseenter', () => {
+      // 移除所有 active
+      document.querySelectorAll('.service-entry').forEach(e => e.classList.remove('active'));
+      // 添加到当前
+      entry.classList.add('active');
+      lastActive = entry;
+    });
+  });
+}
+    
   </script>
 </body>
 </html>
