@@ -68,6 +68,7 @@
             background-color: rgba(40, 40, 40, 0.6);
             backdrop-filter: blur(12px);
             box-shadow: 0 12px 32px rgba(0,0,0,0.6);
+            position: relative;
         }
         .card-title {
             font-size: 15px;
@@ -124,6 +125,74 @@
             background: rgba(255, 255, 255, 0.08);
             transform: none;
         }
+
+        /* ==================== 新增视频版块样式 ==================== */
+        .video-section {
+            padding: 0 60px 140px 60px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .video-section h2 {
+            font-size: 32px;
+            font-weight: 500;
+            margin-bottom: 60px;
+            text-align: left;
+        }
+        .video-gallery {
+            display: flex;
+            gap: 20px;
+            transition: transform 0.8s cubic-bezier(0.34, 0.68, 0.15, 1);
+            width: fit-content;
+        }
+        .video-card-wrapper {
+            flex: 0 0 327px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .video-card {
+            width: 327px;
+            height: 450px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 28px;
+            overflow: hidden;
+            background-color: rgba(40, 40, 40, 0.6);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.6);
+            position: relative;
+            cursor: pointer;
+        }
+        .video-card::after {
+            content: '▶';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 60px;
+            color: rgba(255,255,255,0.9);
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+        .video-card:hover::after {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+        .video-card-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin: 0;
+            color: #ffffff;
+            text-align: left;
+        }
+        .video-card-desc {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #ddd;
+            margin: 8px 0 0 0;
+            text-align: left;
+        }
+
         @media (max-width: 1024px) {
             .header {
                 padding: 40px 30px 20px;
@@ -132,57 +201,50 @@
                 font-size: 28px;
                 text-align: left;
             }
-            .gallery-container {
+            .gallery-container, .video-section {
                 padding: 0 20px 140px 50px;
                 overflow: hidden;
             }
-            .gallery {
+            .gallery, .video-gallery {
                 padding-left: 0 !important;
                 margin-left: 0 !important;
                 gap: 15px;
-                width: auto;
-                min-width: auto;
             }
-            .card-wrapper {
+            .card-wrapper, .video-card-wrapper {
                 flex: 0 0 260px;
             }
-            .card {
+            .card, .video-card {
                 width: 260px;
                 height: 314px;
             }
-            .card-title {
+            .card-title, .video-card-title {
                 font-size: 15px;
             }
-            .card-desc {
+            .card-desc, .video-card-desc {
                 font-size: 14px;
             }
-            /* 手机端箭头移到右下角 */
             .nav-buttons {
                 position: fixed;
-                bottom: 30px;          /* 距离底部 30px */
-                right: 30px;           /* 距离右边 30px */
+                bottom: 30px;
+                right: 30px;
                 top: auto;
                 left: auto;
-                transform: none;
                 flex-direction: row;
                 gap: 15px;
-                z-index: 1000;
             }
-            /* 只改尺寸，不覆盖禁用样式 */
             .nav-buttons button {
                 width: 50px;
                 height: 50px;
                 font-size: 22px;
             }
-            /* 加强手机端禁用箭头视觉效果（关键：让左箭头在第一张时明显“黑掉”） */
             .nav-buttons button:disabled,
             .nav-buttons button:disabled:hover {
-                background: rgba(255, 255, 255, 0.05) !important;  /* 极浅背景，更黑 */
-                opacity: 0.35 !important;                           /* 更透明 */
+                background: rgba(255, 255, 255, 0.05) !important;
+                opacity: 0.35 !important;
                 cursor: default !important;
                 transform: none !important;
                 border: 1px solid rgba(255,255,255,0.1) !important;
-                box-shadow: none !important;                        /* 去阴影，更明显 */
+                box-shadow: none !important;
             }
         }
     </style>
@@ -193,7 +255,6 @@
     </div>
     <div class="gallery-container">
         <div class="gallery" id="gallery">
-            <!-- 每个卡片包裹在 a 标签里，href 带 ?scene=数字 -->
             <a href="detail.html?scene=1" style="text-decoration: none; color: inherit;">
                 <div class="card-wrapper">
                     <div class="card" style="background-image: url('https://img.adons.top/01/1.jpg');"></div>
@@ -208,7 +269,7 @@
                     <div class="card" style="background-image: url('https://img.adons.top/02/2-1.jpg');"></div>
                     <div>
                         <div class="card-title">场景二</div>
-                        <div class="card-desc">情侣相对而坐共享晚餐<br>姿态放松、表情生动真实<br><br></div>
+                        <div class="card-desc">情侣相对而坐共享晚餐<br>姿态放松、表情生动真实</div>
                     </div>
                 </div>
             </a>
@@ -217,7 +278,7 @@
                     <div class="card" style="background-image: url('https://img.adons.top/03/1.jfif');"></div>
                     <div>
                         <div class="card-title">场景三</div>
-                        <div class="card-desc">完美呈现友情温暖的日常时光<br>每个人动作协调、表情自然<br></div>
+                        <div class="card-desc">完美呈现友情温暖的日常时光<br>每个人动作协调、表情自然</div>
                     </div>
                 </div>
             </a>
@@ -226,17 +287,16 @@
                     <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
                     <div>
                         <div class="card-title">场景四</div>
-                        <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和<br></div>
+                        <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和</div>
                     </div>
                 </div>
             </a>
-            <!-- 其他卡片同理 -->
             <a href="detail.html?scene=5" style="text-decoration: none; color: inherit;">
                 <div class="card-wrapper">
                     <div class="card" style="background-image: url('https://img.adons.top/05/1.jpg');"></div>
                     <div>
                         <div class="card-title">场景五</div>
-                        <div class="card-desc">朋友围坐茶桌闲聊时光<br>友情温暖瞬间，日常温馨动人<br></div>
+                        <div class="card-desc">朋友围坐茶桌闲聊时光<br>友情温暖瞬间，日常温馨动人</div>
                     </div>
                 </div>
             </a>
@@ -245,7 +305,7 @@
                     <div class="card" style="background-image: url('https://img.adons.top/06/1.jpg');"></div>
                     <div>
                         <div class="card-title">场景六</div>
-                        <div class="card-desc">母子阳台玩乐温馨时光<br>家庭亲子瞬间，孩子专注玩耍<br></div>
+                        <div class="card-desc">母子阳台玩乐温馨时光<br>家庭亲子瞬间，孩子专注玩耍</div>
                     </div>
                 </div>
             </a>
@@ -254,18 +314,54 @@
                     <div class="card" style="background-image: url('https://img.adons.top/07/1.jpg');"></div>
                     <div>
                         <div class="card-title">场景七</div>
-                        <div class="card-desc">商务聚会轻松用餐氛围<br>人物姿态优雅、互动自然<br></div>
+                        <div class="card-desc">商务聚会轻松用餐氛围<br>人物姿态优雅、互动自然</div>
                     </div>
                 </div>
             </a>
         </div>
     </div>
+
+    <!-- ==================== 新增视频版块 ==================== -->
+    <div class="video-section">
+        <h2>AI智能视频展示</h2>
+        <div class="gallery" id="video-gallery">
+            <a href="detail-video.html?video=1" style="text-decoration: none; color: inherit;">
+                <div class="video-card-wrapper">
+                    <div class="video-card" style="background-image: url('https://img.adons.top/video/1.jpg');"></div>
+                    <div>
+                        <div class="video-card-title">视频一</div>
+                        <div class="video-card-desc">家庭聚会温馨场景<br>自然对话与互动</div>
+                    </div>
+                </div>
+            </a>
+            <a href="detail-video.html?video=2" style="text-decoration: none; color: inherit;">
+                <div class="video-card-wrapper">
+                    <div class="video-card" style="background-image: url('https://img.adons.top/video/2.jpg');"></div>
+                    <div>
+                        <div class="video-card-title">视频二</div>
+                        <div class="video-card-desc">咖啡厅商务洽谈<br>专业氛围与细节</div>
+                    </div>
+                </div>
+            </a>
+            <a href="detail-video.html?video=3" style="text-decoration: none; color: inherit;">
+                <div class="video-card-wrapper">
+                    <div class="video-card" style="background-image: url('https://img.adons.top/video/3.jpg');"></div>
+                    <div>
+                        <div class="video-card-title">视频三</div>
+                        <div class="video-card-desc">户外运动活力场景<br>动态捕捉与自然光影</div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
     <div class="nav-buttons">
         <button id="prev-btn">❮</button>
         <button id="next-btn">❯</button>
     </div>
-    <!-- 滑动脚本保持不变 -->
+
     <script>
+        // ==================== 原有图片滑动逻辑 ====================
         const galleryContainer = document.querySelector('.gallery-container');
         const gallery = document.getElementById('gallery');
         const items = document.querySelectorAll('.card-wrapper');
@@ -275,6 +371,7 @@
         let maxIndex = total - Math.floor(galleryContainer.offsetWidth / (327 + 20));
         if (maxIndex < 0) maxIndex = 0;
         let index = 0;
+
         function updateSlide() {
             if (items.length === 0) return;
             const itemWidth = items[0].getBoundingClientRect().width;
@@ -294,6 +391,7 @@
             prevBtn.disabled = index === 0;
             nextBtn.disabled = index >= maxIndex;
         }
+
         nextBtn.onclick = () => {
             if (index < maxIndex) {
                 index++;
@@ -306,6 +404,7 @@
                 updateSlide();
             }
         };
+
         window.addEventListener('resize', () => {
             const visible = Math.floor(galleryContainer.offsetWidth / (window.innerWidth > 1024 ? 347 : 275));
             maxIndex = total - visible;
@@ -313,13 +412,56 @@
             if (index > maxIndex) index = maxIndex;
             updateSlide();
         });
+
+        // ==================== 新增视频滑动逻辑 ====================
+        const videoGallery = document.getElementById('video-gallery');
+        const videoItems = document.querySelectorAll('.video-card-wrapper');
+        let videoIndex = 0;
+        let videoMaxIndex = videoItems.length - Math.floor(document.querySelector('.video-section').offsetWidth / (327 + 20));
+
+        function updateVideoSlide() {
+            if (videoItems.length === 0) return;
+            const itemWidth = videoItems[0].getBoundingClientRect().width;
+            const gap = 20;
+            let offset = videoIndex * (itemWidth + gap);
+            videoGallery.style.transform = `translateX(-${offset}px)`;
+        }
+
+        // 复用左右按钮（如果你想分开控制可以再加按钮，这里复用同一组）
+        nextBtn.onclick = () => {
+            if (index < maxIndex) {
+                index++;
+                updateSlide();
+            }
+            if (videoIndex < videoMaxIndex) {
+                videoIndex++;
+                updateVideoSlide();
+            }
+        };
+
+        prevBtn.onclick = () => {
+            if (index > 0) {
+                index--;
+                updateSlide();
+            }
+            if (videoIndex > 0) {
+                videoIndex--;
+                updateVideoSlide();
+            }
+        };
+
         updateSlide();
+        updateVideoSlide();
+
+        // 触屏滑动支持（图片和视频都支持）
         let touchStartX = 0;
         let isSwiping = false;
+
         galleryContainer.addEventListener('touchstart', (e) => {
             touchStartX = e.touches[0].clientX;
             isSwiping = true;
         }, { passive: false });
+
         galleryContainer.addEventListener('touchmove', (e) => {
             if (!isSwiping) return;
             const deltaX = e.touches[0].clientX - touchStartX;
@@ -328,6 +470,7 @@
             gallery.style.transform = `translateX(${ -currentOffset + deltaX }px)`;
             e.preventDefault();
         }, { passive: false });
+
         galleryContainer.addEventListener('touchend', () => {
             if (!isSwiping) return;
             const deltaX = event.changedTouches[0].clientX - touchStartX;
