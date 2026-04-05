@@ -44,7 +44,7 @@
             width: 100%;
             box-sizing: border-box;
             flex: 1;
-            position: relative;           /* 关键：让箭头相对于此容器定位 */
+            position: relative;
         }
         .gallery {
             display: flex;
@@ -84,12 +84,11 @@
             margin: 8px 0 0 0;
             text-align: left;
         }
-
         /* 箭头按钮 - 跟随卡片区域移动 */
         .nav-buttons {
-            position: absolute;           /* 改为 absolute */
-            right: 0;                     /* 右对齐卡片容器 */
-            top: -10%;                     /* 垂直居中 */
+            position: absolute;
+            right: 0;
+            top: 50%;
             transform: translateY(-50%);
             display: flex;
             gap: 20px;
@@ -124,7 +123,7 @@
             transform: none;
         }
 
-        /* 视频版块（你之前新增的） */
+        /* ==================== 视频版块 ==================== */
         .video-section {
             padding: 0 60px 140px 60px;
             width: 100%;
@@ -169,12 +168,13 @@
             transform: translate(-50%, -50%);
             font-size: 60px;
             color: rgba(255,255,255,0.9);
-            opacity: 0.8;
+            opacity: 0.85;
             transition: all 0.3s ease;
+            z-index: 2;
         }
         .video-card:hover::after {
             opacity: 1;
-            transform: translate(-50%, -50%) scale(1.1);
+            transform: translate(-50%, -50%) scale(1.15);
         }
         .video-card-title {
             font-size: 15px;
@@ -192,59 +192,26 @@
         }
 
         @media (max-width: 1024px) {
-            .header {
-                padding: 40px 30px 20px;
-            }
-            .header h1 {
-                font-size: 28px;
-                text-align: left;
-            }
+            .header { padding: 40px 30px 20px; }
+            .header h1 { font-size: 28px; }
             .gallery-container, .video-section {
                 padding: 0 20px 140px 50px;
                 overflow: hidden;
             }
-            .gallery, .video-gallery {
-                padding-left: 0 !important;
-                margin-left: 0 !important;
-                gap: 15px;
-            }
-            .card-wrapper, .video-card-wrapper {
-                flex: 0 0 260px;
-            }
-            .card, .video-card {
-                width: 260px;
-                height: 314px;
-            }
-            .card-title, .video-card-title {
-                font-size: 15px;
-            }
-            .card-desc, .video-card-desc {
-                font-size: 14px;
-            }
-            /* 手机端箭头移到右下角 */
+            .gallery, .video-gallery { gap: 15px; }
+            .card-wrapper, .video-card-wrapper { flex: 0 0 260px; }
+            .card, .video-card { width: 260px; height: 314px; }
             .nav-buttons {
                 position: fixed;
                 bottom: 30px;
                 right: 30px;
                 top: auto;
-                left: auto;
                 transform: none;
-                flex-direction: row;
-                gap: 15px;
             }
             .nav-buttons button {
                 width: 50px;
                 height: 50px;
                 font-size: 22px;
-            }
-            .nav-buttons button:disabled,
-            .nav-buttons button:disabled:hover {
-                background: rgba(255, 255, 255, 0.05) !important;
-                opacity: 0.35 !important;
-                cursor: default !important;
-                transform: none !important;
-                border: 1px solid rgba(255,255,255,0.1) !important;
-                box-shadow: none !important;
             }
         }
     </style>
@@ -256,7 +223,6 @@
 
     <div class="gallery-container">
         <div class="gallery" id="gallery">
-            <!-- 你的卡片内容保持不变 -->
             <a href="detail.html?scene=1" style="text-decoration: none; color: inherit;">
                 <div class="card-wrapper">
                     <div class="card" style="background-image: url('https://img.adons.top/01/1.jpg');"></div>
@@ -322,33 +288,49 @@
             </a>
         </div>
 
-        <!-- 箭头按钮现在放在 gallery-container 内部，跟随卡片移动 -->
         <div class="nav-buttons">
             <button id="prev-btn">❮</button>
             <button id="next-btn">❯</button>
         </div>
     </div>
 
-    <!-- ==================== 视频版块 ==================== -->
+    <!-- ==================== 视频版块（已加入你的 R2 视频） ==================== -->
     <div class="video-section">
         <h2>AI智能视频展示</h2>
         <div class="gallery" id="video-gallery">
-            <!-- 你的视频卡片保持不变 -->
-            <a href="detail-video.html?video=1" style="text-decoration: none; color: inherit;">
+            
+            <!-- 视频一 - 使用你上传的 R2 链接 -->
+            <a href="https://pub-c82e30e0463848b68595368687744f81.r2.dev/Swivel%20Chair.mp4" style="text-decoration: none; color: inherit;">
                 <div class="video-card-wrapper">
-                    <div class="video-card" style="background-image: url('https://img.adons.top/video/1.jpg');"></div>
+                    <div class="video-card" 
+                         style="background-image: url('https://pub-c82e30e0463848b68595368687744f81.r2.dev/Swivel%20Chair.jpg');">
+                    </div>
                     <div>
-                        <div class="video-card-title">视频一</div>
-                        <div class="video-card-desc">家庭聚会温馨场景<br>自然对话与互动</div>
+                        <div class="video-card-title">视频一 - Swivel Chair</div>
+                        <div class="video-card-desc">旋转椅 AI 智能加人物演示<br>自然动作与多角度展示</div>
                     </div>
                 </div>
             </a>
-            <!-- 其他视频卡片同理 -->
+
+            <!-- 可以继续添加更多视频卡片 -->
+            <!-- 示例：视频二 -->
+            <!-- 
+            <a href="detail-video.html?video=2" style="text-decoration: none; color: inherit;">
+                <div class="video-card-wrapper">
+                    <div class="video-card" style="background-image: url('https://img.adons.top/video/2.jpg');"></div>
+                    <div>
+                        <div class="video-card-title">视频二</div>
+                        <div class="video-card-desc">另一个场景演示</div>
+                    </div>
+                </div>
+            </a>
+            -->
+
         </div>
     </div>
 
     <script>
-        // ==================== 原有图片滑动逻辑 ====================
+        // ==================== 原有图片滑动逻辑（完全不变） ====================
         const galleryContainer = document.querySelector('.gallery-container');
         const gallery = document.getElementById('gallery');
         const items = document.querySelectorAll('.card-wrapper');
@@ -405,7 +387,6 @@
         // 触屏滑动支持
         let touchStartX = 0;
         let isSwiping = false;
-
         galleryContainer.addEventListener('touchstart', (e) => {
             touchStartX = e.touches[0].clientX;
             isSwiping = true;
