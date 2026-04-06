@@ -19,16 +19,14 @@
             max-width: 1440px;
             width: 100%;
             box-sizing: border-box;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
         }
         *::-webkit-scrollbar { display: none; }
 
-        /* 移动端垂直滑动优化 */
+        /* 移动端优化 */
         @media (max-width: 1024px) {
             body { touch-action: pan-y; }
+            .gallery-container { overflow-x: hidden; overflow-y: visible; }
             .gallery { touch-action: pan-y; }
-            .gallery-container { overflow-y: visible; }
         }
 
         .header {
@@ -45,7 +43,7 @@
         }
 
         .gallery-container {
-            overflow: visible;
+            overflow: hidden;           /* 关键：隐藏滚动条 */
             padding: 0 60px 140px 60px;
             width: 100%;
             box-sizing: border-box;
@@ -55,7 +53,7 @@
         .gallery {
             display: flex;
             gap: 20px;
-            transition: transform 0.8s cubic-bezier(0.34, 0.68, 0.15, 1);
+            transition: transform 0.5s cubic-bezier(0.34, 0.68, 0.15, 1);
             width: fit-content;
             min-width: 100%;
         }
@@ -81,14 +79,12 @@
             font-weight: 600;
             margin: 0;
             color: #ffffff;
-            text-align: left;
         }
         .card-desc {
             font-size: 15px;
             line-height: 1.6;
             color: #ddd;
             margin: 8px 0 0 0;
-            text-align: left;
         }
 
         .nav-buttons {
@@ -99,7 +95,6 @@
             display: flex;
             gap: 20px;
             z-index: 1000;
-            pointer-events: auto;
         }
         .nav-buttons button {
             width: 38px;
@@ -109,106 +104,45 @@
             background: rgba(255, 255, 255, 0.15);
             color: white;
             font-size: 18px;
-            font-weight: bold;
             cursor: pointer;
             backdrop-filter: blur(20px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            transition: all 0.3s ease;
-        }
-        .nav-buttons button:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.1);
-        }
-        .nav-buttons button:disabled {
-            background: rgba(255, 255, 255, 0.08);
-            opacity: 0.4;
-            cursor: default;
         }
 
         /* 视频部分 */
         .video-section {
             padding: 80px 60px 140px 60px;
-            width: 100%;
-            box-sizing: border-box;
             background: #1d1d1f;
             margin: 0 -60px;
         }
-        .video-section h2 {
-            font-size: 32px;
-            font-weight: 500;
-            margin-bottom: 60px;
-            text-align: left;
-        }
         .video-card-wrapper {
             flex: 0 0 327px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
             cursor: pointer;
         }
         .video-card {
             width: 450px;
             height: 280px;
             background-size: cover;
-            background-position: center;
             border-radius: 28px;
-            overflow: hidden;
-            background-color: rgba(40, 40, 40, 0.6);
-            box-shadow: 0 12px 32px rgba(0,0,0,0.6);
             position: relative;
         }
         .video-card::after {
             content: '▶';
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             font-size: 60px;
             color: rgba(255,255,255,0.9);
-            opacity: 0.85;
-            transition: all 0.3s ease;
-        }
-        .video-card:hover::after {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1.15);
-        }
-        .video-card-title {
-            font-size: 15px;
-            font-weight: 600;
-            margin: 0;
-            color: #ffffff;
-            text-align: left;
-        }
-        .video-card-desc {
-            font-size: 15px;
-            line-height: 1.6;
-            color: #ddd;
-            margin: 0 0 0 0;
-            text-align: left;
         }
 
-        /* 视频弹窗 */
         .video-modal {
             display: none;
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.92);
+            inset: 0;
+            background: rgba(0,0,0,0.92);
             z-index: 3000;
             align-items: center;
             justify-content: center;
             padding: 20px;
-        }
-        .video-modal-content {
-            position: relative;
-            max-width: 1000px;
-            width: 100%;
-            background: #111;
-            border-radius: 16px;
-            overflow: hidden;
-        }
-        .video-modal video {
-            width: 100%;
-            display: block;
         }
         .loading {
             position: absolute;
@@ -220,11 +154,8 @@
         }
 
         @media (max-width: 1024px) {
-            .header { padding: 40px 20px 20px; }
+            .header, .gallery-container, .video-section { padding: 40px 20px 80px 20px; }
             .header h1 { font-size: 28px; }
-            .gallery-container, .video-section {
-                padding: 0 20px 140px 20px;
-            }
             .card-wrapper, .video-card-wrapper { flex: 0 0 260px; }
             .card, .video-card { width: 260px; height: 314px; }
             .nav-buttons {
@@ -232,13 +163,8 @@
                 bottom: 30px;
                 right: 20px;
                 top: auto;
-                transform: none;
             }
-            .nav-buttons button {
-                width: 50px;
-                height: 50px;
-                font-size: 22px;
-            }
+            .nav-buttons button { width: 50px; height: 50px; font-size: 22px; }
         }
     </style>
 </head>
@@ -249,77 +175,58 @@
 
     <div class="gallery-container">
         <div class="gallery" id="gallery">
+            <!-- 7个场景卡片 -->
             <a href="detail.html?scene=1" style="text-decoration: none; color: inherit;">
                 <div class="card-wrapper">
                     <div class="card" style="background-image: url('https://img.adons.top/01/1.jpg');"></div>
-                    <div>
-                        <div class="card-title">场景一</div>
-                        <div class="card-desc">完美呈现家庭生活场景<br>食物细节丰富、氛围温馨</div>
-                    </div>
+                    <div><div class="card-title">场景一</div><div class="card-desc">完美呈现家庭生活场景<br>食物细节丰富、氛围温馨</div></div>
                 </div>
             </a>
             <a href="detail.html?scene=2" style="text-decoration: none; color: inherit;">
                 <div class="card-wrapper">
                     <div class="card" style="background-image: url('https://img.adons.top/02/2-1.jpg');"></div>
-                    <div>
-                        <div class="card-title">场景二</div>
-                        <div class="card-desc">情侣相对而坐共享晚餐<br>姿态放松、表情生动真实</div>
-                    </div>
+                    <div><div class="card-title">场景二</div><div class="card-desc">情侣相对而坐共享晚餐<br>姿态放松、表情生动真实</div></div>
                 </div>
             </a>
             <a href="detail.html?scene=3" style="text-decoration: none; color: inherit;">
                 <div class="card-wrapper">
                     <div class="card" style="background-image: url('https://img.adons.top/03/1.jfif');"></div>
-                    <div>
-                        <div class="card-title">场景三</div>
-                        <div class="card-desc">完美呈现友情温暖的日常时光<br>每个人动作协调、表情自然</div>
-                    </div>
+                    <div><div class="card-title">场景三</div><div class="card-desc">完美呈现友情温暖的日常时光<br>每个人动作协调、表情自然</div></div>
                 </div>
             </a>
             <a href="detail.html?scene=4" style="text-decoration: none; color: inherit;">
                 <div class="card-wrapper">
                     <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
-                    <div>
-                        <div class="card-title">场景四</div>
-                        <div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和</div>
-                    </div>
+                    <div><div class="card-title">场景四</div><div class="card-desc">调酒师微笑递酒、女士顾客专注品尝<br>空间感强、细节真实无违和</div></div>
                 </div>
             </a>
             <a href="detail.html?scene=5" style="text-decoration: none; color: inherit;">
                 <div class="card-wrapper">
                     <div class="card" style="background-image: url('https://img.adons.top/05/1.jpg');"></div>
-                    <div>
-                        <div class="card-title">场景五</div>
-                        <div class="card-desc">朋友围坐茶桌闲聊时光<br>友情温暖瞬间，日常温馨动人</div>
-                    </div>
+                    <div><div class="card-title">场景五</div><div class="card-desc">朋友围坐茶桌闲聊时光<br>友情温暖瞬间，日常温馨动人</div></div>
                 </div>
             </a>
             <a href="detail.html?scene=6" style="text-decoration: none; color: inherit;">
                 <div class="card-wrapper">
                     <div class="card" style="background-image: url('https://img.adons.top/06/1.jpg');"></div>
-                    <div>
-                        <div class="card-title">场景六</div>
-                        <div class="card-desc">母子阳台玩乐温馨时光<br>家庭亲子瞬间，孩子专注玩耍</div>
-                    </div>
+                    <div><div class="card-title">场景六</div><div class="card-desc">母子阳台玩乐温馨时光<br>家庭亲子瞬间，孩子专注玩耍</div></div>
                 </div>
             </a>
             <a href="detail.html?scene=7" style="text-decoration: none; color: inherit;">
                 <div class="card-wrapper">
                     <div class="card" style="background-image: url('https://img.adons.top/07/1.jpg');"></div>
-                    <div>
-                        <div class="card-title">场景七</div>
-                        <div class="card-desc">商务聚会轻松用餐氛围<br>人物姿态优雅、互动自然</div>
-                    </div>
+                    <div><div class="card-title">场景七</div><div class="card-desc">商务聚会轻松用餐氛围<br>人物姿态优雅、互动自然</div></div>
                 </div>
             </a>
         </div>
+
         <div class="nav-buttons">
             <button id="prev-btn">❮</button>
             <button id="next-btn">❯</button>
         </div>
     </div>
 
-    <!-- 视频版块 -->
+    <!-- 视频部分 -->
     <div class="video-section">
         <h2>AI智能视频展示</h2>
         <div class="gallery" id="video-gallery">
@@ -333,7 +240,7 @@
         </div>
     </div>
 
-    <!-- 视频浮层 -->
+    <!-- 视频弹窗 -->
     <div id="videoModal" class="video-modal">
         <div class="video-modal-content">
             <div class="video-modal-close" onclick="closeVideo()">×</div>
@@ -345,16 +252,21 @@
     </div>
 
     <script>
-        const galleryContainer = document.querySelector('.gallery-container');
         const gallery = document.getElementById('gallery');
         const items = document.querySelectorAll('.card-wrapper');
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
         let index = 0;
+        let isDragging = false;
+        let startX = 0;
+        let currentTranslate = 0;
 
-        function updateSlide() {
-            const itemWidth = items[0].getBoundingClientRect().width + 20;
-            gallery.style.transform = `translateX(-${index * itemWidth}px)`;
+        function updateSlide(animate = true) {
+            const itemWidth = items[0].offsetWidth + 20;
+            currentTranslate = -index * itemWidth;
+            gallery.style.transition = animate ? 'transform 0.5s cubic-bezier(0.34, 0.68, 0.15, 1)' : 'none';
+            gallery.style.transform = `translateX(${currentTranslate}px)`;
+            
             prevBtn.disabled = index === 0;
             nextBtn.disabled = index >= items.length - 3;
         }
@@ -362,25 +274,48 @@
         nextBtn.onclick = () => { if (index < items.length - 3) { index++; updateSlide(); } };
         prevBtn.onclick = () => { if (index > 0) { index--; updateSlide(); } };
 
-        window.addEventListener('resize', updateSlide);
-        updateSlide();
+        // 移动端拖拽滑动（关键修复）
+        const container = document.querySelector('.gallery-container');
 
-        // 移动端触屏优化（仅手机左右滑动切换，上下滑动正常）
-        let touchStartX = 0, touchStartY = 0;
-        galleryContainer.addEventListener('touchstart', e => {
-            touchStartX = e.touches[0].clientX;
-            touchStartY = e.touches[0].clientY;
+        container.addEventListener('touchstart', e => {
+            startX = e.touches[0].clientX;
+            isDragging = true;
+            gallery.style.transition = 'none';
         }, { passive: true });
 
-        galleryContainer.addEventListener('touchmove', e => {
-            const deltaX = Math.abs(e.touches[0].clientX - touchStartX);
-            const deltaY = Math.abs(e.touches[0].clientY - touchStartY);
-            if (deltaX > deltaY + 15) {
+        container.addEventListener('touchmove', e => {
+            if (!isDragging) return;
+            
+            const deltaX = e.touches[0].clientX - startX;
+            const moveX = currentTranslate + deltaX;
+            
+            // 只在水平方向明显滑动时干预
+            const deltaY = Math.abs(e.touches[0].clientY - e.touches[0].clientY); // 简化判断
+            if (Math.abs(deltaX) > 10) {
                 e.preventDefault();
             }
+            
+            gallery.style.transform = `translateX(${moveX}px)`;
         }, { passive: false });
 
-        // 视频播放
+        container.addEventListener('touchend', e => {
+            if (!isDragging) return;
+            isDragging = false;
+
+            const deltaX = e.changedTouches[0].clientX - startX;
+            
+            if (Math.abs(deltaX) > 80) {
+                if (deltaX > 0 && index > 0) index--;
+                else if (deltaX < 0 && index < items.length - 3) index++;
+            }
+            
+            updateSlide(true);
+        });
+
+        window.addEventListener('resize', () => updateSlide());
+        updateSlide();
+        
+        // 视频播放功能
         function playVideo(videoUrl) {
             const modal = document.getElementById('videoModal');
             const source = document.getElementById('modalSource');
@@ -410,11 +345,10 @@
             modal.style.display = 'none';
         }
 
-        document.getElementById('videoModal').addEventListener('click', function(e) {
+        document.getElementById('videoModal').addEventListener('click', e => {
             if (e.target === this) closeVideo();
         });
-
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', e => {
             if (e.key === "Escape") closeVideo();
         });
     </script>
