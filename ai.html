@@ -332,13 +332,18 @@
 .video-modal-content {
     position: relative;
     width: 100%;
-    max-width: 960px;
+    max-width: 800px;
     background: #000;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 30px 100px rgba(0,0,0,0.9);
 }
-
+.video-modal video {
+            width: 100%;
+            height: auto;               /* 关键：保持原始比例 */
+            display: block;
+            max-height: 85vh;           /* 防止过高超出屏幕 */
+        }
 .video-modal-close {
     position: absolute;
     top: 18px;
@@ -456,7 +461,6 @@
     <div id="videoModal" class="video-modal">
         <div class="video-modal-content">
             <div class="video-modal-close" onclick="closeVideo()">×</div>
-            <div id="loading" class="loading">加载中...</div>
             <video id="modalVideo" controls autoplay playsinline>
                 <source id="modalSource" src="" type="video/mp4">
             </video>
@@ -530,101 +534,36 @@
         isSwiping = false;
     });
 
-    // ==================== 修复版：点击视频卡片直接全屏播放 + 关闭按钮 ====================
-    document.addEventListener('DOMContentLoaded', function() {
-        const videoCards = document.querySelectorAll('.video-card');
-        
-        videoCards.forEach(card => {
-            card.addEventListener('click', function() {
-                const videoUrl = this.getAttribute('data-video');
-                if (!videoUrl) return;
+    // ==================== 修改后的视频播放函数（电脑端保持1:1比例） ====================
+        function playVideo(videoUrl) {
+            const modal = document.getElementById('videoModal');
+            const source = document.getElementById('modalSource');
+            const video = document.getElementById('modalVideo');
+            
+            source.src = videoUrl;
+            video.load();
+            modal.style.display = 'flex';
+            
+            video.play().catch(() => {});
+        }
 
-                // 创建全屏视频容器
-                const videoContainer = document.createElement('div');
-                videoContainer.style.cssText = `
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: #000;
-                    z-index: 9999;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                `;
+        function closeVideo() {
+            const modal = document.getElementById('videoModal');
+            const video = document.getElementById('modalVideo');
+            video.pause();
+            video.currentTime = 0;
+            modal.style.display = 'none';
+        }
 
-                // 创建视频元素
-                const tempVideo = document.createElement('video');
-                tempVideo.src = videoUrl;
-                tempVideo.controls = true;
-                tempVideo.autoplay = true;
-                tempVideo.playsInline = true;
-                tempVideo.style.cssText = `
-                    width: 100%;
-                    height: 100%;
-                    max-height: 100vh;
-                    object-fit: contain;
-                `;
-
-                // 创建关闭按钮
-                const closeBtn = document.createElement('div');
-                closeBtn.innerHTML = '✕';
-                closeBtn.style.cssText = `
-                    position: absolute;
-                    top: 30px;
-                    right: 30px;
-                    font-size: 36px;
-                    color: #fff;
-                    cursor: pointer;
-                    z-index: 10000;
-                    width: 50px;
-                    height: 50px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    background: rgba(0,0,0,0.6);
-                    border-radius: 50%;
-                    user-select: none;
-                `;
-
-                // 组装元素
-                videoContainer.appendChild(tempVideo);
-                videoContainer.appendChild(closeBtn);
-                document.body.appendChild(videoContainer);
-
-                // 播放视频
-                tempVideo.play().catch(err => {
-                    console.error('播放失败:', err);
-                    alert('视频播放失败，请稍后重试');
-                    document.body.removeChild(videoContainer);
-                });
-
-                // 关闭功能
-                const closeVideo = () => {
-                    if (document.fullscreenElement) {
-                        document.exitFullscreen();
-                    }
-                    if (videoContainer.parentNode) {
-                        document.body.removeChild(videoContainer);
-                    }
-                };
-
-                // 点击关闭按钮关闭
-                closeBtn.addEventListener('click', closeVideo);
-
-                // 视频播放结束自动关闭
-                tempVideo.addEventListener('ended', closeVideo);
-
-                // 全屏状态变化时处理
-                tempVideo.addEventListener('fullscreenchange', () => {
-                    if (!document.fullscreenElement) {
-                        closeVideo();
-                    }
-                });
-            });
+        // 点击背景关闭
+        document.getElementById('videoModal').addEventListener('click', function(e) {
+            if (e.target === this) closeVideo();
         });
-    });
-</script>
+
+        // ESC 键关闭
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "Escape") closeVideo();
+        });
+    </script>
 </body>
 </html>
