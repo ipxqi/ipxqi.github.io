@@ -306,12 +306,19 @@
 .video-modal-content {
     position: relative;
     width: 100%;
-    max-width: 960px;
+    max-width: 800px;
     background: #000;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 30px 100px rgba(0,0,0,0.9);
 }
+        .video-modal video {
+            width: 100%;
+            height: auto;
+            display: block;
+            aspect-ratio: 1 / 1;        /* 关键：强制 1:1 比例 */
+            object-fit: contain;
+        }
 .video-modal-close {
     position: absolute;
     top: 18px;
