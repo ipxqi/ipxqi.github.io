@@ -148,15 +148,17 @@
 
 /* ==================== 视频展示 - 手机端竖排版 ==================== */
 .video-section {
-    width: 100%;
-    background: #1d1d1f;           /* 灰色底色 */
-    padding: 80px 0 140px 0;       /* 上下留白，左右不留白 */
-    margin: 0;                     /* 确保无外边距 */
+    width: 100vw;                    /* 关键：占满视口宽度 */
+    margin-left: calc(-50vw + 50%);  /* 关键：让它从屏幕最左到最右 */
+    background: #1d1d1f;
+    padding: 80px 0 140px 0;
     position: relative;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
-.video-container {
-    max-width: 1440px;             /* 与你页面主体最大宽度保持一致 */
+.video-inner {
+    max-width: 1440px;               /* 与你页面主体宽度一致 */
     margin: 0 auto;
     padding: 0 60px;
     width: 100%;
