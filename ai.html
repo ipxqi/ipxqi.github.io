@@ -47,12 +47,20 @@
             gap: 20px;
             transition: transform 0.8s cubic-bezier(0.34, 0.68, 0.15, 1);
             width: fit-content;
+            /* 手机端关键设置 */
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
         }
+        .gallery::-webkit-scrollbar { display: none; }
+
         .card-wrapper {
             flex: 0 0 327px;
             display: flex;
             flex-direction: column;
             gap: 20px;
+            scroll-snap-align: start;
         }
         .card {
             width: 327px;
@@ -112,7 +120,7 @@
                 position: relative;
                 top: auto;
                 right: 0;
-                margin: 15px 10px 40px auto;
+                margin: 20px 10px 40px auto;
                 transform: none;
                 justify-content: flex-end;
             }
@@ -132,6 +140,7 @@
 
     <div class="gallery-container">
         <div class="gallery" id="gallery">
+            <!-- 7个场景卡片 -->
             <a href="detail.html?scene=1" style="text-decoration: none; color: inherit;">
                 <div class="card-wrapper">
                     <div class="card" style="background-image: url('https://img.adons.top/01/1.jpg');"></div>
@@ -195,6 +204,7 @@
         </div>
     </div>
 
+    <!-- 视频弹窗保持不变 -->
     <div id="videoModal" class="video-modal">
         <div class="video-modal-content">
             <div class="video-modal-close" onclick="closeVideo()">×</div>
@@ -206,62 +216,20 @@
     </div>
 
     <script>
-        const gallery = document.getElementById('gallery');
-        const items = document.querySelectorAll('.card-wrapper');
+        // 箭头按钮逻辑
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
-        let index = 0;
+        const gallery = document.getElementById('gallery');
 
-        function getVisibleCount() {
-            return window.innerWidth > 1024 ? 3 : 1;
+        function scrollToPrev() {
+            gallery.scrollBy({ left: -280, behavior: 'smooth' });
+        }
+        function scrollToNext() {
+            gallery.scrollBy({ left: 280, behavior: 'smooth' });
         }
 
-        function updateSlide() {
-            const itemWidth = items[0].getBoundingClientRect().width + 20;
-            gallery.style.transform = `translateX(-${index * itemWidth}px)`;
-            const visible = getVisibleCount();
-            prevBtn.disabled = index === 0;
-            nextBtn.disabled = index >= items.length - visible;
-        }
-
-        nextBtn.onclick = () => { const v = getVisibleCount(); if (index < items.length - v) { index++; updateSlide(); } };
-        prevBtn.onclick = () => { if (index > 0) { index--; updateSlide(); } };
-
-        window.addEventListener('resize', updateSlide);
-        updateSlide();
-
-        // ==================== 手机手指左右滑动（加强版） ====================
-        let touchStartX = 0, touchStartY = 0, currentTranslate = 0;
-        const container = document.querySelector('.gallery-container');
-
-        container.addEventListener('touchstart', e => {
-            touchStartX = e.touches[0].clientX;
-            touchStartY = e.touches[0].clientY;
-            currentTranslate = index * (items[0].getBoundingClientRect().width + 20);
-            gallery.style.transition = 'none';
-        }, { passive: true });
-
-        container.addEventListener('touchmove', e => {
-            const deltaX = e.touches[0].clientX - touchStartX;
-            const deltaY = Math.abs(e.touches[0].clientY - touchStartY);
-
-            if (Math.abs(deltaX) > deltaY + 15) {
-                e.preventDefault();
-                const newTranslate = currentTranslate - deltaX;
-                gallery.style.transform = `translateX(-${newTranslate}px)`;
-            }
-        }, { passive: false });
-
-        container.addEventListener('touchend', e => {
-            gallery.style.transition = 'transform 0.8s cubic-bezier(0.34, 0.68, 0.15, 1)';
-            const deltaX = e.changedTouches[0].clientX - touchStartX;
-
-            if (Math.abs(deltaX) > 60) {
-                if (deltaX > 0 && index > 0) index--;
-                else if (deltaX < 0 && index < items.length - getVisibleCount()) index++;
-            }
-            updateSlide();
-        });
+        prevBtn.onclick = scrollToPrev;
+        nextBtn.onclick = scrollToNext;
 
         // 视频播放
         function playVideo(videoUrl) {
