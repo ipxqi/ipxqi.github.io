@@ -146,7 +146,7 @@
             margin-bottom: 60px;
         }
 
-        /* ==================== 图二风格视频展示 ==================== */
+     /* ==================== 严格按参考图的视频展示样式 ==================== */
 .video-section {
     padding: 80px 60px 140px 60px;
     background: #1d1d1f;
@@ -156,110 +156,136 @@
 .video-section h2 {
     font-size: 32px;
     font-weight: 500;
-    margin-bottom: 60px;
-    text-align: center;
+    margin-bottom: 50px;
+    padding-left: 10px;
 }
 
-.video-main {
-    max-width: 860px;
-    margin: 0 auto;
-    border-radius: 28px;
-    overflow: hidden;
+.video-gallery {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 20px;
+    scrollbar-width: none; /* 隐藏滚动条 */
+}
+
+.video-gallery::-webkit-scrollbar {
+    display: none;
+}
+
+.video-card {
+    flex: 0 0 340px;           /* 每张卡片固定宽度 */
+    scroll-snap-align: start;
     background: #111;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    transition: transform 0.3s ease;
+    cursor: pointer;
 }
 
-.video-thumbnail {
+.video-card:hover {
+    transform: scale(1.03);
+}
+
+.thumbnail {
     position: relative;
     width: 100%;
-    height: 480px;
+    height: 240px;
     background: #000;
 }
 
-.video-thumbnail img {
+.thumbnail img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.play-button {
+.overlay-text {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: white;
+    font-size: 22px;
+    font-weight: 600;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+    pointer-events: none;
+}
+
+.play-icon {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 90px;
-    height: 90px;
-    background: rgba(255,255,255,0.9);
+    width: 68px;
+    height: 68px;
+    background: rgba(255,255,255,0.95);
+    color: #000;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-    transition: all 0.3s ease;
+    font-size: 32px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    transition: all 0.3s;
 }
 
-.play-button span {
-    font-size: 42px;
-    color: #000;
-    margin-left: 6px;
+.video-card:hover .play-icon {
+    transform: translate(-50%, -50%) scale(1.1);
 }
 
-.video-main:hover .play-button {
-    transform: translate(-50%, -50%) scale(1.08);
-    background: rgba(255,255,255,1);
-}
-
-.video-brand {
+.veo {
     position: absolute;
-    bottom: 30px;
-    left: 40px;
+    bottom: 16px;
+    right: 16px;
     color: white;
-    font-size: 28px;
+    font-size: 13px;
+    background: rgba(0,0,0,0.6);
+    padding: 2px 8px;
+    border-radius: 4px;
+    pointer-events: none;
+}
+
+.info {
+    padding: 20px 18px 24px;
+}
+
+.title {
+    font-size: 18px;
     font-weight: 600;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    margin: 0 0 8px 0;
+    color: #fff;
 }
 
-.video-info {
-    padding: 40px 40px 50px;
-    text-align: center;
-    background: #1d1d1f;
-}
-
-.card-title {
-    font-size: 26px;
-    font-weight: 600;
-    margin: 0 0 12px 0;
-}
-
-.card-desc {
-    font-size: 17px;
-    line-height: 1.6;
+.desc {
+    font-size: 15px;
+    line-height: 1.55;
     color: #ccc;
-    margin: 0;
 }
 
-/* 手机端适配 */
+/* 手机端适配（让卡片稍微小一点，间距调整） */
 @media (max-width: 1024px) {
-    .video-thumbnail {
-        height: 320px;
+    .video-section {
+        padding: 60px 20px 100px 20px;
     }
-    .play-button {
-        width: 70px;
-        height: 70px;
+    .video-gallery {
+        gap: 16px;
+        padding: 0 10px;
     }
-    .play-button span {
-        font-size: 32px;
+    .video-card {
+        flex: 0 0 280px;
     }
-    .video-brand {
-        font-size: 22px;
-        bottom: 20px;
-        left: 30px;
+    .thumbnail {
+        height: 200px;
     }
-    .video-info {
-        padding: 30px 20px;
+    .overlay-text {
+        font-size: 19px;
     }
-    .card-title {
-        font-size: 22px;
+    .play-icon {
+        width: 58px;
+        height: 58px;
+        font-size: 28px;
     }
 }
         
@@ -323,23 +349,40 @@
         </div>
     </div>
 
-    <!-- 视频部分（修改为图二样式） -->
+  <!-- 视频部分（严格按参考图样式） -->
 <div class="video-section">
     <h2>AI智能视频展示</h2>
     
-    <div class="video-main" onclick="playVideo('https://pub-c82e30e0463848b68595368687744f81.r2.dev/SwivelChair.mp4')" style="cursor: pointer;">
-        <div class="video-thumbnail">
-            <img src="https://pub-c82e30e0463848b68595368687744f81.r2.dev/SwivelChair.jpg" alt="Olivia Velvet Swivel Chair">
-            <div class="play-button">
-                <span>▶</span>
+    <div class="video-gallery" id="video-gallery">
+        <!-- 第一张卡片 -->
+        <div class="video-card" onclick="playVideo('https://pub-c82e30e0463848b68595368687744f81.r2.dev/SwivelChair.mp4')">
+            <div class="thumbnail">
+                <img src="https://pub-c82e30e0463848b68595368687744f81.r2.dev/SwivelChair.jpg" alt="Olivia Velvet Swivel Chair">
+                <div class="overlay-text">Olivia Velvet</div>
+                <div class="play-icon">▶</div>
+                <div class="veo">Veo</div>
             </div>
-            <div class="video-brand">Olivia Velvet</div>
+            <div class="info">
+                <div class="title">Olivia Velvet Swivel Chair</div>
+                <div class="desc">旋转椅 AI 智能加人物演示 - 自然动作与多角度展示</div>
+            </div>
         </div>
-        
-        <div class="video-info">
-            <div class="card-title">Olivia Velvet Swivel Chair</div>
-            <div class="card-desc">旋转椅 AI 智能加人物演示 - 自然动作与多角度展示</div>
+
+        <!-- 第二张卡片（示例，你后期可以复制粘贴添加更多） -->
+        <div class="video-card" onclick="playVideo('你的第二个视频链接.mp4')">
+            <div class="thumbnail">
+                <img src="你的第二个缩略图.jpg" alt="Olivia Velvet Swivel Chair">
+                <div class="overlay-text">Olivia Velvet</div>
+                <div class="play-icon">▶</div>
+                <div class="veo">Veo</div>
+            </div>
+            <div class="info">
+                <div class="title">Olivia Velvet Swivel Chair</div>
+                <div class="desc">旋转椅 AI 智能加人物演示 - 自然动作与多角度展示</div>
+            </div>
         </div>
+
+        <!-- 继续复制上面的 <div class="video-card"> ... </div> 添加更多卡片 -->
     </div>
 </div>
 
