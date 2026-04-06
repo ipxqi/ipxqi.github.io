@@ -34,12 +34,23 @@
             width: 100%;
             box-sizing: border-box;
         }
-        .header h1 {
-            font-size: 32px;
-            font-weight: 500;
-            margin: 0;
-            line-height: 1.4;
-        }
+        /* ==================== 统一标题样式 ==================== */
+.header h1,
+.video-section h2 {
+    font-size: 32px;
+    font-weight: 500;
+    margin: 0;
+    line-height: 1.4;
+    color: #fff;
+}
+
+/* 手机端标题大小调整 */
+@media (max-width: 1024px) {
+    .header h1,
+    .video-section h2 {
+        font-size: 28px;
+    }
+}
 
         .gallery-container {
             padding: 0 60px 100px 60px;
@@ -423,7 +434,7 @@
 <!-- 视频部分 -->
 <div class="video-section">
     <div class="video-inner">
-        <h1>AI智能视频展示</h1>
+        <h2>AI智能视频展示</h2>
         
         <div class="video-gallery" id="video-gallery">
             <!-- 示例卡片（可复制添加更多） -->
