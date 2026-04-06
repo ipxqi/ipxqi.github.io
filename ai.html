@@ -6,9 +6,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-touch-fullscreen" content="yes">
-    
     <title>AI智能加人物</title>
     <style>
         body {
@@ -24,7 +21,6 @@
             width: 100%;
             box-sizing: border-box;
             overflow-x: hidden;
-            -webkit-overflow-scrolling: touch;
         }
         *::-webkit-scrollbar { display: none; }
 
@@ -34,7 +30,7 @@
         }
 
         .header {
-            padding: 80px 60px 60px 60px;
+            padding: 60px 60px 40px 60px;
             width: 100%;
             box-sizing: border-box;
         }
@@ -43,11 +39,10 @@
             font-weight: 500;
             margin: 0;
             line-height: 1.4;
-            text-align: left;
         }
 
         .gallery-container {
-            padding: 0 60px 140px 60px;
+            padding: 0 60px 100px 60px;
             width: 100%;
             box-sizing: border-box;
             position: relative;
@@ -107,9 +102,39 @@
             cursor: pointer;
             backdrop-filter: blur(20px);
         }
-        .nav-buttons button:hover { background: rgba(255, 255, 255, 0.3); }
+        .nav-buttons button:hover { background: rgba(255,255,255,0.3); }
         .nav-buttons button:disabled { opacity: 0.4; cursor: default; }
 
+        /* ==================== 手机端调整 ==================== */
+        @media (max-width: 1024px) {
+            .header { padding: 50px 20px 30px 20px; }
+            .header h1 { font-size: 28px; }
+            
+            .gallery-container {
+                padding: 0 20px 100px 20px;
+            }
+            .card-wrapper, .video-card-wrapper { flex: 0 0 260px; }
+            .card, .video-card { width: 260px; height: 314px; }
+
+            /* 箭头放在卡片下方并向右对齐 */
+            .nav-buttons {
+                position: relative;
+                top: auto;
+                right: 0;
+                margin: 15px 0 30px auto;   /* 向右对齐 */
+                transform: none;
+                justify-content: flex-end;
+                width: 100%;
+                padding-right: 10px;
+            }
+            .nav-buttons button {
+                width: 48px;
+                height: 48px;
+                font-size: 22px;
+            }
+        }
+
+        /* 视频部分 */
         .video-section {
             padding: 80px 60px 140px 60px;
             background: #1d1d1f;
@@ -119,63 +144,6 @@
             font-size: 32px;
             font-weight: 500;
             margin-bottom: 60px;
-        }
-        .video-card-wrapper {
-            flex: 0 0 327px;
-            cursor: pointer;
-        }
-        .video-card {
-            width: 450px;
-            height: 280px;
-            background-size: cover;
-            background-position: center;
-            border-radius: 28px;
-            position: relative;
-        }
-        .video-card::after {
-            content: '▶';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 60px;
-            color: rgba(255,255,255,0.9);
-        }
-
-        .video-modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.92);
-            z-index: 3000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #fff;
-        }
-
-        @media (max-width: 1024px) {
-            .header, .gallery-container, .video-section { padding: 40px 20px 80px 20px; }
-            .header h1 { font-size: 28px; }
-            .card-wrapper, .video-card-wrapper { flex: 0 0 260px; }
-            .card, .video-card { width: 260px; height: 314px; }
-            .nav-buttons {
-                position: fixed;
-                bottom: 30px;
-                right: 20px;
-                top: auto;
-            }
-            .nav-buttons button {
-                width: 50px;
-                height: 50px;
-                font-size: 22px;
-            }
         }
     </style>
 </head>
@@ -312,7 +280,6 @@
             video.onloadeddata = () => { loading.style.display = 'none'; video.play().catch(() => {}); };
             video.onerror = () => { loading.style.display = 'none'; alert('视频加载失败'); };
         }
-
         function closeVideo() {
             const modal = document.getElementById('videoModal');
             const video = document.getElementById('modalVideo');
@@ -320,7 +287,6 @@
             video.currentTime = 0;
             modal.style.display = 'none';
         }
-
         document.getElementById('videoModal').addEventListener('click', function(e) {
             if (e.target === this) closeVideo();
         });
