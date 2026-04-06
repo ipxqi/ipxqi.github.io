@@ -229,43 +229,41 @@
     </div>
 
     <script>
-        const gallery = document.getElementById('gallery');
-        const items = document.querySelectorAll('.card-wrapper');
-        const prevBtn = document.getElementById('prev-btn');
-        const nextBtn = document.getElementById('next-btn');
-        let index = 0;
+    const gallery = document.getElementById('gallery'); // 原本图片 gallery
+const items = document.querySelectorAll('.card-wrapper');
+const prevBtn = document.getElementById('prev-btn');
+const nextBtn = document.getElementById('next-btn');
+let index = 0;
 
-        function getVisibleCount() {
-            return window.innerWidth > 1024 ? 3 : 1;
-        }
+function getVisibleCount() {
+    return window.innerWidth > 1024 ? 3 : 1;
+}
 
-        function updateSlide() {
-            const itemWidth = items[0].getBoundingClientRect().width + 20;
-            gallery.style.transform = `translateX(-${index * itemWidth}px)`;
-            const visible = getVisibleCount();
-            prevBtn.disabled = index === 0;
-            nextBtn.disabled = index >= items.length - visible;
-        }
+function updateSlide() {
+    const itemWidth = items[0].getBoundingClientRect().width + 20;
+    gallery.style.transform = `translateX(-${index * itemWidth}px)`;
+    const visible = getVisibleCount();
+    prevBtn.disabled = index === 0;
+    nextBtn.disabled = index >= items.length - visible;
+}
 
-        nextBtn.onclick = () => { const v = getVisibleCount(); if (index < items.length - v) { index++; updateSlide(); } };
-        prevBtn.onclick = () => { if (index > 0) { index--; updateSlide(); } };
+nextBtn.onclick = () => { const v = getVisibleCount(); if (index < items.length - v) { index++; updateSlide(); } };
+prevBtn.onclick = () => { if (index > 0) { index--; updateSlide(); } };
 
-        window.addEventListener('resize', updateSlide);
-        updateSlide();
+window.addEventListener('resize', updateSlide);
+updateSlide();
 
-        // 手机触屏滑动卡片
+// ========= 手机触屏滑动卡片，只绑定到图片 gallery =========
 let touchStartX = 0, touchStartY = 0;
 let isSwiping = false;
 
-const galleryContainer = document.querySelector('.gallery-container');
-
-galleryContainer.addEventListener('touchstart', e => {
+gallery.addEventListener('touchstart', e => {
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
     isSwiping = true;
 }, { passive: true });
 
-galleryContainer.addEventListener('touchmove', e => {
+gallery.addEventListener('touchmove', e => {
     if (!isSwiping) return;
 
     const dx = e.touches[0].clientX - touchStartX;
@@ -280,7 +278,7 @@ galleryContainer.addEventListener('touchmove', e => {
     }
 }, { passive: false });
 
-galleryContainer.addEventListener('touchend', e => {
+gallery.addEventListener('touchend', e => {
     if (!isSwiping) return;
 
     const dx = e.changedTouches[0].clientX - touchStartX;
