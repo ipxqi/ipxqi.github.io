@@ -205,28 +205,31 @@
         </div>
     </div>
 
+    <!-- 视频部分 -->
     <div class="video-section">
         <h2>AI智能视频展示</h2>
-        <div class="gallery">
+        <div class="gallery" id="video-gallery">
             <div class="video-card-wrapper" onclick="playVideo('https://pub-c82e30e0463848b68595368687744f81.r2.dev/SwivelChair.mp4')">
                 <div class="video-card" style="background-image: url('https://pub-c82e30e0463848b68595368687744f81.r2.dev/SwivelChair.jpg');"></div>
                 <div>
-                    <div class="video-card-title">Olivia Velvet Swivel Chair</div>
-                    <div class="video-card-desc">旋转椅 AI 智能加人物演示 - 自然动作与多角度展示</div>
+                    <div class="card-title">Olivia Velvet Swivel Chair</div>
+                    <div class="card-desc">旋转椅 AI 智能加人物演示 - 自然动作与多角度展示</div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- 视频弹窗 -->
     <div id="videoModal" class="video-modal">
         <div class="video-modal-content">
             <div class="video-modal-close" onclick="closeVideo()">×</div>
-            <div id="loading" class="loading" style="display:none;">加载中...</div>
+            <div id="loading" class="loading">加载中...</div>
             <video id="modalVideo" controls autoplay playsinline>
                 <source id="modalSource" src="" type="video/mp4">
             </video>
         </div>
     </div>
+    
 
     <script>
     const gallery = document.getElementById('gallery'); // 原本图片 gallery
