@@ -253,19 +253,50 @@
         window.addEventListener('resize', updateSlide);
         updateSlide();
 
-        // 手机触屏滑动
-        let touchStartX = 0, touchStartY = 0;
-        const container = document.querySelector('.gallery-container');
-        container.addEventListener('touchstart', e => {
-            touchStartX = e.touches[0].clientX;
-            touchStartY = e.touches[0].clientY;
-        }, { passive: true });
+        // 手机触屏滑动卡片
+let touchStartX = 0, touchStartY = 0;
+let isSwiping = false;
 
-        container.addEventListener('touchmove', e => {
-            const deltaX = Math.abs(e.touches[0].clientX - touchStartX);
-            const deltaY = Math.abs(e.touches[0].clientY - touchStartY);
-            if (deltaX > deltaY + 20) e.preventDefault();
-        }, { passive: false });
+const galleryContainer = document.querySelector('.gallery-container');
+
+galleryContainer.addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    isSwiping = true;
+}, { passive: true });
+
+galleryContainer.addEventListener('touchmove', e => {
+    if (!isSwiping) return;
+
+    const dx = e.touches[0].clientX - touchStartX;
+    const dy = e.touches[0].clientY - touchStartY;
+
+    // 只有横向滑动时阻止默认滚动
+    if (Math.abs(dx) > Math.abs(dy)) {
+        e.preventDefault();
+        const itemWidth = items[0].getBoundingClientRect().width + 20;
+        gallery.style.transition = 'none';
+        gallery.style.transform = `translateX(${-index * itemWidth + dx}px)`;
+    }
+}, { passive: false });
+
+galleryContainer.addEventListener('touchend', e => {
+    if (!isSwiping) return;
+
+    const dx = e.changedTouches[0].clientX - touchStartX;
+
+    if (Math.abs(dx) > 50) {  // 滑动超过50px就切换
+        const visible = getVisibleCount();
+        if (dx < 0 && index < items.length - visible) index++;
+        if (dx > 0 && index > 0) index--;
+    }
+
+    const itemWidth = items[0].getBoundingClientRect().width + 20;
+    gallery.style.transition = 'transform 0.8s cubic-bezier(0.34, 0.68, 0.15, 1)';
+    gallery.style.transform = `translateX(-${index * itemWidth}px)`;
+
+    isSwiping = false;
+});
 
         // 视频播放
         function playVideo(videoUrl) {
