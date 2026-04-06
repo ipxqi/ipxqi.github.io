@@ -5,6 +5,10 @@
     <link rel="shortcut icon" href="/favicon.png" type="image/png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    
     <title>AI智能加人物</title>
     <style>
         body {
@@ -20,10 +24,10 @@
             width: 100%;
             box-sizing: border-box;
             overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
         }
         *::-webkit-scrollbar { display: none; }
 
-        /* 移动端允许垂直滑动 */
         @media (max-width: 1024px) {
             body { touch-action: pan-y; }
             .gallery { touch-action: pan-y; }
@@ -103,15 +107,9 @@
             cursor: pointer;
             backdrop-filter: blur(20px);
         }
-        .nav-buttons button:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-        .nav-buttons button:disabled {
-            opacity: 0.4;
-            cursor: default;
-        }
+        .nav-buttons button:hover { background: rgba(255, 255, 255, 0.3); }
+        .nav-buttons button:disabled { opacity: 0.4; cursor: default; }
 
-        /* 视频部分 */
         .video-section {
             padding: 80px 60px 140px 60px;
             background: #1d1d1f;
@@ -163,10 +161,7 @@
         }
 
         @media (max-width: 1024px) {
-            .header, .gallery-container, .video-section {
-                padding-left: 20px;
-                padding-right: 20px;
-            }
+            .header, .gallery-container, .video-section { padding: 40px 20px 80px 20px; }
             .header h1 { font-size: 28px; }
             .card-wrapper, .video-card-wrapper { flex: 0 0 260px; }
             .card, .video-card { width: 260px; height: 314px; }
@@ -242,7 +237,6 @@
         </div>
     </div>
 
-    <!-- 视频部分 -->
     <div class="video-section">
         <h2>AI智能视频展示</h2>
         <div class="gallery">
@@ -256,7 +250,6 @@
         </div>
     </div>
 
-    <!-- 视频弹窗 -->
     <div id="videoModal" class="video-modal">
         <div class="video-modal-content">
             <div class="video-modal-close" onclick="closeVideo()">×</div>
@@ -275,40 +268,26 @@
         let index = 0;
 
         function getVisibleCount() {
-            const containerW = document.querySelector('.gallery-container').offsetWidth;
-            return window.innerWidth > 1024 ? 3 : 1;   // 电脑显示3张，手机显示1张
+            return window.innerWidth > 1024 ? 3 : 1;
         }
 
         function updateSlide() {
             const itemWidth = items[0].getBoundingClientRect().width + 20;
             gallery.style.transform = `translateX(-${index * itemWidth}px)`;
-
             const visible = getVisibleCount();
             prevBtn.disabled = index === 0;
             nextBtn.disabled = index >= items.length - visible;
         }
 
-        nextBtn.onclick = () => {
-            const visible = getVisibleCount();
-            if (index < items.length - visible) {
-                index++;
-                updateSlide();
-            }
-        };
-        prevBtn.onclick = () => {
-            if (index > 0) {
-                index--;
-                updateSlide();
-            }
-        };
+        nextBtn.onclick = () => { const v = getVisibleCount(); if (index < items.length - v) { index++; updateSlide(); } };
+        prevBtn.onclick = () => { if (index > 0) { index--; updateSlide(); } };
 
         window.addEventListener('resize', updateSlide);
         updateSlide();
 
-        // 手机左右滑动
+        // 手机触屏滑动
         let touchStartX = 0, touchStartY = 0;
         const container = document.querySelector('.gallery-container');
-
         container.addEventListener('touchstart', e => {
             touchStartX = e.touches[0].clientX;
             touchStartY = e.touches[0].clientY;
@@ -317,9 +296,7 @@
         container.addEventListener('touchmove', e => {
             const deltaX = Math.abs(e.touches[0].clientX - touchStartX);
             const deltaY = Math.abs(e.touches[0].clientY - touchStartY);
-            if (deltaX > deltaY + 20) {
-                e.preventDefault();
-            }
+            if (deltaX > deltaY + 20) e.preventDefault();
         }, { passive: false });
 
         // 视频播放
@@ -328,20 +305,12 @@
             const source = document.getElementById('modalSource');
             const video = document.getElementById('modalVideo');
             const loading = document.getElementById('loading');
-
             source.src = videoUrl;
             video.load();
             loading.style.display = 'block';
             modal.style.display = 'flex';
-
-            video.onloadeddata = () => {
-                loading.style.display = 'none';
-                video.play().catch(() => {});
-            };
-            video.onerror = () => {
-                loading.style.display = 'none';
-                alert('视频加载失败，请检查网络或视频地址');
-            };
+            video.onloadeddata = () => { loading.style.display = 'none'; video.play().catch(() => {}); };
+            video.onerror = () => { loading.style.display = 'none'; alert('视频加载失败'); };
         }
 
         function closeVideo() {
@@ -355,7 +324,6 @@
         document.getElementById('videoModal').addEventListener('click', function(e) {
             if (e.target === this) closeVideo();
         });
-
         document.addEventListener('keydown', function(e) {
             if (e.key === "Escape") closeVideo();
         });
