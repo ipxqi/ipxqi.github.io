@@ -19,20 +19,14 @@
             max-width: 1440px;
             width: 100%;
             box-sizing: border-box;
-            overflow-x: hidden;           /* 彻底防止横向滚动条 */
+            overflow-x: hidden;
         }
         *::-webkit-scrollbar { display: none; }
 
-        /* 移动端优化 */
+        /* 移动端允许垂直滑动 */
         @media (max-width: 1024px) {
             body { touch-action: pan-y; }
-            .gallery-container { overflow-x: hidden; }
-            .gallery { 
-                touch-action: pan-y; 
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                scroll-behavior: smooth;
-            }
+            .gallery { touch-action: pan-y; }
         }
 
         .header {
@@ -49,11 +43,9 @@
         }
 
         .gallery-container {
-            overflow: visible;
             padding: 0 60px 140px 60px;
             width: 100%;
             box-sizing: border-box;
-            flex: 1;
             position: relative;
         }
         .gallery {
@@ -61,7 +53,6 @@
             gap: 20px;
             transition: transform 0.8s cubic-bezier(0.34, 0.68, 0.15, 1);
             width: fit-content;
-            min-width: 100%;
         }
         .card-wrapper {
             flex: 0 0 327px;
@@ -77,7 +68,6 @@
             border-radius: 28px;
             overflow: hidden;
             background-color: rgba(40, 40, 40, 0.6);
-            backdrop-filter: blur(12px);
             box-shadow: 0 12px 32px rgba(0,0,0,0.6);
         }
         .card-title {
@@ -85,14 +75,12 @@
             font-weight: 600;
             margin: 0;
             color: #ffffff;
-            text-align: left;
         }
         .card-desc {
             font-size: 15px;
             line-height: 1.6;
             color: #ddd;
             margin: 8px 0 0 0;
-            text-align: left;
         }
 
         .nav-buttons {
@@ -112,26 +100,30 @@
             background: rgba(255, 255, 255, 0.15);
             color: white;
             font-size: 18px;
-            font-weight: bold;
             cursor: pointer;
             backdrop-filter: blur(20px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            transition: all 0.3s ease;
+        }
+        .nav-buttons button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        .nav-buttons button:disabled {
+            opacity: 0.4;
+            cursor: default;
         }
 
-        /* 视频部分样式保持不变 */
+        /* 视频部分 */
         .video-section {
             padding: 80px 60px 140px 60px;
-            width: 100%;
-            box-sizing: border-box;
             background: #1d1d1f;
             margin: 0 -60px;
         }
+        .video-section h2 {
+            font-size: 32px;
+            font-weight: 500;
+            margin-bottom: 60px;
+        }
         .video-card-wrapper {
             flex: 0 0 327px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
             cursor: pointer;
         }
         .video-card {
@@ -156,7 +148,7 @@
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.92);
+            background: rgba(0,0,0,0.92);
             z-index: 3000;
             align-items: center;
             justify-content: center;
@@ -168,13 +160,14 @@
             left: 50%;
             transform: translate(-50%, -50%);
             color: #fff;
-            z-index: 5;
         }
 
         @media (max-width: 1024px) {
-            .header { padding: 40px 20px 20px; }
+            .header, .gallery-container, .video-section {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
             .header h1 { font-size: 28px; }
-            .gallery-container, .video-section { padding: 0 20px 140px 20px; }
             .card-wrapper, .video-card-wrapper { flex: 0 0 260px; }
             .card, .video-card { width: 260px; height: 314px; }
             .nav-buttons {
@@ -192,14 +185,13 @@
     </style>
 </head>
 <body>
-    <!-- 页面结构保持不变 -->
+
     <div class="header">
         <h1>无人场景加多人<br>多角度展示</h1>
     </div>
 
     <div class="gallery-container">
         <div class="gallery" id="gallery">
-            <!-- 7个场景卡片 -->
             <a href="detail.html?scene=1" style="text-decoration: none; color: inherit;">
                 <div class="card-wrapper">
                     <div class="card" style="background-image: url('https://img.adons.top/01/1.jpg');"></div>
@@ -243,6 +235,7 @@
                 </div>
             </a>
         </div>
+
         <div class="nav-buttons">
             <button id="prev-btn">❮</button>
             <button id="next-btn">❯</button>
@@ -252,7 +245,7 @@
     <!-- 视频部分 -->
     <div class="video-section">
         <h2>AI智能视频展示</h2>
-        <div class="gallery" id="video-gallery">
+        <div class="gallery">
             <div class="video-card-wrapper" onclick="playVideo('https://pub-c82e30e0463848b68595368687744f81.r2.dev/SwivelChair.mp4')">
                 <div class="video-card" style="background-image: url('https://pub-c82e30e0463848b68595368687744f81.r2.dev/SwivelChair.jpg');"></div>
                 <div>
@@ -275,46 +268,61 @@
     </div>
 
     <script>
-        // 电脑端滑动逻辑（不变）
         const gallery = document.getElementById('gallery');
         const items = document.querySelectorAll('.card-wrapper');
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
         let index = 0;
 
+        function getVisibleCount() {
+            const containerW = document.querySelector('.gallery-container').offsetWidth;
+            return window.innerWidth > 1024 ? 3 : 1;   // 电脑显示3张，手机显示1张
+        }
+
         function updateSlide() {
             const itemWidth = items[0].getBoundingClientRect().width + 20;
             gallery.style.transform = `translateX(-${index * itemWidth}px)`;
+
+            const visible = getVisibleCount();
             prevBtn.disabled = index === 0;
-            nextBtn.disabled = index >= items.length - 3;
+            nextBtn.disabled = index >= items.length - visible;
         }
 
-        nextBtn.onclick = () => { if (index < items.length - 3) { index++; updateSlide(); } };
-        prevBtn.onclick = () => { if (index > 0) { index--; updateSlide(); } };
+        nextBtn.onclick = () => {
+            const visible = getVisibleCount();
+            if (index < items.length - visible) {
+                index++;
+                updateSlide();
+            }
+        };
+        prevBtn.onclick = () => {
+            if (index > 0) {
+                index--;
+                updateSlide();
+            }
+        };
 
         window.addEventListener('resize', updateSlide);
         updateSlide();
 
-        // 移动端左右滑动优化（独立控制卡片，不影响页面）
+        // 手机左右滑动
         let touchStartX = 0, touchStartY = 0;
-        const galleryContainer = document.querySelector('.gallery-container');
+        const container = document.querySelector('.gallery-container');
 
-        galleryContainer.addEventListener('touchstart', e => {
+        container.addEventListener('touchstart', e => {
             touchStartX = e.touches[0].clientX;
             touchStartY = e.touches[0].clientY;
         }, { passive: true });
 
-        galleryContainer.addEventListener('touchmove', e => {
+        container.addEventListener('touchmove', e => {
             const deltaX = Math.abs(e.touches[0].clientX - touchStartX);
             const deltaY = Math.abs(e.touches[0].clientY - touchStartY);
-
-            // 只有明显左右滑动时才阻止默认行为
             if (deltaX > deltaY + 20) {
                 e.preventDefault();
             }
         }, { passive: false });
 
-        // 视频功能
+        // 视频播放
         function playVideo(videoUrl) {
             const modal = document.getElementById('videoModal');
             const source = document.getElementById('modalSource');
@@ -344,11 +352,11 @@
             modal.style.display = 'none';
         }
 
-        document.getElementById('videoModal').addEventListener('click', e => {
+        document.getElementById('videoModal').addEventListener('click', function(e) {
             if (e.target === this) closeVideo();
         });
 
-        document.addEventListener('keydown', e => {
+        document.addEventListener('keydown', function(e) {
             if (e.key === "Escape") closeVideo();
         });
     </script>
