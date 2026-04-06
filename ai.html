@@ -43,6 +43,7 @@
             line-height: 1.4;
             text-align: left;
         }
+
         .gallery-container {
             overflow: visible;
             padding: 0 60px 140px 60px;
@@ -92,7 +93,7 @@
 
         .nav-buttons {
             position: absolute;
-            right: 0;
+            right: 60px;
             top: -10%;
             transform: translateY(-50%);
             display: flex;
@@ -176,12 +177,14 @@
             font-weight: 600;
             margin: 0;
             color: #ffffff;
+            text-align: left;
         }
         .video-card-desc {
             font-size: 15px;
             line-height: 1.6;
             color: #ddd;
             margin: 0 0 0 0;
+            text-align: left;
         }
 
         /* 视频弹窗 */
@@ -217,18 +220,17 @@
         }
 
         @media (max-width: 1024px) {
-            .header { padding: 40px 30px 20px; }
+            .header { padding: 40px 20px 20px; }
             .header h1 { font-size: 28px; }
             .gallery-container, .video-section {
                 padding: 0 20px 140px 20px;
             }
-            .gallery, .video-gallery { gap: 15px; }
             .card-wrapper, .video-card-wrapper { flex: 0 0 260px; }
             .card, .video-card { width: 260px; height: 314px; }
             .nav-buttons {
                 position: fixed;
                 bottom: 30px;
-                right: 30px;
+                right: 20px;
                 top: auto;
                 transform: none;
             }
@@ -343,7 +345,6 @@
     </div>
 
     <script>
-        // 横向滑动逻辑（电脑端基本保持原样）
         const galleryContainer = document.querySelector('.gallery-container');
         const gallery = document.getElementById('gallery');
         const items = document.querySelectorAll('.card-wrapper');
@@ -364,7 +365,7 @@
         window.addEventListener('resize', updateSlide);
         updateSlide();
 
-        // 移动端触屏优化（只干预水平滑动，垂直滑动流畅）
+        // 移动端触屏优化（仅手机左右滑动切换，上下滑动正常）
         let touchStartX = 0, touchStartY = 0;
         galleryContainer.addEventListener('touchstart', e => {
             touchStartX = e.touches[0].clientX;
@@ -375,11 +376,11 @@
             const deltaX = Math.abs(e.touches[0].clientX - touchStartX);
             const deltaY = Math.abs(e.touches[0].clientY - touchStartY);
             if (deltaX > deltaY + 15) {
-                e.preventDefault();   // 仅水平滑动时阻止默认行为
+                e.preventDefault();
             }
         }, { passive: false });
 
-        // 视频播放功能（修复无内容问题）
+        // 视频播放
         function playVideo(videoUrl) {
             const modal = document.getElementById('videoModal');
             const source = document.getElementById('modalSource');
