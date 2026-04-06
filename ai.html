@@ -147,9 +147,10 @@
         }
 
 /* ==================== 视频展示 - 手机端竖排版 ==================== */
+/* ==================== 视频区域：背景铺满 + 手机端居中 ==================== */
 .video-section {
     width: 100%;
-    background: #1d1d1f;           /* 你的灰色底色 */
+    background: #1d1d1f;
     padding: 80px 0 140px 0;
     margin: 0;
     position: relative;
@@ -169,12 +170,11 @@
 }
 
 .video-inner {
-    max-width: 1440px;             /* 与你页面整体最大宽度保持一致 */
+    max-width: 1440px;
     margin: 0 auto;
     padding: 0 60px;
     width: 100%;
     box-sizing: border-box;
-    position: relative;
 }
 
 .video-section h2 {
@@ -187,7 +187,7 @@
 
 .video-gallery {
     display: flex;
-    flex-direction: row;           /* 默认横向 */
+    flex-direction: row;
     gap: 24px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
@@ -201,7 +201,7 @@
 }
 
 .video-card {
-    flex: 0 0 340px;               /* 电脑端宽度 */
+    flex: 0 0 340px;
     scroll-snap-align: start;
     background: transparent;
     border-radius: 16px;
@@ -269,27 +269,32 @@
     color: #ccc;
 }
 
-/* ==================== 手机端竖排调整 ==================== */
+/* ==================== 手机端：竖排 + 居中 ==================== */
 @media (max-width: 1024px) {
     .video-section {
-        padding: 60px 20px 100px 20px;
+        padding: 60px 0 100px 0;
+    }
+    
+    .video-inner {
+        padding: 0 20px;
     }
     
     .video-gallery {
-        flex-direction: column;    /* 手机端改为竖排 */
+        flex-direction: column;
+        align-items: center;     /* 关键：卡片水平居中 */
         gap: 32px;
         overflow-x: visible;
         padding-bottom: 0;
     }
     
     .video-card {
-        flex: 0 0 auto;            /* 宽度自动占满 */
+        flex: none;
         width: 100%;
-        max-width: 100%;
+        max-width: 420px;        /* 限制最大宽度，避免手机上太宽 */
     }
     
     .thumbnail {
-        height: 260px;             /* 手机端稍高一点，更接近参考图比例 */
+        height: 260px;
         border-radius: 20px;
     }
     
@@ -297,18 +302,6 @@
         width: 68px;
         height: 68px;
         font-size: 34px;
-    }
-    
-    .info {
-        padding: 20px 8px 10px;
-    }
-    
-    .title {
-        font-size: 19px;
-    }
-    
-    .desc {
-        font-size: 15.5px;
     }
 }
 
@@ -427,14 +420,14 @@
         </div>
     </div>
 
-<!-- 视频部分 - 背景铺满 + 内容左对齐主体 -->
+<!-- 视频部分 -->
 <div class="video-section">
     <div class="video-inner">
         <h2>AI智能视频展示</h2>
         
         <div class="video-gallery" id="video-gallery">
-            <!-- 当前视频卡片 -->
-            <div class="video-card" onclick="playVideo('https://pub-c82e30e0463848b68595368687744f81.r2.dev/SwivelChair.mp4')">
+            <!-- 示例卡片（可复制添加更多） -->
+            <div class="video-card" data-video="https://pub-c82e30e0463848b68595368687744f81.r2.dev/SwivelChair.mp4">
                 <div class="thumbnail">
                     <img src="https://pub-c82e30e0463848b68595368687744f81.r2.dev/SwivelChair.jpg" alt="Olivia Velvet Swivel Chair">
                     <div class="play-icon">▶</div>
@@ -444,8 +437,6 @@
                     <div class="desc">旋转椅 AI 智能加人物演示 - 自然动作与多角度展示</div>
                 </div>
             </div>
-
-            <!-- 以后添加更多卡片就复制上面的 video-card 块 -->
         </div>
     </div>
 </div>
