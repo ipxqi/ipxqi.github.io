@@ -453,109 +453,119 @@
     </div>
     
 
-    <script>
-    const gallery = document.getElementById('gallery'); // 原本图片 gallery
-const items = document.querySelectorAll('.card-wrapper');
-const prevBtn = document.getElementById('prev-btn');
-const nextBtn = document.getElementById('next-btn');
-let index = 0;
+  <script>
+    // 场景画廊滑动功能（保持不变）
+    const gallery = document.getElementById('gallery');
+    const items = document.querySelectorAll('.card-wrapper');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    let index = 0;
 
-function getVisibleCount() {
-    return window.innerWidth > 1024 ? 3 : 1;
-}
+    function getVisibleCount() {
+        return window.innerWidth > 1024 ? 3 : 1;
+    }
 
-function updateSlide() {
-    const itemWidth = items[0].getBoundingClientRect().width + 20;
-    gallery.style.transform = `translateX(-${index * itemWidth}px)`;
-    const visible = getVisibleCount();
-    prevBtn.disabled = index === 0;
-    nextBtn.disabled = index >= items.length - visible;
-}
-
-nextBtn.onclick = () => { const v = getVisibleCount(); if (index < items.length - v) { index++; updateSlide(); } };
-prevBtn.onclick = () => { if (index > 0) { index--; updateSlide(); } };
-
-window.addEventListener('resize', updateSlide);
-updateSlide();
-
-// ========= 手机触屏滑动卡片，只绑定到图片 gallery =========
-let touchStartX = 0, touchStartY = 0;
-let isSwiping = false;
-
-gallery.addEventListener('touchstart', e => {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-    isSwiping = true;
-}, { passive: true });
-
-gallery.addEventListener('touchmove', e => {
-    if (!isSwiping) return;
-
-    const dx = e.touches[0].clientX - touchStartX;
-    const dy = e.touches[0].clientY - touchStartY;
-
-    // 只有横向滑动时阻止默认滚动
-    if (Math.abs(dx) > Math.abs(dy)) {
-        e.preventDefault();
+    function updateSlide() {
         const itemWidth = items[0].getBoundingClientRect().width + 20;
-        gallery.style.transition = 'none';
-        gallery.style.transform = `translateX(${-index * itemWidth + dx}px)`;
-    }
-}, { passive: false });
-
-gallery.addEventListener('touchend', e => {
-    if (!isSwiping) return;
-
-    const dx = e.changedTouches[0].clientX - touchStartX;
-
-    if (Math.abs(dx) > 50) {  // 滑动超过50px就切换
+        gallery.style.transform = `translateX(-${index * itemWidth}px)`;
         const visible = getVisibleCount();
-        if (dx < 0 && index < items.length - visible) index++;
-        if (dx > 0 && index > 0) index--;
+        prevBtn.disabled = index === 0;
+        nextBtn.disabled = index >= items.length - visible;
     }
 
-    const itemWidth = items[0].getBoundingClientRect().width + 20;
-    gallery.style.transition = 'transform 0.8s cubic-bezier(0.34, 0.68, 0.15, 1)';
-    gallery.style.transform = `translateX(-${index * itemWidth}px)`;
-
-    isSwiping = false;
-});
-
-      function playVideo(videoUrl) {
-    const modal = document.getElementById('videoModal');
-    const source = document.getElementById('modalSource');
-    const video = document.getElementById('modalVideo');
-    const loading = document.getElementById('loading');
-
-    source.src = videoUrl;
-    video.load();
-    loading.style.display = 'block';
-    modal.style.display = 'flex';
-    
-    video.onloadeddata = () => {
-        loading.style.display = 'none';
-        video.play().catch(() => {});
+    nextBtn.onclick = () => { 
+        const v = getVisibleCount(); 
+        if (index < items.length - v) { index++; updateSlide(); } 
     };
-    
-    video.onerror = () => {
-        loading.style.display = 'none';
-        alert('视频加载失败');
+    prevBtn.onclick = () => { 
+        if (index > 0) { index--; updateSlide(); } 
     };
-}
 
-function closeVideo() {
-    const modal = document.getElementById('videoModal');
-    const video = document.getElementById('modalVideo');
-    video.pause();
-    video.currentTime = 0;
-    modal.style.display = 'none';
-}
-        document.getElementById('videoModal').addEventListener('click', function(e) {
-            if (e.target === this) closeVideo();
+    window.addEventListener('resize', updateSlide);
+    updateSlide();
+
+    // ==================== 手机端触屏滑动（保持不变） ====================
+    let touchStartX = 0, touchStartY = 0;
+    let isSwiping = false;
+    gallery.addEventListener('touchstart', e => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        isSwiping = true;
+    }, { passive: true });
+
+    gallery.addEventListener('touchmove', e => {
+        if (!isSwiping) return;
+        const dx = e.touches[0].clientX - touchStartX;
+        const dy = e.touches[0].clientY - touchStartY;
+        if (Math.abs(dx) > Math.abs(dy)) {
+            e.preventDefault();
+            const itemWidth = items[0].getBoundingClientRect().width + 20;
+            gallery.style.transition = 'none';
+            gallery.style.transform = `translateX(${-index * itemWidth + dx}px)`;
+        }
+    }, { passive: false });
+
+    gallery.addEventListener('touchend', e => {
+        if (!isSwiping) return;
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(dx) > 50) {
+            const visible = getVisibleCount();
+            if (dx < 0 && index < items.length - visible) index++;
+            if (dx > 0 && index > 0) index--;
+        }
+        const itemWidth = items[0].getBoundingClientRect().width + 20;
+        gallery.style.transition = 'transform 0.8s cubic-bezier(0.34, 0.68, 0.15, 1)';
+        gallery.style.transform = `translateX(-${index * itemWidth}px)`;
+        isSwiping = false;
+    });
+
+    // ==================== 新增：点击视频卡片直接全屏播放（无需弹窗） ====================
+    document.addEventListener('DOMContentLoaded', function() {
+        const videoCards = document.querySelectorAll('.video-card');
+        
+        videoCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const videoUrl = this.getAttribute('data-video');
+                if (!videoUrl) return;
+
+                // 创建视频元素并全屏播放
+                const tempVideo = document.createElement('video');
+                tempVideo.src = videoUrl;
+                tempVideo.controls = true;
+                tempVideo.autoplay = true;
+                tempVideo.playsInline = true;
+                tempVideo.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: #000;
+                    z-index: 9999;
+                    object-fit: contain;
+                `;
+
+                document.body.appendChild(tempVideo);
+
+                tempVideo.play().catch(err => {
+                    console.error('播放失败:', err);
+                    alert('视频播放失败，请稍后重试');
+                    if (tempVideo.parentNode) document.body.removeChild(tempVideo);
+                });
+
+                // 清理函数
+                const cleanup = () => {
+                    if (document.fullscreenElement) document.exitFullscreen();
+                    if (tempVideo.parentNode) document.body.removeChild(tempVideo);
+                };
+
+                tempVideo.addEventListener('ended', cleanup);
+                tempVideo.addEventListener('fullscreenchange', () => {
+                    if (!document.fullscreenElement) cleanup();
+                });
+            });
         });
-        document.addEventListener('keydown', function(e) {
-            if (e.key === "Escape") closeVideo();
-        });
-    </script>
+    });
+</script>
 </body>
 </html>
