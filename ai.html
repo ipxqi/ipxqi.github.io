@@ -23,12 +23,10 @@
             overflow-x: hidden;
         }
         *::-webkit-scrollbar { display: none; }
-
         @media (max-width: 1024px) {
             body { touch-action: pan-y; }
             .gallery { touch-action: pan-y; }
         }
-
         .header {
             padding: 60px 60px 40px 60px;
             width: 100%;
@@ -43,7 +41,6 @@
     line-height: 1.4;
     color: #fff;
 }
-
 /* 手机端标题大小调整 */
 @media (max-width: 1024px) {
     .header h1,
@@ -51,7 +48,6 @@
         font-size: 28px;
     }
 }
-
         .gallery-container {
             padding: 0 60px 100px 60px;
             width: 100%;
@@ -92,7 +88,6 @@
             color: #ddd;
             margin: 8px 0 0 0;
         }
-
         .nav-buttons {
             position: absolute;
             right: 60px;
@@ -115,24 +110,22 @@
         }
         .nav-buttons button:hover { background: rgba(255,255,255,0.3); }
         .nav-buttons button:disabled { opacity: 0.4; cursor: default; }
-
         /* ==================== 手机端调整 ==================== */
         @media (max-width: 1024px) {
             .header { padding: 50px 20px 30px 20px; }
             .header h1 { font-size: 28px; }
-            
+           
             .gallery-container {
                 padding: 0 20px 0px 20px;
             }
             .card-wrapper, .video-card-wrapper { flex: 0 0 260px; }
             .card, .video-card { width: 260px; height: 330px; }
-
             /* 箭头放在卡片下方并向右对齐 */
             .nav-buttons {
                 position: relative;
                 top: auto;
                 right: 0;
-                margin: 20px 0 30px auto;   /* 向右对齐 */
+                margin: 20px 0 30px auto; /* 向右对齐 */
                 transform: none;
                 justify-content: flex-end;
                 width: 100%;
@@ -144,7 +137,6 @@
                 font-size: 20px;
             }
         }
-
         /* 视频部分 */
         .video-section {
             padding: 80px 60px 140px 60px;
@@ -156,7 +148,6 @@
             font-weight: 500;
             margin-bottom: 60px;
         }
-
 /* ==================== 视频展示 - 手机端竖排版 ==================== */
 /* ==================== 视频区域：背景铺满 + 手机端居中 ==================== */
 .video-section {
@@ -166,7 +157,6 @@
     margin: 0;
     position: relative;
 }
-
 .video-section::before {
     content: '';
     position: absolute;
@@ -179,7 +169,6 @@
     margin-left: -50vw;
     margin-right: -50vw;
 }
-
 .video-inner {
     max-width: 1440px;
     margin: 0 auto;
@@ -187,7 +176,6 @@
     width: 100%;
     box-sizing: border-box;
 }
-
 .video-section h2 {
     font-size: 32px;
     font-weight: 500;
@@ -195,7 +183,6 @@
     padding-left: 10px;
     color: #fff;
 }
-
 .video-gallery {
     display: flex;
     flex-direction: row;
@@ -206,11 +193,9 @@
     padding-bottom: 30px;
     scrollbar-width: none;
 }
-
 .video-gallery::-webkit-scrollbar {
     display: none;
 }
-
 .video-card {
     flex: 0 0 390px;
     scroll-snap-align: start;
@@ -220,11 +205,9 @@
     cursor: pointer;
     transition: transform 0.3s ease;
 }
-
 .video-card:hover {
     transform: scale(1.03);
 }
-
 .thumbnail {
     position: relative;
     width: 100%;
@@ -233,13 +216,11 @@
     border-radius: 16px;
     overflow: hidden;
 }
-
 .thumbnail img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-
 .play-icon {
     position: absolute;
     top: 50%;
@@ -257,65 +238,59 @@
     box-shadow: 0 8px 25px rgba(0,0,0,0.5);
     transition: all 0.3s ease;
 }
-
 .video-card:hover .play-icon {
     transform: translate(-50%, -50%) scale(1.12);
     background: #ffffff75;
 }
-
 .info {
     padding: 18px 6px 10px;
 }
-
 .title {
     font-size: 18px;
     font-weight: 600;
     margin: 0 0 0px 0;
     color: #fff;
 }
-
 .desc {
     font-size: 15px;
     line-height: 1.6;
     color: #ccc;
 }
-
 /* ==================== 手机端：竖排 + 居中 ==================== */
 @media (max-width: 1024px) {
     .video-section {
         padding: 60px 0 100px 0;
     }
-    
+   
     .video-inner {
         padding: 0 20px;
     }
-    
+   
     .video-gallery {
         flex-direction: column;
-        align-items: center;     /* 关键：卡片水平居中 */
+        align-items: center; /* 关键：卡片水平居中 */
         gap: 32px;
         overflow-x: visible;
         padding-bottom: 0;
     }
-    
+   
     .video-card {
         flex: none;
         width: 100%;
-        max-width: 420px;        /* 限制最大宽度，避免手机上太宽 */
+        max-width: 420px; /* 限制最大宽度，避免手机上太宽 */
     }
-    
+   
     .thumbnail {
         height: 220px;
         border-radius: 20px;
     }
-    
+   
     .play-icon {
         width: 50px;
         height: 50px;
         font-size: 34px;
     }
 }
-
 /* ==================== 视频弹窗浮层（居中弹出） ==================== */
 .video-modal {
     display: none;
@@ -328,22 +303,15 @@
     padding: 20px;
     box-sizing: border-box;
 }
-
 .video-modal-content {
     position: relative;
     width: 100%;
-    max-width: 800px;
+    max-width: 960px;
     background: #000;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 30px 100px rgba(0,0,0,0.9);
 }
-.video-modal video {
-            width: 100%;
-            height: auto;               /* 关键：保持原始比例 */
-            display: block;
-            max-height: 85vh;           /* 防止过高超出屏幕 */
-        }
 .video-modal-close {
     position: absolute;
     top: 18px;
@@ -360,13 +328,11 @@
     background: rgba(0,0,0,0.6);
     border-radius: 50%;
 }
-
 #modalVideo {
     width: 100%;
     display: block;
     max-height: 88vh;
 }
-
 .loading {
     position: absolute;
     top: 50%;
@@ -375,15 +341,13 @@
     color: #fff;
     font-size: 18px;
 }
-        
+       
     </style>
 </head>
 <body>
-
     <div class="header">
         <h1>无人场景加多人<br>多角度展示</h1>
     </div>
-
     <div class="gallery-container">
         <div class="gallery" id="gallery">
             <a href="detail.html?scene=1" style="text-decoration: none; color: inherit;">
@@ -429,18 +393,16 @@
                 </div>
             </a>
         </div>
-
         <div class="nav-buttons">
             <button id="prev-btn">❮</button>
             <button id="next-btn">❯</button>
         </div>
     </div>
-
 <!-- 视频部分 -->
 <div class="video-section">
     <div class="video-inner">
         <h2>AI智能视频展示</h2>
-        
+       
         <div class="video-gallery" id="video-gallery">
             <!-- 示例卡片（可复制添加更多） -->
             <div class="video-card" data-video="https://pub-c82e30e0463848b68595368687744f81.r2.dev/Swivelchair7.mp4">
@@ -456,18 +418,17 @@
         </div>
     </div>
 </div>
-
     <!-- 视频弹窗 -->
     <div id="videoModal" class="video-modal">
         <div class="video-modal-content">
             <div class="video-modal-close" onclick="closeVideo()">×</div>
+            <div id="loading" class="loading">加载中...</div>
             <video id="modalVideo" controls autoplay playsinline>
                 <source id="modalSource" src="" type="video/mp4">
             </video>
         </div>
     </div>
-    
-
+   
  <script>
     // 场景画廊滑动功能（保持不变）
     const gallery = document.getElementById('gallery');
@@ -475,11 +436,9 @@
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
     let index = 0;
-
     function getVisibleCount() {
         return window.innerWidth > 1024 ? 3 : 1;
     }
-
     function updateSlide() {
         const itemWidth = items[0].getBoundingClientRect().width + 20;
         gallery.style.transform = `translateX(-${index * itemWidth}px)`;
@@ -487,18 +446,15 @@
         prevBtn.disabled = index === 0;
         nextBtn.disabled = index >= items.length - visible;
     }
-
-    nextBtn.onclick = () => { 
-        const v = getVisibleCount(); 
-        if (index < items.length - v) { index++; updateSlide(); } 
+    nextBtn.onclick = () => {
+        const v = getVisibleCount();
+        if (index < items.length - v) { index++; updateSlide(); }
     };
-    prevBtn.onclick = () => { 
-        if (index > 0) { index--; updateSlide(); } 
+    prevBtn.onclick = () => {
+        if (index > 0) { index--; updateSlide(); }
     };
-
     window.addEventListener('resize', updateSlide);
     updateSlide();
-
     // 手机端触屏滑动（保持不变）
     let touchStartX = 0, touchStartY = 0;
     let isSwiping = false;
@@ -507,7 +463,6 @@
         touchStartY = e.touches[0].clientY;
         isSwiping = true;
     }, { passive: true });
-
     gallery.addEventListener('touchmove', e => {
         if (!isSwiping) return;
         const dx = e.touches[0].clientX - touchStartX;
@@ -519,7 +474,6 @@
             gallery.style.transform = `translateX(${-index * itemWidth + dx}px)`;
         }
     }, { passive: false });
-
     gallery.addEventListener('touchend', e => {
         if (!isSwiping) return;
         const dx = e.changedTouches[0].clientX - touchStartX;
@@ -533,37 +487,92 @@
         gallery.style.transform = `translateX(-${index * itemWidth}px)`;
         isSwiping = false;
     });
-
-    // ==================== 修改后的视频播放函数（电脑端保持1:1比例） ====================
-        function playVideo(videoUrl) {
-            const modal = document.getElementById('videoModal');
-            const source = document.getElementById('modalSource');
-            const video = document.getElementById('modalVideo');
-            
-            source.src = videoUrl;
-            video.load();
-            modal.style.display = 'flex';
-            
-            video.play().catch(() => {});
-        }
-
-        function closeVideo() {
-            const modal = document.getElementById('videoModal');
-            const video = document.getElementById('modalVideo');
-            video.pause();
-            video.currentTime = 0;
-            modal.style.display = 'none';
-        }
-
-        // 点击背景关闭
-        document.getElementById('videoModal').addEventListener('click', function(e) {
-            if (e.target === this) closeVideo();
+    // ==================== 修复版：点击视频卡片直接全屏播放 + 关闭按钮 ====================
+    document.addEventListener('DOMContentLoaded', function() {
+        const videoCards = document.querySelectorAll('.video-card');
+       
+        videoCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const videoUrl = this.getAttribute('data-video');
+                if (!videoUrl) return;
+                // 创建全屏视频容器
+                const videoContainer = document.createElement('div');
+                videoContainer.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: #000;
+                    z-index: 9999;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                `;
+                // 创建视频元素
+                const tempVideo = document.createElement('video');
+                tempVideo.src = videoUrl;
+                tempVideo.controls = true;
+                tempVideo.autoplay = true;
+                tempVideo.playsInline = true;
+                tempVideo.style.cssText = `
+                    width: 100%;
+                    height: 100%;
+                    max-height: 100vh;
+                    object-fit: contain;
+                `;
+                // 创建关闭按钮
+                const closeBtn = document.createElement('div');
+                closeBtn.innerHTML = '✕';
+                closeBtn.style.cssText = `
+                    position: absolute;
+                    top: 30px;
+                    right: 30px;
+                    font-size: 36px;
+                    color: #fff;
+                    cursor: pointer;
+                    z-index: 10000;
+                    width: 50px;
+                    height: 50px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: rgba(0,0,0,0.6);
+                    border-radius: 50%;
+                    user-select: none;
+                `;
+                // 组装元素
+                videoContainer.appendChild(tempVideo);
+                videoContainer.appendChild(closeBtn);
+                document.body.appendChild(videoContainer);
+                // 播放视频
+                tempVideo.play().catch(err => {
+                    console.error('播放失败:', err);
+                    alert('视频播放失败，请稍后重试');
+                    document.body.removeChild(videoContainer);
+                });
+                // 关闭功能
+                const closeVideo = () => {
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen();
+                    }
+                    if (videoContainer.parentNode) {
+                        document.body.removeChild(videoContainer);
+                    }
+                };
+                // 点击关闭按钮关闭
+                closeBtn.addEventListener('click', closeVideo);
+                // 视频播放结束自动关闭
+                tempVideo.addEventListener('ended', closeVideo);
+                // 全屏状态变化时处理
+                tempVideo.addEventListener('fullscreenchange', () => {
+                    if (!document.fullscreenElement) {
+                        closeVideo();
+                    }
+                });
+            });
         });
-
-        // ESC 键关闭
-        document.addEventListener('keydown', function(e) {
-            if (e.key === "Escape") closeVideo();
-        });
-    </script>
+    });
+</script>
 </body>
 </html>
