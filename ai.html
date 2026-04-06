@@ -146,7 +146,7 @@
             margin-bottom: 60px;
         }
 
-     /* ==================== 严格按参考图的视频展示样式 ==================== */
+/* ==================== 视频展示 - 纯净版（按你的最新要求） ==================== */
 .video-section {
     padding: 80px 60px 140px 60px;
     background: #1d1d1f;
@@ -158,6 +158,7 @@
     font-weight: 500;
     margin-bottom: 50px;
     padding-left: 10px;
+    color: #fff;
 }
 
 .video-gallery {
@@ -166,8 +167,8 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    padding-bottom: 20px;
-    scrollbar-width: none; /* 隐藏滚动条 */
+    padding-bottom: 30px;
+    scrollbar-width: none;
 }
 
 .video-gallery::-webkit-scrollbar {
@@ -175,18 +176,17 @@
 }
 
 .video-card {
-    flex: 0 0 340px;           /* 每张卡片固定宽度 */
+    flex: 0 0 340px;
     scroll-snap-align: start;
-    background: #111;
+    background: transparent;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-    transition: transform 0.3s ease;
     cursor: pointer;
+    transition: transform 0.3s ease;
 }
 
 .video-card:hover {
-    transform: scale(1.03);
+    transform: scale(1.04);
 }
 
 .thumbnail {
@@ -194,6 +194,8 @@
     width: 100%;
     height: 240px;
     background: #000;
+    border-radius: 16px;
+    overflow: hidden;
 }
 
 .thumbnail img {
@@ -202,53 +204,33 @@
     object-fit: cover;
 }
 
-.overlay-text {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    color: white;
-    font-size: 22px;
-    font-weight: 600;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.8);
-    pointer-events: none;
-}
-
 .play-icon {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 68px;
-    height: 68px;
-    background: rgba(255,255,255,0.95);
+    width: 72px;
+    height: 72px;
+    background: rgba(255, 255, 255, 0.95);
     color: #000;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 32px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
-    transition: all 0.3s;
-}
-
-.video-card:hover .play-icon {
-    transform: translate(-50%, -50%) scale(1.1);
-}
-
-.veo {
-    position: absolute;
-    bottom: 16px;
-    right: 16px;
-    color: white;
-    font-size: 13px;
-    background: rgba(0,0,0,0.6);
-    padding: 2px 8px;
-    border-radius: 4px;
+    font-size: 36px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
     pointer-events: none;
 }
 
+.video-card:hover .play-icon {
+    transform: translate(-50%, -50%) scale(1.12);
+    background: rgba(255, 255, 255, 1);
+}
+
 .info {
-    padding: 20px 18px 24px;
+    padding: 18px 6px 10px;
+    text-align: left;
 }
 
 .title {
@@ -260,18 +242,18 @@
 
 .desc {
     font-size: 15px;
-    line-height: 1.55;
+    line-height: 1.6;
     color: #ccc;
 }
 
-/* 手机端适配（让卡片稍微小一点，间距调整） */
+/* 手机端适配 */
 @media (max-width: 1024px) {
     .video-section {
         padding: 60px 20px 100px 20px;
     }
     .video-gallery {
         gap: 16px;
-        padding: 0 10px;
+        padding: 0 8px;
     }
     .video-card {
         flex: 0 0 280px;
@@ -279,14 +261,71 @@
     .thumbnail {
         height: 200px;
     }
-    .overlay-text {
-        font-size: 19px;
-    }
     .play-icon {
-        width: 58px;
-        height: 58px;
-        font-size: 28px;
+        width: 60px;
+        height: 60px;
+        font-size: 30px;
     }
+}
+
+/* ==================== 视频弹窗浮层（全屏居中弹出） ==================== */
+.video-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.92);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.video-modal-content {
+    position: relative;
+    width: 100%;
+    max-width: 960px;
+    background: #000;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.9);
+}
+
+.video-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 32px;
+    color: #fff;
+    cursor: pointer;
+    z-index: 10000;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.5);
+    border-radius: 50%;
+}
+
+#modalVideo {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 85vh;
+}
+
+.loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 18px;
+    z-index: 10;
 }
         
     </style>
@@ -349,18 +388,16 @@
         </div>
     </div>
 
-  <!-- 视频部分（严格按参考图样式） -->
+<!-- 视频部分（严格按最新要求） -->
 <div class="video-section">
     <h2>AI智能视频展示</h2>
     
     <div class="video-gallery" id="video-gallery">
-        <!-- 第一张卡片 -->
+        <!-- 示例卡片1（可复制添加更多） -->
         <div class="video-card" onclick="playVideo('https://pub-c82e30e0463848b68595368687744f81.r2.dev/SwivelChair.mp4')">
             <div class="thumbnail">
                 <img src="https://pub-c82e30e0463848b68595368687744f81.r2.dev/SwivelChair.jpg" alt="Olivia Velvet Swivel Chair">
-                <div class="overlay-text">Olivia Velvet</div>
                 <div class="play-icon">▶</div>
-                <div class="veo">Veo</div>
             </div>
             <div class="info">
                 <div class="title">Olivia Velvet Swivel Chair</div>
@@ -368,21 +405,19 @@
             </div>
         </div>
 
-        <!-- 第二张卡片（示例，你后期可以复制粘贴添加更多） -->
-        <div class="video-card" onclick="playVideo('你的第二个视频链接.mp4')">
+        <!-- 继续复制下面这个块添加更多视频卡片 -->
+        <!-- 
+        <div class="video-card" onclick="playVideo('你的视频链接.mp4')">
             <div class="thumbnail">
-                <img src="你的第二个缩略图.jpg" alt="Olivia Velvet Swivel Chair">
-                <div class="overlay-text">Olivia Velvet</div>
+                <img src="你的缩略图链接.jpg" alt="Olivia Velvet Swivel Chair">
                 <div class="play-icon">▶</div>
-                <div class="veo">Veo</div>
             </div>
             <div class="info">
                 <div class="title">Olivia Velvet Swivel Chair</div>
                 <div class="desc">旋转椅 AI 智能加人物演示 - 自然动作与多角度展示</div>
             </div>
         </div>
-
-        <!-- 继续复制上面的 <div class="video-card"> ... </div> 添加更多卡片 -->
+        -->
     </div>
 </div>
 
@@ -466,26 +501,35 @@ gallery.addEventListener('touchend', e => {
     isSwiping = false;
 });
 
-        // 视频播放
-        function playVideo(videoUrl) {
-            const modal = document.getElementById('videoModal');
-            const source = document.getElementById('modalSource');
-            const video = document.getElementById('modalVideo');
-            const loading = document.getElementById('loading');
-            source.src = videoUrl;
-            video.load();
-            loading.style.display = 'block';
-            modal.style.display = 'flex';
-            video.onloadeddata = () => { loading.style.display = 'none'; video.play().catch(() => {}); };
-            video.onerror = () => { loading.style.display = 'none'; alert('视频加载失败'); };
-        }
-        function closeVideo() {
-            const modal = document.getElementById('videoModal');
-            const video = document.getElementById('modalVideo');
-            video.pause();
-            video.currentTime = 0;
-            modal.style.display = 'none';
-        }
+      function playVideo(videoUrl) {
+    const modal = document.getElementById('videoModal');
+    const source = document.getElementById('modalSource');
+    const video = document.getElementById('modalVideo');
+    const loading = document.getElementById('loading');
+
+    source.src = videoUrl;
+    video.load();
+    loading.style.display = 'block';
+    modal.style.display = 'flex';
+    
+    video.onloadeddata = () => {
+        loading.style.display = 'none';
+        video.play().catch(() => {});
+    };
+    
+    video.onerror = () => {
+        loading.style.display = 'none';
+        alert('视频加载失败');
+    };
+}
+
+function closeVideo() {
+    const modal = document.getElementById('videoModal');
+    const video = document.getElementById('modalVideo');
+    video.pause();
+    video.currentTime = 0;
+    modal.style.display = 'none';
+}
         document.getElementById('videoModal').addEventListener('click', function(e) {
             if (e.target === this) closeVideo();
         });
