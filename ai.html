@@ -2,12 +2,13 @@
 <html lang="zh-CN">
 <head>
     <link rel="icon" href="/favicon.png" type="image/png">
+    <link rel="shortcut icon" href="/favicon.png" type="image/png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=yes">
     <title>AI智能加人物</title>
     <style>
         body {
-            margin: 0;
+            margin: 0 auto;
             padding: 0;
             background: #000;
             color: #fff;
@@ -15,29 +16,47 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            max-width: 1440px;
+            width: 100%;
+            box-sizing: border-box;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        *::-webkit-scrollbar { display: none; }
+
+        /* 移动端垂直滑动优化 */
+        @media (max-width: 1024px) {
+            body { touch-action: pan-y; }
+            .gallery { touch-action: pan-y; }
+            .gallery-container { overflow-y: visible; }
         }
 
         .header {
             padding: 80px 60px 60px 60px;
+            width: 100%;
+            box-sizing: border-box;
         }
         .header h1 {
             font-size: 32px;
             font-weight: 500;
             margin: 0;
             line-height: 1.4;
+            text-align: left;
         }
-
         .gallery-container {
+            overflow: visible;
             padding: 0 60px 140px 60px;
+            width: 100%;
+            box-sizing: border-box;
+            flex: 1;
             position: relative;
-            overflow: hidden;
         }
         .gallery {
             display: flex;
             gap: 20px;
-            transition: transform 0.8s cubic-bezier(0.32, 0.72, 0, 1);
+            transition: transform 0.8s cubic-bezier(0.34, 0.68, 0.15, 1);
             width: fit-content;
-            touch-action: pan-y;   /* 关键：允许垂直滑动 */
+            min-width: 100%;
         }
         .card-wrapper {
             flex: 0 0 327px;
@@ -52,23 +71,64 @@
             background-position: center;
             border-radius: 28px;
             overflow: hidden;
+            background-color: rgba(40, 40, 40, 0.6);
+            backdrop-filter: blur(12px);
             box-shadow: 0 12px 32px rgba(0,0,0,0.6);
         }
         .card-title {
             font-size: 15px;
             font-weight: 600;
             margin: 0;
+            color: #ffffff;
+            text-align: left;
         }
         .card-desc {
             font-size: 15px;
             line-height: 1.6;
             color: #ddd;
             margin: 8px 0 0 0;
+            text-align: left;
         }
 
-        /* 视频区域 */
+        .nav-buttons {
+            position: absolute;
+            right: 0;
+            top: -10%;
+            transform: translateY(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+            pointer-events: auto;
+        }
+        .nav-buttons button {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+        .nav-buttons button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+        .nav-buttons button:disabled {
+            background: rgba(255, 255, 255, 0.08);
+            opacity: 0.4;
+            cursor: default;
+        }
+
+        /* 视频部分 */
         .video-section {
             padding: 80px 60px 140px 60px;
+            width: 100%;
+            box-sizing: border-box;
             background: #1d1d1f;
             margin: 0 -60px;
         }
@@ -76,9 +136,13 @@
             font-size: 32px;
             font-weight: 500;
             margin-bottom: 60px;
+            text-align: left;
         }
         .video-card-wrapper {
             flex: 0 0 327px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
             cursor: pointer;
         }
         .video-card {
@@ -87,8 +151,10 @@
             background-size: cover;
             background-position: center;
             border-radius: 28px;
-            position: relative;
+            overflow: hidden;
+            background-color: rgba(40, 40, 40, 0.6);
             box-shadow: 0 12px 32px rgba(0,0,0,0.6);
+            position: relative;
         }
         .video-card::after {
             content: '▶';
@@ -98,14 +164,32 @@
             transform: translate(-50%, -50%);
             font-size: 60px;
             color: rgba(255,255,255,0.9);
+            opacity: 0.85;
+            transition: all 0.3s ease;
+        }
+        .video-card:hover::after {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.15);
+        }
+        .video-card-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin: 0;
+            color: #ffffff;
+        }
+        .video-card-desc {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #ddd;
+            margin: 0 0 0 0;
         }
 
         /* 视频弹窗 */
         .video-modal {
             display: none;
             position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.95);
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.92);
             z-index: 3000;
             align-items: center;
             justify-content: center;
@@ -123,22 +207,6 @@
             width: 100%;
             display: block;
         }
-        .video-modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            cursor: pointer;
-            z-index: 10;
-        }
         .loading {
             position: absolute;
             top: 50%;
@@ -148,40 +216,21 @@
             z-index: 5;
         }
 
-        .nav-buttons {
-            position: absolute;
-            right: 60px;
-            top: -40px;
-            display: flex;
-            gap: 20px;
-            z-index: 100;
-        }
-        .nav-buttons button {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.15);
-            color: white;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-        }
-        .nav-buttons button:hover {
-            background: rgba(255,255,255,0.3);
-        }
-
         @media (max-width: 1024px) {
-            .header, .gallery-container, .video-section {
-                padding: 40px 20px 80px 20px;
-            }
+            .header { padding: 40px 30px 20px; }
             .header h1 { font-size: 28px; }
+            .gallery-container, .video-section {
+                padding: 0 20px 140px 20px;
+            }
+            .gallery, .video-gallery { gap: 15px; }
             .card-wrapper, .video-card-wrapper { flex: 0 0 260px; }
             .card, .video-card { width: 260px; height: 314px; }
             .nav-buttons {
                 position: fixed;
                 bottom: 30px;
-                right: 20px;
+                right: 30px;
                 top: auto;
+                transform: none;
             }
             .nav-buttons button {
                 width: 50px;
@@ -192,14 +241,12 @@
     </style>
 </head>
 <body>
-
     <div class="header">
         <h1>无人场景加多人<br>多角度展示</h1>
     </div>
 
     <div class="gallery-container">
         <div class="gallery" id="gallery">
-
             <a href="detail.html?scene=1" style="text-decoration: none; color: inherit;">
                 <div class="card-wrapper">
                     <div class="card" style="background-image: url('https://img.adons.top/01/1.jpg');"></div>
@@ -209,7 +256,6 @@
                     </div>
                 </div>
             </a>
-
             <a href="detail.html?scene=2" style="text-decoration: none; color: inherit;">
                 <div class="card-wrapper">
                     <div class="card" style="background-image: url('https://img.adons.top/02/2-1.jpg');"></div>
@@ -219,7 +265,6 @@
                     </div>
                 </div>
             </a>
-
             <a href="detail.html?scene=3" style="text-decoration: none; color: inherit;">
                 <div class="card-wrapper">
                     <div class="card" style="background-image: url('https://img.adons.top/03/1.jfif');"></div>
@@ -229,7 +274,6 @@
                     </div>
                 </div>
             </a>
-
             <a href="detail.html?scene=4" style="text-decoration: none; color: inherit;">
                 <div class="card-wrapper">
                     <div class="card" style="background-image: url('https://img.adons.top/04/1.jfif');"></div>
@@ -239,7 +283,6 @@
                     </div>
                 </div>
             </a>
-
             <a href="detail.html?scene=5" style="text-decoration: none; color: inherit;">
                 <div class="card-wrapper">
                     <div class="card" style="background-image: url('https://img.adons.top/05/1.jpg');"></div>
@@ -249,7 +292,6 @@
                     </div>
                 </div>
             </a>
-
             <a href="detail.html?scene=6" style="text-decoration: none; color: inherit;">
                 <div class="card-wrapper">
                     <div class="card" style="background-image: url('https://img.adons.top/06/1.jpg');"></div>
@@ -259,7 +301,6 @@
                     </div>
                 </div>
             </a>
-
             <a href="detail.html?scene=7" style="text-decoration: none; color: inherit;">
                 <div class="card-wrapper">
                     <div class="card" style="background-image: url('https://img.adons.top/07/1.jpg');"></div>
@@ -270,32 +311,31 @@
                 </div>
             </a>
         </div>
-
         <div class="nav-buttons">
             <button id="prev-btn">❮</button>
             <button id="next-btn">❯</button>
         </div>
     </div>
 
-    <!-- 视频部分 -->
+    <!-- 视频版块 -->
     <div class="video-section">
         <h2>AI智能视频展示</h2>
         <div class="gallery" id="video-gallery">
             <div class="video-card-wrapper" onclick="playVideo('http://my-adon-video.test.upcdn.net/Swivel%20Chair.mp4')">
                 <div class="video-card" style="background-image: url('https://pub-c82e30e0463848b68595368687744f81.r2.dev/Swivel%20Chair.jpg');"></div>
                 <div>
-                    <div class="card-title">Olivia Velvet Swivel Chair</div>
-                    <div class="card-desc">旋转椅 AI 智能加人物演示 - 自然动作与多角度展示</div>
+                    <div class="video-card-title">Olivia Velvet Swivel Chair</div>
+                    <div class="video-card-desc">旋转椅 AI 智能加人物演示 - 自然动作与多角度展示</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 视频弹窗 -->
+    <!-- 视频浮层 -->
     <div id="videoModal" class="video-modal">
         <div class="video-modal-content">
             <div class="video-modal-close" onclick="closeVideo()">×</div>
-            <div id="loading" class="loading">加载中...</div>
+            <div id="loading" class="loading" style="display:none;">加载中...</div>
             <video id="modalVideo" controls autoplay playsinline>
                 <source id="modalSource" src="" type="video/mp4">
             </video>
@@ -303,7 +343,8 @@
     </div>
 
     <script>
-        // 图片横向滑动
+        // 横向滑动逻辑（电脑端基本保持原样）
+        const galleryContainer = document.querySelector('.gallery-container');
         const gallery = document.getElementById('gallery');
         const items = document.querySelectorAll('.card-wrapper');
         const prevBtn = document.getElementById('prev-btn');
@@ -311,7 +352,7 @@
         let index = 0;
 
         function updateSlide() {
-            const itemWidth = items[0].offsetWidth + 20;
+            const itemWidth = items[0].getBoundingClientRect().width + 20;
             gallery.style.transform = `translateX(-${index * itemWidth}px)`;
             prevBtn.disabled = index === 0;
             nextBtn.disabled = index >= items.length - 3;
@@ -320,27 +361,25 @@
         nextBtn.onclick = () => { if (index < items.length - 3) { index++; updateSlide(); } };
         prevBtn.onclick = () => { if (index > 0) { index--; updateSlide(); } };
 
-        // Apple风格触屏滑动（上下滑动流畅）
-        let startX = 0, startY = 0;
-        const container = document.querySelector('.gallery-container');
-
-        container.addEventListener('touchstart', e => {
-            startX = e.touches[0].clientX;
-            startY = e.touches[0].clientY;
-        }, { passive: true });
-
-        container.addEventListener('touchmove', e => {
-            const deltaX = Math.abs(e.touches[0].clientX - startX);
-            const deltaY = Math.abs(e.touches[0].clientY - startY);
-            if (deltaX > deltaY + 20) {
-                e.preventDefault();
-            }
-        }, { passive: false });
-
         window.addEventListener('resize', updateSlide);
         updateSlide();
 
-        // 视频播放
+        // 移动端触屏优化（只干预水平滑动，垂直滑动流畅）
+        let touchStartX = 0, touchStartY = 0;
+        galleryContainer.addEventListener('touchstart', e => {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        galleryContainer.addEventListener('touchmove', e => {
+            const deltaX = Math.abs(e.touches[0].clientX - touchStartX);
+            const deltaY = Math.abs(e.touches[0].clientY - touchStartY);
+            if (deltaX > deltaY + 15) {
+                e.preventDefault();   // 仅水平滑动时阻止默认行为
+            }
+        }, { passive: false });
+
+        // 视频播放功能（修复无内容问题）
         function playVideo(videoUrl) {
             const modal = document.getElementById('videoModal');
             const source = document.getElementById('modalSource');
@@ -358,7 +397,7 @@
             };
             video.onerror = () => {
                 loading.style.display = 'none';
-                alert('视频加载失败，请检查网络或链接');
+                alert('视频加载失败，请检查网络或视频地址');
             };
         }
 
@@ -370,10 +409,11 @@
             modal.style.display = 'none';
         }
 
-        document.getElementById('videoModal').addEventListener('click', e => {
+        document.getElementById('videoModal').addEventListener('click', function(e) {
             if (e.target === this) closeVideo();
         });
-        document.addEventListener('keydown', e => {
+
+        document.addEventListener('keydown', function(e) {
             if (e.key === "Escape") closeVideo();
         });
     </script>
