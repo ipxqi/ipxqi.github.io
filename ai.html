@@ -24,11 +24,6 @@
         }
         *::-webkit-scrollbar { display: none; }
 
-        @media (max-width: 1024px) {
-            body { touch-action: pan-y; }
-            .gallery { touch-action: pan-y; }
-        }
-
         .header {
             padding: 60px 60px 40px 60px;
             width: 100%;
@@ -102,48 +97,30 @@
             cursor: pointer;
             backdrop-filter: blur(20px);
         }
-        .nav-buttons button:hover { background: rgba(255,255,255,0.3); }
-        .nav-buttons button:disabled { opacity: 0.4; cursor: default; }
 
-        /* ==================== 手机端调整 ==================== */
+        /* ==================== 手机端 ==================== */
         @media (max-width: 1024px) {
             .header { padding: 50px 20px 30px 20px; }
             .header h1 { font-size: 28px; }
             
-            .gallery-container {
-                padding: 0 20px 100px 20px;
-            }
-            .card-wrapper, .video-card-wrapper { flex: 0 0 260px; }
-            .card, .video-card { width: 260px; height: 314px; }
+            .gallery-container { padding: 0 20px 120px 20px; }
+            .card-wrapper { flex: 0 0 260px; }
+            .card { width: 260px; height: 314px; }
 
             /* 箭头放在卡片下方并向右对齐 */
             .nav-buttons {
                 position: relative;
                 top: auto;
                 right: 0;
-                margin: 15px 0 30px auto;   /* 向右对齐 */
+                margin: 15px 10px 40px auto;
                 transform: none;
                 justify-content: flex-end;
-                width: 100%;
-                padding-right: 10px;
             }
             .nav-buttons button {
-                width: 48px;
-                height: 48px;
+                width: 50px;
+                height: 50px;
                 font-size: 22px;
             }
-        }
-
-        /* 视频部分 */
-        .video-section {
-            padding: 80px 60px 140px 60px;
-            background: #1d1d1f;
-            margin: 0 -60px;
-        }
-        .video-section h2 {
-            font-size: 32px;
-            font-weight: 500;
-            margin-bottom: 60px;
         }
     </style>
 </head>
@@ -253,19 +230,38 @@
         window.addEventListener('resize', updateSlide);
         updateSlide();
 
-        // 手机触屏滑动
-        let touchStartX = 0, touchStartY = 0;
+        // ==================== 手机手指左右滑动（加强版） ====================
+        let touchStartX = 0, touchStartY = 0, currentTranslate = 0;
         const container = document.querySelector('.gallery-container');
+
         container.addEventListener('touchstart', e => {
             touchStartX = e.touches[0].clientX;
             touchStartY = e.touches[0].clientY;
+            currentTranslate = index * (items[0].getBoundingClientRect().width + 20);
+            gallery.style.transition = 'none';
         }, { passive: true });
 
         container.addEventListener('touchmove', e => {
-            const deltaX = Math.abs(e.touches[0].clientX - touchStartX);
+            const deltaX = e.touches[0].clientX - touchStartX;
             const deltaY = Math.abs(e.touches[0].clientY - touchStartY);
-            if (deltaX > deltaY + 20) e.preventDefault();
+
+            if (Math.abs(deltaX) > deltaY + 15) {
+                e.preventDefault();
+                const newTranslate = currentTranslate - deltaX;
+                gallery.style.transform = `translateX(-${newTranslate}px)`;
+            }
         }, { passive: false });
+
+        container.addEventListener('touchend', e => {
+            gallery.style.transition = 'transform 0.8s cubic-bezier(0.34, 0.68, 0.15, 1)';
+            const deltaX = e.changedTouches[0].clientX - touchStartX;
+
+            if (Math.abs(deltaX) > 60) {
+                if (deltaX > 0 && index > 0) index--;
+                else if (deltaX < 0 && index < items.length - getVisibleCount()) index++;
+            }
+            updateSlide();
+        });
 
         // 视频播放
         function playVideo(videoUrl) {
