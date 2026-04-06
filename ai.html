@@ -148,21 +148,25 @@
 
 /* ==================== 视频展示 - 手机端竖排版 ==================== */
 .video-section {
-    width: 100vw;                    /* 关键：占满视口宽度 */
-    margin-left: calc(-50vw + 50%);  /* 关键：让它从屏幕最左到最右 */
+    width: 100%;
     background: #1d1d1f;
     padding: 80px 0 140px 0;
+    margin: 0;
     position: relative;
+    /* 让背景突破父容器限制 */
     left: 50%;
-    transform: translateX(-50%);
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
 }
 
 .video-inner {
-    max-width: 1440px;               /* 与你页面主体宽度一致 */
+    max-width: 1440px;          /* 与你页面主体最大宽度一致 */
     margin: 0 auto;
     padding: 0 60px;
     width: 100%;
     box-sizing: border-box;
+    position: relative;
 }
 
 .video-section h2 {
@@ -415,36 +419,25 @@
         </div>
     </div>
 
-<!-- 视频部分（严格按最新要求） -->
+<!-- 视频部分 - 背景铺满左右 -->
 <div class="video-section">
-    <h2>AI智能视频展示</h2>
-    
-    <div class="video-gallery" id="video-gallery">
-        <!-- 示例卡片1（可复制添加更多） -->
-        <div class="video-card" onclick="playVideo('https://pub-c82e30e0463848b68595368687744f81.r2.dev/SwivelChair.mp4')">
-            <div class="thumbnail">
-                <img src="https://pub-c82e30e0463848b68595368687744f81.r2.dev/SwivelChair.jpg" alt="Olivia Velvet Swivel Chair">
-                <div class="play-icon">▶</div>
+    <div class="video-inner">
+        <h2>AI智能视频展示</h2>
+        
+        <div class="video-gallery" id="video-gallery">
+            <div class="video-card" onclick="playVideo('https://pub-c82e30e0463848b68595368687744f81.r2.dev/SwivelChair.mp4')">
+                <div class="thumbnail">
+                    <img src="https://pub-c82e30e0463848b68595368687744f81.r2.dev/SwivelChair.jpg" alt="Olivia Velvet Swivel Chair">
+                    <div class="play-icon">▶</div>
+                </div>
+                <div class="info">
+                    <div class="title">Olivia Velvet Swivel Chair</div>
+                    <div class="desc">旋转椅 AI 智能加人物演示 - 自然动作与多角度展示</div>
+                </div>
             </div>
-            <div class="info">
-                <div class="title">Olivia Velvet Swivel Chair</div>
-                <div class="desc">旋转椅 AI 智能加人物演示 - 自然动作与多角度展示</div>
-            </div>
-        </div>
 
-        <!-- 继续复制下面这个块添加更多视频卡片 -->
-        <!-- 
-        <div class="video-card" onclick="playVideo('你的视频链接.mp4')">
-            <div class="thumbnail">
-                <img src="你的缩略图链接.jpg" alt="Olivia Velvet Swivel Chair">
-                <div class="play-icon">▶</div>
-            </div>
-            <div class="info">
-                <div class="title">Olivia Velvet Swivel Chair</div>
-                <div class="desc">旋转椅 AI 智能加人物演示 - 自然动作与多角度展示</div>
-            </div>
+            <!-- 复制上面的 video-card 添加更多卡片 -->
         </div>
-        -->
     </div>
 </div>
 
