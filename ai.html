@@ -496,23 +496,38 @@
         isSwiping = false;
     });
 
-    // ==================== 新版：点击视频卡片弹出浮层 + 电脑端 1:1 比例 ====================
+    // ==================== 视频浮层播放（已修复加载中问题） ====================
     function playVideo(videoUrl) {
         const modal = document.getElementById('videoModal');
         const source = document.getElementById('modalSource');
         const video = document.getElementById('modalVideo');
-        
+        const loading = document.getElementById('loading');
+
         source.src = videoUrl;
+        loading.style.display = 'block';     // 显示加载中
         video.load();
+
         modal.style.display = 'flex';
-        video.play().catch(() => {});
+
+        // 视频加载完成后隐藏“加载中”
+        video.addEventListener('loadeddata', () => {
+            loading.style.display = 'none';
+        }, { once: true });
+
+        // 自动播放
+        video.play().catch(() => {
+            loading.style.display = 'none';
+        });
     }
 
     function closeVideo() {
         const modal = document.getElementById('videoModal');
         const video = document.getElementById('modalVideo');
+        const loading = document.getElementById('loading');
+
         video.pause();
         video.currentTime = 0;
+        loading.style.display = 'none';
         modal.style.display = 'none';
     }
 
