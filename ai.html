@@ -198,14 +198,15 @@
     display: none;
 }
 .video-card {
-    flex: 0 0 390px;
-    scroll-snap-align: start;
+    flex: 0 0 380px;
+    max-width: 380px;          /* 最大宽度限制 */
+   width: 100%;
     background: transparent;
     border-radius: 16px;
     overflow: hidden;
     cursor: pointer;
     transition: transform 0.3s ease;
-    min-width: 390px;           /* 防止被压缩 */
+    /* min-width: 390px;       ← 删除这一行 或 注释掉 */
 }
 .video-card:hover {
     transform: scale(1.03);
