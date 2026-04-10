@@ -204,6 +204,7 @@
     overflow: hidden;
     cursor: pointer;
     transition: transform 0.3s ease;
+    min-width: 390px;           /* 防止被压缩 */
 }
 .video-card:hover {
     transform: scale(1.03);
@@ -409,9 +410,10 @@
 <div class="video-section">
     <div class="video-inner">
         <h2>AI智能视频展示</h2>
-       
+      
         <div class="video-gallery" id="video-gallery">
-            <!-- 示例卡片（可复制添加更多） -->
+            
+            <!-- 视频一 -->
             <div class="video-card" data-video="https://pub-c82e30e0463848b68595368687744f81.r2.dev/Swivelchair7.mp4">
                 <div class="thumbnail">
                     <img src="https://pub-c82e30e0463848b68595368687744f81.r2.dev/SwivelChair.jpg" alt="Olivia Velvet Swivel Chair">
@@ -421,12 +423,12 @@
                     <div class="title">Olivia Velvet Swivel Chair</div>
                     <div class="desc">旋转椅 AI 智能加人物演示 - 自然动作与多角度展示</div>
                 </div>
-               </div>
+            </div>
 
-                 <!-- 示例卡片（可复制添加更多） -->
+            <!-- 视频二 -->
             <div class="video-card" data-video="https://pub-c82e30e0463848b68595368687744f81.r2.dev/Baoshi2.mp4">
                 <div class="thumbnail">
-                    <img src="https://pub-c82e30e0463848b68595368687744f81.r2.dev/baoshi.jpg" alt="Olivia Velvet Swivel Chair">
+                    <img src="https://pub-c82e30e0463848b68595368687744f81.r2.dev/baoshi.jpg" alt="Darphin Gold Sculpting Serum">
                     <div class="play-icon">▶</div>
                 </div>
                 <div class="info">
@@ -435,10 +437,10 @@
                 </div>
             </div>
 
-                 <!-- 示例卡片（可复制添加更多） -->
+            <!-- 视频三 -->
             <div class="video-card" data-video="https://pub-c82e30e0463848b68595368687744f81.r2.dev/Bose2.mp4">
                 <div class="thumbnail">
-                    <img src="https://pub-c82e30e0463848b68595368687744f81.r2.dev/bose.jpg" alt="Olivia Velvet Swivel Chair">
+                    <img src="https://pub-c82e30e0463848b68595368687744f81.r2.dev/bose.jpg" alt="Bose Noise Cancelling Headphone">
                     <div class="play-icon">▶</div>
                 </div>
                 <div class="info">
@@ -447,11 +449,10 @@
                 </div>
             </div>
 
-
-            <!-- 示例卡片（可复制添加更多） -->
+            <!-- 视频四 -->
             <div class="video-card" data-video="https://pub-c82e30e0463848b68595368687744f81.r2.dev/Yigui.mp4">
                 <div class="thumbnail">
-                    <img src="https://pub-c82e30e0463848b68595368687744f81.r2.dev/YIGUI.jpg" alt="Olivia Velvet Swivel Chair">
+                    <img src="https://pub-c82e30e0463848b68595368687744f81.r2.dev/YIGUI.jpg" alt="Custom Oak Wardrobe">
                     <div class="play-icon">▶</div>
                 </div>
                 <div class="info">
@@ -459,7 +460,7 @@
                     <div class="desc">定制橡木衣柜 AI 视频分镜生成 - 自然互动展示</div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 </div>
