@@ -185,13 +185,14 @@
 }
 .video-gallery {
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;           /* 关键：允许换行 */
     gap: 24px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     padding-bottom: 30px;
     scrollbar-width: none;
+    justify-content: center;   /* 居中排列，更好看 */
 }
 .video-gallery::-webkit-scrollbar {
     display: none;
