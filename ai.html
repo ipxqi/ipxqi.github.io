@@ -355,7 +355,98 @@
     color: #fff;
     font-size: 18px;
 }
-       
+
+
+        /* ==================== 新增：高清照片展示模块样式 ==================== */
+.photo-section {
+    width: 100%;
+    background: #000; /* 与整体纯黑底色呼应 */
+    padding: 80px 0 120px 0;
+    margin: 0;
+    position: relative;
+    box-sizing: border-box;
+}
+.photo-inner {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 60px;
+    width: 100%;
+    box-sizing: border-box;
+}
+.photo-section h2 {
+    font-size: 32px;
+    font-weight: 500;
+    margin-bottom: 50px;
+    padding-left: 10px;
+    color: #fff;
+}
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* PC端优雅的3列大图排版 */
+    gap: 30px; /* 间距拉开，更有呼吸感 */
+}
+.photo-card {
+    background: #1d1d1f;
+    border-radius: 24px;
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+.photo-card:hover {
+    transform: scale(1.025);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+}
+.photo-box {
+    width: 100%;
+    height: 300px; /* 固定高度，确保对齐 */
+    overflow: hidden;
+    background: #111;
+}
+.photo-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 自动裁剪自适应 */
+    display: block;
+}
+.photo-info {
+    padding: 22px 20px;
+}
+.photo-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 6px;
+}
+.photo-desc {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #a1a1a6; /* 采用苹果经典的辅助灰色 */
+}
+
+/* 照片模块：手机端/平板端响应式调整 */
+@media (max-width: 1024px) {
+    .photo-section {
+        padding: 60px 0 80px 0;
+    }
+    .photo-inner {
+        padding: 0 20px;
+    }
+    .photo-section h2 {
+        font-size: 28px;
+        margin-bottom: 30px;
+    }
+    .photo-grid {
+        grid-template-columns: 1fr; /* 移动端单列铺满 */
+        gap: 24px;
+        max-width: 420px; /* 与你的视频卡片max-width保持一致，确保视觉对齐 */
+        margin: 0 auto;
+    }
+    .photo-box {
+        height: 260px; /* 移动端稍微矮一点，更精致 */
+    }
+}
+
+        
     </style>
 </head>
 <body>
@@ -494,6 +585,50 @@
         </div>
     </div>
 </div>
+
+    </div>
+    </div>
+</div>
+
+<div class="photo-section">
+    <div class="photo-inner">
+        <h2>AI高清大图与细节呈现</h2>
+        
+        <div class="photo-grid">
+            <div class="photo-card">
+                <div class="photo-box">
+                    <img src="https://pub-c82e30e0463848b68595368687744f81.r2.dev/SwivelChair.jpg" alt="高清材质呈现">
+                </div>
+                <div class="photo-info">
+                    <div class="photo-title">8K超清面料细节</div>
+                    <div class="photo-desc">高密度雪尼尔面料纹理高清还原，纹路清晰，兼具防污防水功能展示。</div>
+                </div>
+            </div>
+
+            <div class="photo-card">
+                <div class="photo-box">
+                    <img src="https://pub-c82e30e0463848b68595368687744f81.r2.dev/baoshi.jpg" alt="多角度视图">
+                </div>
+                <div class="photo-info">
+                    <div class="photo-title">侧面多角度光影</div>
+                    <div class="photo-desc">AI精准还原3D自然环境光，多角度精细拼接无死角。</div>
+                </div>
+            </div>
+
+            <div class="photo-card">
+                <div class="photo-box">
+                    <img src="https://pub-c82e30e0463848b68595368687744f81.r2.dev/bose.jpg" alt="真实场景合成">
+                </div>
+                <div class="photo-info">
+                    <div class="photo-title">多人复杂场景融合</div>
+                    <div class="photo-desc">智能指哪改哪，多人物姿态无缝置入空场景，色彩质感高级统一。</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="videoModal" class="video-modal">
     <!-- 视频弹窗 -->
     <div id="videoModal" class="video-modal">
         <div class="video-modal-content">
