@@ -298,62 +298,138 @@
         font-size: 34px;
     }
 }
-/* ==================== 视频弹窗浮层（居中弹出） ==================== */
-.video-modal {
+/* ==================== 更新：图片灯箱弹窗（带缩略图功能） ==================== */
+.photo-modal {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.94);
+    background: rgba(0, 0, 0, 0.95);
     z-index: 9999;
     align-items: center;
     justify-content: center;
     padding: 20px;
     box-sizing: border-box;
+    user-select: none;
 }
-.video-modal-content {
+.photo-modal-content {
     position: relative;
     width: 100%;
-    max-width: 1280px;
-    background: #000;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 30px 100px rgba(0,0,0,0.9);
+    max-width: 1000px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
-        .video-modal video {
-            width: 100%;
-            height: auto;
-            display: block;
-            aspect-ratio: 1 / 1;        /* 关键：强制 1:1 比例 */
-            object-fit: contain;
-        }
-.video-modal-close {
+.photo-modal img#modalTargetImage {
+    max-width: 100%;
+    max-height: 65vh; /* 调小大图的最大高度，为底部的缩略图留出充足空间 */
+    object-fit: contain;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+}
+
+/* 弹窗关闭按钮 */
+.photo-modal-close {
     position: absolute;
-    top: 18px;
-    right: 18px;
-    font-size: 34px;
+    top: -60px;
+    right: 0;
+    font-size: 36px;
     color: #fff;
     cursor: pointer;
-    z-index: 10000;
     width: 44px;
     height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0,0,0,0.6);
+    background: rgba(255,255,255,0.1);
     border-radius: 50%;
+    transition: background 0.3s;
 }
-#modalVideo {
-    width: 100%;
-    display: block;
-    max-height: 88vh;
-}
-.loading {
+.photo-modal-close:hover { background: rgba(255,255,255,0.25); }
+
+/* 左右切换箭头 */
+.photo-nav-btn {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #fff;
-    font-size: 18px;
+    top: 40%; /* 针对大图高度调整了垂直居中位置 */
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    backdrop-filter: blur(20px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s, opacity 0.3s;
+    z-index: 10010;
+}
+.photo-nav-btn:hover { background: rgba(255,255,255,0.3); }
+.photo-nav-btn:disabled { opacity: 0.2; cursor: default; }
+#photo-prev-btn { left: -70px; }
+#photo-next-btn { right: -70px; }
+
+/* 图片底部的数字计数器 */
+.photo-counter {
+    color: #a1a1a6;
+    font-size: 14px;
+    margin: 15px 0 10px 0;
+    font-weight: 500;
+}
+
+/* 新增：底部缩略图滚动区域 */
+.photo-thumbnails {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    max-width: 100%;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    /* 隐藏原生的滚动条以保持美观 */
+    scrollbar-width: none; 
+}
+.photo-thumbnails::-webkit-scrollbar {
+    display: none; 
+}
+
+/* 新增：单张缩略图的样式 */
+.thumb-item {
+    width: 64px;
+    height: 64px;
+    border-radius: 6px;
+    object-fit: cover;
+    cursor: pointer;
+    opacity: 0.4; /* 未选中时呈半透明，突出大图效果 */
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    flex-shrink: 0; /* 防止图片过多时被挤压变形 */
+}
+.thumb-item:hover {
+    opacity: 0.8;
+}
+/* 新增：当前选中的缩略图高亮样式 */
+.thumb-item.active {
+    opacity: 1;
+    border-color: #0071e3; /* 苹果经典蓝色高亮边框 */
+    transform: scale(1.05);
+}
+
+/* 手机端响应式优化 */
+@media (max-width: 1160px) {
+    #photo-prev-btn { left: 10px; }
+    #photo-next-btn { right: 10px; }
+    .photo-modal-close {
+        top: 10px;
+        right: 10px;
+        z-index: 10020;
+    }
+    .thumb-item {
+        width: 50px;
+        height: 50px; /* 移动端适当缩小缩略图 */
+    }
 }
 
 
@@ -719,7 +795,10 @@
         <img id="modalTargetImage" src="" alt="预览大图">
         
         <button id="photo-next-btn" class="photo-nav-btn">❯</button>
+        
         <div id="photoCounter" class="photo-counter">1 / 1</div>
+        
+        <div id="photoThumbnails" class="photo-thumbnails"></div>
     </div>
 </div>
 
@@ -893,7 +972,7 @@
         if (e.key === "Escape") closeVideo();
     });
 
-    // ==================== 新增：图片弹窗及多图切换逻辑 ====================
+  // ==================== 更新：图片弹窗、多图切换及缩略图联动逻辑 ====================
     let currentImageArray = []; // 当前卡片包含的图片数组
     let currentImageIndex = 0;  // 当前正在看第几张图
 
@@ -902,6 +981,7 @@
     const photoPrevBtn = document.getElementById('photo-prev-btn');
     const photoNextBtn = document.getElementById('photo-next-btn');
     const photoCounter = document.getElementById('photoCounter');
+    const photoThumbnails = document.getElementById('photoThumbnails'); // 缩略图容器
 
     // 打开大图弹窗
     function openPhotoModal(imagesString) {
@@ -911,33 +991,70 @@
         currentImageArray = imagesString.split(',');
         currentImageIndex = 0; // 默认从第一张开始看
         
-        // 2. 渲染并显示
+        // 2. 动态生成底部缩略图
+        buildThumbnails();
+        
+        // 3. 渲染并显示
         updateModalImage();
         photoModal.style.display = 'flex';
     }
 
-    // 更新弹窗中的图片和状态
+    // 新增：动态构建缩略图 DOM 的方法
+    function buildThumbnails() {
+        photoThumbnails.innerHTML = ''; // 清空上一组缩略图
+        
+        currentImageArray.forEach((imgUrl, index) => {
+            const thumb = document.createElement('img');
+            thumb.src = imgUrl;
+            thumb.classList.add('thumb-item');
+            thumb.alt = `缩略图 ${index + 1}`;
+            
+            // 点击缩略图直接跳转到对应大图
+            thumb.addEventListener('click', (e) => {
+                e.stopPropagation();
+                currentImageIndex = index;
+                updateModalImage();
+            });
+            
+            photoThumbnails.appendChild(thumb);
+        });
+    }
+
+    // 更新弹窗中的大图、计数器和缩略图状态
     function updateModalImage() {
-        // 设置图片路径
+        // 设置大图路径
         modalTargetImage.src = currentImageArray[currentImageIndex];
         
         // 更新计数器文字 (如 3 / 7)
         photoCounter.innerText = `${currentImageIndex + 1} / ${currentImageArray.length}`;
         
-        // 控制边界时箭头的置灰状态 (到第一张没有左箭头，最后一张没有右箭头)
+        // 控制边界时箭头的置灰状态
         photoPrevBtn.disabled = currentImageIndex === 0;
         photoNextBtn.disabled = currentImageIndex === currentImageArray.length - 1;
+        
+        // 更新缩略图高亮状态
+        const thumbs = photoThumbnails.querySelectorAll('.thumb-item');
+        thumbs.forEach((thumb, index) => {
+            if (index === currentImageIndex) {
+                thumb.classList.add('active');
+                // 丝滑滚动：让当前选中的缩略图居中显示在缩略图栏中
+                thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            } else {
+                thumb.classList.remove('active');
+            }
+        });
     }
 
     // 关闭图片弹窗
     function closePhotoModal() {
         photoModal.style.display = 'none';
         modalTargetImage.src = '';
+        photoThumbnails.innerHTML = ''; // 关闭时清空，释放内存
     }
 
     // 绑定下一张/上一张点击事件
     photoNextBtn.onclick = (e) => {
-        e.stopPropagation(); // 阻止冒泡
+        e.stopPropagation(); 
         if (currentImageIndex < currentImageArray.length - 1) {
             currentImageIndex++;
             updateModalImage();
@@ -965,7 +1082,7 @@
         if (e.target === this) closePhotoModal();
     });
 
-    // 扩展：支持键盘左右方向键切换，ESC键关闭 (用户体验极佳)
+    // 支持键盘左右方向键切换，ESC键关闭
     document.addEventListener('keydown', function(e) {
         if (photoModal.style.display === 'flex') {
             if (e.key === "ArrowRight" && currentImageIndex < currentImageArray.length - 1) {
