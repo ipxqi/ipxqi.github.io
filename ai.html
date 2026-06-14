@@ -445,7 +445,95 @@
         height: 260px; /* 移动端稍微矮一点，更精致 */
     }
 }
+        
+/* ==================== 新增：图片灯箱弹窗（支持多图切换） ==================== */
+.photo-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+    user-select: none;
+}
+.photo-modal-content {
+    position: relative;
+    width: 100%;
+    max-width: 1000px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.photo-modal img {
+    max-width: 100%;
+    max-height: 80vh; 
+    object-fit: contain;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+    transition: transform 0.3s ease;
+}
+.photo-modal-close {
+    position: absolute;
+    top: -60px;
+    right: 0;
+    font-size: 36px;
+    color: #fff;
+    cursor: pointer;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    transition: background 0.3s;
+}
+.photo-modal-close:hover { background: rgba(255,255,255,0.25); }
 
+.photo-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    backdrop-filter: blur(20px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s, opacity 0.3s;
+    z-index: 10010;
+}
+.photo-nav-btn:hover { background: rgba(255,255,255,0.3); }
+.photo-nav-btn:disabled { opacity: 0.2; cursor: default; }
+#photo-prev-btn { left: -70px; }
+#photo-next-btn { right: -70px; }
+
+.photo-counter {
+    color: #a1a1a6;
+    font-size: 14px;
+    margin-top: 15px;
+    font-weight: 500;
+}
+
+@media (max-width: 1160px) {
+    #photo-prev-btn { left: 10px; }
+    #photo-next-btn { right: 10px; }
+    .photo-modal-close {
+        top: 10px;
+        right: 10px;
+        z-index: 10020;
+    }
+}
         
     </style>
 </head>
@@ -584,7 +672,59 @@
             
         </div>
     </div>
+</div><div class="photo-section">
+    <div class="photo-inner">
+        <h2>AI高清多角度大图浏览</h2>
+        
+        <div class="photo-grid">
+            <div class="photo-card" data-images="https://img.adons.top/01/1.jpg,https://pub-c82e30e0463848b68595368687744f81.r2.dev/SwivelChair.jpg,https://pub-c82e30e0463848b68595368687744f81.r2.dev/baoshi.jpg,https://pub-c82e30e0463848b68595368687744f81.r2.dev/bose.jpg,https://img.adons.top/02/2-1.jpg,https://img.adons.top/05/1.jpg,https://img.adons.top/06/1.jpg">
+                <div class="photo-box">
+                    <img src="https://img.adons.top/01/1.jpg" alt="场景一主图">
+                </div>
+                <div class="photo-info">
+                    <div class="photo-title">场景一 · 多角度全景 (7张)</div>
+                    <div class="photo-desc">点击展开查看包含客厅、特写、面料及智能生成的多角度全套高清渲染图。</div>
+                </div>
+            </div>
+
+            <div class="photo-card" data-images="https://img.adons.top/02/2-1.jpg,https://pub-c82e30e0463848b68595368687744f81.r2.dev/baoshi.jpg,https://pub-c82e30e0463848b68595368687744f81.r2.dev/bose.jpg,https://pub-c82e30e0463848b68595368687744f81.r2.dev/YIGUI.jpg">
+                <div class="photo-box">
+                    <img src="https://img.adons.top/02/2-1.jpg" alt="场景二主图">
+                </div>
+                <div class="photo-info">
+                    <div class="photo-title">场景二 · 复杂光影系列</div>
+                    <div class="photo-desc">点击展开查看多人物置入与3D自然光影环境的多角度高清大图切换。</div>
+                </div>
+            </div>
+
+            <div class="photo-card" data-images="https://pub-c82e30e0463848b68595368687744f81.r2.dev/bose.jpg,https://pub-c82e30e0463848b68595368687744f81.r2.dev/YIGUI.jpg,https://pub-c82e30e0463848b68595368687744f81.r2.dev/changjing2.jpg">
+                <div class="photo-box">
+                    <img src="https://pub-c82e30e0463848b68595368687744f81.r2.dev/bose.jpg" alt="场景三主图">
+                </div>
+                <div class="photo-info">
+                    <div class="photo-title">场景三 · 商业级别精修</div>
+                    <div class="photo-desc">指哪改哪，定向场景编辑后的电影级光影原图细节呈现。</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+
+<div id="photoModal" class="photo-modal">
+    <div class="photo-modal-content">
+        <div class="photo-modal-close" onclick="closePhotoModal()">×</div>
+        <button id="photo-prev-btn" class="photo-nav-btn">❮</button>
+        
+        <img id="modalTargetImage" src="" alt="预览大图">
+        
+        <button id="photo-next-btn" class="photo-nav-btn">❯</button>
+        <div id="photoCounter" class="photo-counter">1 / 1</div>
+    </div>
+</div>
+
+
+<div id="videoModal" class="video-modal">
 
     </div>
     </div>
@@ -751,6 +891,93 @@
     // ESC 键关闭
     document.addEventListener('keydown', function(e) {
         if (e.key === "Escape") closeVideo();
+    });
+
+    // ==================== 新增：图片弹窗及多图切换逻辑 ====================
+    let currentImageArray = []; // 当前卡片包含的图片数组
+    let currentImageIndex = 0;  // 当前正在看第几张图
+
+    const photoModal = document.getElementById('photoModal');
+    const modalTargetImage = document.getElementById('modalTargetImage');
+    const photoPrevBtn = document.getElementById('photo-prev-btn');
+    const photoNextBtn = document.getElementById('photo-next-btn');
+    const photoCounter = document.getElementById('photoCounter');
+
+    // 打开大图弹窗
+    function openPhotoModal(imagesString) {
+        if (!imagesString) return;
+        
+        // 1. 拆分图片字符串为数组
+        currentImageArray = imagesString.split(',');
+        currentImageIndex = 0; // 默认从第一张开始看
+        
+        // 2. 渲染并显示
+        updateModalImage();
+        photoModal.style.display = 'flex';
+    }
+
+    // 更新弹窗中的图片和状态
+    function updateModalImage() {
+        // 设置图片路径
+        modalTargetImage.src = currentImageArray[currentImageIndex];
+        
+        // 更新计数器文字 (如 3 / 7)
+        photoCounter.innerText = `${currentImageIndex + 1} / ${currentImageArray.length}`;
+        
+        // 控制边界时箭头的置灰状态 (到第一张没有左箭头，最后一张没有右箭头)
+        photoPrevBtn.disabled = currentImageIndex === 0;
+        photoNextBtn.disabled = currentImageIndex === currentImageArray.length - 1;
+    }
+
+    // 关闭图片弹窗
+    function closePhotoModal() {
+        photoModal.style.display = 'none';
+        modalTargetImage.src = '';
+    }
+
+    // 绑定下一张/上一张点击事件
+    photoNextBtn.onclick = (e) => {
+        e.stopPropagation(); // 阻止冒泡
+        if (currentImageIndex < currentImageArray.length - 1) {
+            currentImageIndex++;
+            updateModalImage();
+        }
+    };
+
+    photoPrevBtn.onclick = (e) => {
+        e.stopPropagation();
+        if (currentImageIndex > 0) {
+            currentImageIndex--;
+            updateModalImage();
+        }
+    };
+
+    // 给所有图片卡片绑定点击监听
+    document.querySelectorAll('.photo-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const images = card.getAttribute('data-images');
+            openPhotoModal(images);
+        });
+    });
+
+    // 点击弹窗背景也可以关闭
+    photoModal.addEventListener('click', function(e) {
+        if (e.target === this) closePhotoModal();
+    });
+
+    // 扩展：支持键盘左右方向键切换，ESC键关闭 (用户体验极佳)
+    document.addEventListener('keydown', function(e) {
+        if (photoModal.style.display === 'flex') {
+            if (e.key === "ArrowRight" && currentImageIndex < currentImageArray.length - 1) {
+                currentImageIndex++;
+                updateModalImage();
+            } else if (e.key === "ArrowLeft" && currentImageIndex > 0) {
+                currentImageIndex--;
+                updateModalImage();
+            } else if (e.key === "Escape") {
+                closePhotoModal();
+            }
+        }
     });
 </script>
 </body>
