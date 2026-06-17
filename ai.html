@@ -140,13 +140,14 @@
             }
         }
         
-        /* ==================== 视频区域：背景铺满 + 手机端居中 ==================== */
+        /* ==================== 统一对齐重构：视频区域 ==================== */
         .video-section {
             width: 100%;
             background: #1d1d1f;
-            padding: 60px 0 50px 0;
+            padding: 80px 0;
             margin: 0;
             position: relative;
+            box-sizing: border-box;
         }
         .video-section::before {
             content: '';
@@ -160,35 +161,34 @@
             margin-left: -50vw;
             margin-right: -50vw;
         }
-        .video-inner {
+        .video-inner, .photo-inner {
             max-width: 1440px;
             margin: 0 auto;
             padding: 0 60px;
             width: 100%;
             box-sizing: border-box;
         }
-        .video-section h2 {
+        .video-section h2, .photo-section h2 {
             margin-bottom: 50px;
-            padding-left: 10px;
+            padding-left: 0;
             color: #fff;
         }
         .video-gallery {
             display: flex;
-            flex-wrap: wrap;           /* 关键：允许换行 */
+            flex-wrap: wrap;
             gap: 24px;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
-            padding-bottom: 30px;
             scrollbar-width: none;
-            justify-content: flex-start;   /* ← 改成靠左对齐 */
+            justify-content: flex-start;
         }
         .video-gallery::-webkit-scrollbar {
             display: none;
         }
         .video-card {
             flex: 0 0 380px;
-            max-width: 380px;          /* 最大宽度限制 */
+            max-width: 380px;
             width: 100%;
             background: transparent;
             border-radius: 16px;
@@ -247,21 +247,20 @@
             line-height: 1.6;
             color: #ccc;
         }
-        /* ==================== 视频展示 手机端响应式 ==================== */
+
+        /* 视频展示 手机端对齐修正 */
         @media (max-width: 1024px) {
             .video-section {
-                padding: 60px 0px 100px 0px;
+                padding: 60px 0;
             }
-            .video-inner {
-                width: 100%;
-                padding: 0 10px;
+            .video-inner, .photo-inner {
+                padding: 0 20px;
             }
             .video-gallery {
                 flex-direction: column;
-                align-items: center; /* 卡片水平居中 */
+                align-items: center;
                 gap: 32px;
                 overflow-x: visible;
-                padding-bottom: 0;
                 width: 100%;
             }
             .video-card {
@@ -281,49 +280,38 @@
             }
         }
 
-        /* ==================== 高清照片展示模块（纯图版：一行4个样式） ==================== */
+        /* ==================== 统一对齐重构：高清照片展示模块 ==================== */
         .photo-section {
             width: 100%;
-            background: #000;
+            background: #000; /* 与整体通栏纯黑底色呼微调一致 */
             padding: 80px 0 120px 0;
             margin: 0;
             position: relative;
             box-sizing: border-box;
         }
-        .photo-inner {
-            max-width: 1440px;
-            margin: 0 auto;
-            padding: 0 60px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .photo-section h2 {
-            margin-bottom: 50px;
-            padding-left: 10px;
-            color: #fff;
-        }
+        /* 核心修复：采用完全对齐的 Grid 响应式逻辑，与上方视频卡片和标题完美对齐 */
         .photo-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* 完美的 4 列大图排版 */
-            gap: 20px;
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 24px; /* 间距拉开到 24px，与上方视频卡片的横向间距完全统一 */
         }
         .photo-card {
             background: #1d1d1f;
-            border-radius: 24px;
+            border-radius: 16px; /* 圆角改为 16px，与视频卡片的外围大圆角质感完全对齐 */
             overflow: hidden;
-            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             cursor: pointer;
+            width: 100%;
         }
         .photo-card:hover {
-            transform: scale(1.025);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+            transform: scale(1.03); /* 缩放动效节奏与视频保持一致 */
         }
         .photo-box {
             width: 100%;
-            height: 400px; /* 降低裁剪高度，使 4 列画面比例更加精致和谐 */
+            height: 240px; /* 高度统一设定为 240px，与上方视频封面的高宽比例完全一致 */
             overflow: hidden;
-            background: #111;
+            background: #000;
         }
         .photo-box img {
             width: 100%;
@@ -332,23 +320,23 @@
             display: block;
         }
 
-        /* 照片网格响应式适配 */
-        @media (max-width: 1200px) {
-            .photo-grid { grid-template-columns: repeat(2, 1fr); }
-        }
+        /* 照片网格手机端对齐修正 */
         @media (max-width: 1024px) {
             .photo-section { padding: 60px 0 80px 0; }
-            .photo-inner { padding: 0 20px; }
             .photo-grid {
                 grid-template-columns: 1fr;
-                gap: 24px;
-                max-width: 420px;
-                margin: 0 auto;
+                gap: 32px; /* 移动端上下卡片间距改为 32px，与视频保持像素级重合 */
+                width: 100%;
             }
-            .photo-box { height: 260px; }
+            .photo-card {
+                max-width: 420px; /* 完美对齐上方视频移动端的 max-width */
+                margin: 0 auto;
+                border-radius: 20px; /* 移动端视频圆角是 20px，这里自动同步 */
+            }
+            .photo-box { height: 220px; } /* 移动端高度同步收缩 */
         }
 
-        /* ==================== 照片大图浏览灯箱弹窗样式（带底部缩略图） ==================== */
+        /* ==================== 照片大图浏览灯箱弹窗样式 ==================== */
         .photo-modal {
             display: none;
             position: fixed;
@@ -372,7 +360,7 @@
         }
         .photo-modal img#modalTargetImage {
             max-width: 100%;
-            max-height: 65vh; /* 压缩大图高度，给底部留出充足的缩略图显示空间 */
+            max-height: 65vh;
             object-fit: contain;
             border-radius: 12px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.8);
@@ -397,7 +385,7 @@
 
         .photo-nav-btn {
             position: absolute;
-            top: 40%; /* 针对大图高度偏移 */
+            top: 40%;
             transform: translateY(-50%);
             width: 50px;
             height: 50px;
@@ -426,7 +414,6 @@
             font-weight: 500;
         }
         
-        /* 底部滚动缩略图区域 */
         .photo-thumbnails {
             display: flex;
             gap: 10px;
@@ -453,7 +440,7 @@
         .thumb-item:hover { opacity: 0.8; }
         .thumb-item.active {
             opacity: 1;
-            border-color: #0071e3; /* 经典高亮蓝色 */
+            border-color: #0071e3;
             transform: scale(1.05);
         }
 
@@ -462,64 +449,6 @@
             #photo-next-btn { right: 10px; }
             .photo-modal-close { top: 10px; right: 10px; z-index: 10020; }
             .thumb-item { width: 50px; height: 50px; }
-        }
-
-        /* ==================== 视频弹窗浮层 ==================== */
-        .video-modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.94);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        .video-modal-content {
-            position: relative;
-            width: 100%;
-            max-width: 1280px;
-            background: #000;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 30px 100px rgba(0,0,0,0.9);
-        }
-        .video-modal video {
-            width: 100%;
-            height: auto;
-            display: block;
-            aspect-ratio: 1 / 1;        /* 关键：强制 1:1 比例 */
-            object-fit: contain;
-        }
-        .video-modal-close {
-            position: absolute;
-            top: 18px;
-            right: 18px;
-            font-size: 34px;
-            color: #fff;
-            cursor: pointer;
-            z-index: 10000;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0,0,0,0.6);
-            border-radius: 50%;
-        }
-        #modalVideo {
-            width: 100%;
-            display: block;
-            max-height: 88vh;
-        }
-        .loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #fff;
-            font-size: 18px;
         }
     </style>
 </head>
@@ -707,7 +636,7 @@
     </div>
 
 <script>
-    // ==================== 原有图片滑动逻辑（保持不变） ====================
+    // ==================== 原有图片滑动逻辑 ====================
     const gallery = document.getElementById('gallery');
     const items = document.querySelectorAll('.card-wrapper');
     const prevBtn = document.getElementById('prev-btn');
@@ -733,7 +662,7 @@
     window.addEventListener('resize', updateSlide);
     updateSlide();
 
-    // 手机端触屏滑动（保持不变）
+    // 手机端触屏滑动
     let touchStartX = 0, touchStartY = 0;
     let isSwiping = false;
     gallery.addEventListener('touchstart', e => {
@@ -766,7 +695,7 @@
         isSwiping = false;
     });
 
-    // ==================== 视频浮层播放（保持不变） ====================
+    // ==================== 视频浮层播放 ====================
     function playVideo(videoUrl) {
         const modal = document.getElementById('videoModal');
         const source = document.getElementById('modalSource');
@@ -774,16 +703,14 @@
         const loading = document.getElementById('loading');
 
         source.src = videoUrl;
-        loading.style.display = 'block';     // 显示加载中
+        loading.style.display = 'block';
         video.load();
         modal.style.display = 'flex';
 
-        // 视频加载完成后隐藏“加载中”
         video.addEventListener('loadeddata', () => {
             loading.style.display = 'none';
         }, { once: true });
 
-        // 自动播放
         video.play().catch(() => {
             loading.style.display = 'none';
         });
@@ -800,7 +727,6 @@
         modal.style.display = 'none';
     }
 
-    // 点击视频卡片触发
     document.querySelectorAll('.video-card').forEach(card => {
         card.addEventListener('click', () => {
             const videoUrl = card.getAttribute('data-video');
@@ -808,17 +734,15 @@
         });
     });
 
-    // 点击背景关闭
     document.getElementById('videoModal').addEventListener('click', function(e) {
         if (e.target === this) closeVideo();
     });
 
-    // ESC 键关闭原视频
     document.addEventListener('keydown', function(e) {
         if (e.key === "Escape") closeVideo();
     });
 
-    // ==================== 核心逻辑：照片弹窗、多图切换及缩略图联动 ====================
+    // ==================== 照片弹窗、多图切换及缩略图联动 ====================
     let currentImageArray = []; 
     let currentImageIndex = 0;  
 
@@ -829,7 +753,6 @@
     const photoCounter = document.getElementById('photoCounter');
     const photoThumbnails = document.getElementById('photoThumbnails'); 
 
-    // 打开照片大图弹窗
     function openPhotoModal(imagesString) {
         if (!imagesString) return;
         currentImageArray = imagesString.split(',');
@@ -839,7 +762,6 @@
         photoModal.style.display = 'flex';
     }
 
-    // 动态在弹窗内创建一整排缩略图
     function buildThumbnails() {
         photoThumbnails.innerHTML = ''; 
         currentImageArray.forEach((imgUrl, index) => {
@@ -856,7 +778,6 @@
         });
     }
 
-    // 更新大图渲染状态与缩略图的联动焦点
     function updateModalImage() {
         modalTargetImage.src = currentImageArray[currentImageIndex];
         photoCounter.innerText = `${currentImageIndex + 1} / ${currentImageArray.length}`;
@@ -874,7 +795,6 @@
         });
     }
 
-    // 关闭照片弹窗
     function closePhotoModal() {
         photoModal.style.display = 'none';
         modalTargetImage.src = '';
@@ -897,7 +817,6 @@
         }
     };
 
-    // 重新精确定位并绑定照片卡片点击事件
     document.querySelectorAll('.photo-grid .photo-card').forEach(card => {
         card.addEventListener('click', () => {
             const images = card.getAttribute('data-images');
@@ -905,12 +824,10 @@
         });
     });
 
-    // 点击弹窗背景关闭
     photoModal.addEventListener('click', function(e) {
         if (e.target === this) closePhotoModal();
     });
 
-    // 键盘左右键与ESC键的完美支持
     document.addEventListener('keydown', function(e) {
         if (photoModal.style.display === 'flex') {
             if (e.key === "ArrowRight" && currentImageIndex < currentImageArray.length - 1) {
